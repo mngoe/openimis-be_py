@@ -2,7 +2,9 @@ ARG PYTHON_VERSION="3.7"
 ARG WINDOWS_VERSION="ltsc2016"
 FROM "python:${PYTHON_VERSION}-windowsservercore-${WINDOWS_VERSION}"
 ARG GETTEXT_VERSION="0.19.8.1"
-ARG OPENIMIS_VERSION="1.4.1" 
+ARG OPENIMIS_VERSION="1.5.0" 
+#RUN Get-NetIPInterface
+RUN Set-DnsClientServerAddress -ServerAddresses  '8.8.8.8' -InterfaceAlias 'Ethernet 2'
 ENV GETTEXT_URL="https://github.com/vslavik/gettext-tools-windows/releases/download/v${GETTEXT_VERSION}/gettext-tools-windows-${GETTEXT_VERSION}.zip"
 LABEL vendor="openIMIS"\
       maintainer="Patrick Delcroix <patrick.delcroix@swisspth.ch>"\
