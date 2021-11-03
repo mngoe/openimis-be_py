@@ -26,7 +26,7 @@
     },
     {
       "name": "insuree",
-      "pip": "openimis-be-insuree==1.3.0"
+      "pip": "git+https://github.com/openimis/openimis-be-insuree_py.git@hotfix/insuree_number#egg=openimis-be-insuree"
     },
     {
       "name": "policy",
@@ -51,7 +51,7 @@
     {
       "name": "claim_batch",
       "pip": "openimis-be-claim_batch==1.3.0"
-    },   
+    },
     {
       "name": "api_fhir_r4",
       "pip": "openimis-be-api-fhir-r4==1.0.0"
