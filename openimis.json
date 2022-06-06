@@ -111,6 +111,10 @@
 		{
 			"name":"productpackage",
 			"pip":" openimis-be-productpackage-0.1.0"
+		},
+		{
+			"name":"cs",
+			"pip":" openimis-be-cs-0.1.0"
 		}
 	]
 }
