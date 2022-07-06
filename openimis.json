@@ -110,11 +110,11 @@
 		},
 		{
 			"name":"productpackage",
-			"pip":" openimis-be-productpackage"
+			"pip":"git+https://github.com/mngoe/openimis-be-productpackage_py.git@develop#egg=openimis-be-productpackage"
 		},
 		{
 			"name":"cs",
-			"pip":" openimis-be-cs"
+			"pip":"git+https://github.com/mngoe/openimis-be-cs_py.git@develop#egg=openimis-be-cs"
 		}
 	]
 }
