@@ -11,7 +11,7 @@ class ExampleImisTest(TestCase):
         # Remove this code when implementing tests
         warnings.warn("The example code in test case is still present.")
 
-    def test_example_module_loaded_correctly(self):
+    def test_example_module_loaded_correctly(cls):
         example_service_function_job()
         ExampleService().example_service_method_job()
-        self.assertTrue(True)
+        cls.assertTrue(True)
