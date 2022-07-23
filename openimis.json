@@ -115,6 +115,10 @@
 		{
 			"name":"cs",
 			"pip":"git+https://github.com/mngoe/openimis-be-cs_py.git@develop#egg=openimis-be-cs"
-		}
+		},
+		{
+            "name":"reportcs",
+            "pip":"git+ https://github.com/mngoe/openimis-be-report-cs_py@develop#egg=openimis-be-report-cs"
+        }
 	]
 }
