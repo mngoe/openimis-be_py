@@ -13,6 +13,9 @@ django-jsonfallback
 django-mssql-backend==2.8.1
 django-rest-framework-rules
 django-test-without-migrations
+#jsonfallback add dependencies to django-mysql through jsonfallback/fields.py
+django-mysql
+django-utils.six
 graphene-django<3
 graphene-django-optimizer==0.8.0
 PyJWT==1.7.0
