@@ -119,6 +119,6 @@
 		{
             "name":"reportcs",
             "pip":"git+https://github.com/mngoe/openimis-be-report-cs_py@develop#egg=openimis-be-report-cs"
-        }
+    }
 	]
 }
