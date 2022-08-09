@@ -108,10 +108,7 @@
 			"name":"calcrule_unconditional_cash_payment",
 			"pip":"git+https://github.com/openimis/openimis-be-calcrule_unconditional_cash_payment_py.git@develop#egg=openimis-be-calcrule_unconditional_cash_payment"
 		},
-		{
-			"name":"productpackage",
-			"pip":"git+https://github.com/mngoe/openimis-be-productpackage_py.git@develop#egg=openimis-be-productpackage"
-		},
+
 		{
 			"name":"cs",
 			"pip":"git+https://github.com/mngoe/openimis-be-cs_py.git@develop#egg=openimis-be-cs"
