@@ -6,15 +6,11 @@
 		},
 		{
 			"name": "report",
-			"pip": "git+https://github.com/openimis/openimis-be-report_py.git@develop#egg=openimis-be-report"
+			"pip": "git+https://github.com/openimis/openimis-be-report_py.git@b1ddf2d5d2bf649d5510761dea9df674f39e4c2bp#egg=openimis-be-report"
 		},
 		{
 			"name": "location",
-			"pip": "git+https://github.com/openimis/openimis-be-location_py.git@develop#egg=openimis-be-location"
-		},
-		{
-			"name": "medical",
-			"pip": "git+https://github.com/openimis/openimis-be-medical_py.git@develop#egg=openimis-be-medical"
+			"pip": "git+https://github.com/openimis/openimis-be-location_py.git@5c0a22adde79db76562b6ecd48c50ed7f557db16#egg=openimis-be-location"
 		},
 		{
 			"name": "medical_pricelist",
@@ -109,16 +105,20 @@
 			"pip":"git+https://github.com/openimis/openimis-be-calcrule_unconditional_cash_payment_py.git@develop#egg=openimis-be-calcrule_unconditional_cash_payment"
 		},
 		{
-			"name":"productpackage",
-			"pip":"git+https://github.com/mngoe/openimis-be-productpackage_py.git@develop#egg=openimis-be-productpackage"
-		},
-		{
 			"name":"cs",
 			"pip":"git+https://github.com/mngoe/openimis-be-cs_py.git@develop#egg=openimis-be-cs"
 		},
 		{
             "name":"reportcs",
             "pip":"git+https://github.com/mngoe/openimis-be-report-cs_py@develop#egg=openimis-be-report-cs"
+<<<<<<< HEAD
     }
+=======
+        },
+		{
+			"name": "medical",
+			"pip": "../openimis-be-medical_py"
+		}
+>>>>>>> ae6f48a (ajustement)
 	]
 }
