@@ -110,19 +110,11 @@
 		},
 		{
             "name":"reportcs",
-<<<<<<< HEAD
-            "pip":"git+https://github.com/mngoe/openimis-be-report-cs_py@develop#egg=openimis-be-report-cs"
-<<<<<<< HEAD
-    }
-=======
-=======
             "pip":"../openimis-be-report-cs_py"
->>>>>>> 0eacfb1 (ajustement openimis.json)
         },
 		{
 			"name": "medical",
 			"pip": "../openimis-be-medical_py"
 		}
->>>>>>> ae6f48a (ajustement)
 	]
 }
