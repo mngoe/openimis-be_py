@@ -12,6 +12,7 @@ import os
 
 from dotenv import load_dotenv
 from .openimisapps import openimis_apps, get_locale_folders
+from datetime import timedelta
 
 load_dotenv()
 
@@ -266,6 +267,8 @@ GRAPHENE = {
 GRAPHQL_JWT = {
     "JWT_VERIFY_EXPIRATION": True,
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+    "JWT_EXPIRATION_DELTA": timedelta(days=1),
+    "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=30),
     "JWT_AUTH_HEADER_PREFIX": "Bearer",
     "JWT_ENCODE_HANDLER": "core.jwt.jwt_encode_user_key",
     "JWT_DECODE_HANDLER": "core.jwt.jwt_decode_user_key",
@@ -283,26 +286,30 @@ GRAPHQL_JWT = {
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+DB_ENGINE = os.environ.get("DB_ENGINE", "sql_server.pyodbc")
+
 if "DB_OPTIONS" in os.environ:
     DATABASE_OPTIONS = json.loads(os.environ["DB_OPTIONS"])
-elif os.name == "nt":
-    DATABASE_OPTIONS = {
-        "driver": "ODBC Driver 17 for SQL Server",
-        "extra_params": "Persist Security Info=False;server=%s"
-        % os.environ.get("DB_HOST"),
-        "unicode_results": True,
-    }
+elif "sql_server" in DB_ENGINE:
+    if os.name == "nt":
+        DATABASE_OPTIONS = {
+            "driver": "ODBC Driver 17 for SQL Server",
+            "extra_params": "Persist Security Info=False;server=%s"
+            % os.environ.get("DB_HOST"),
+            "unicode_results": True,
+        }
+    else:
+        DATABASE_OPTIONS = {
+            "driver": "ODBC Driver 17 for SQL Server",
+            "unicode_results": True,
+        }
 else:
-    DATABASE_OPTIONS = {
-        "driver": "ODBC Driver 17 for SQL Server",
-        "unicode_results": True,
-    }
-
+    DATABASE_OPTIONS = {}
 
 if not os.environ.get("NO_DATABASE_ENGINE", "False") == "True":
     DATABASES = {
         "default": {
-            "ENGINE": os.environ.get("DB_ENGINE", "sql_server.pyodbc"),
+            "ENGINE": DB_ENGINE,
             "NAME": os.environ.get("DB_NAME"),
             "USER": os.environ.get("DB_USER"),
             "PASSWORD": os.environ.get("DB_PASSWORD"),
@@ -456,7 +463,11 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = int(os.environ.get('DATA_UPLOAD_MAX_MEMORY_SIZE', 
 INSUREE_NUMBER_LENGTH = os.environ.get("INSUREE_NUMBER_LENGTH", None)
 INSUREE_NUMBER_MODULE_ROOT = os.environ.get("INSUREE_NUMBER_MODULE_ROOT", None)
 
-FRONTEND_URL = os.environ.get("FRONTENT_URL", "")
+# There used to be a default password for zip files but for security reasons, it was removed. Trying to export
+# without a password defined is going to fail
+MASTER_DATA_PASSWORD = os.environ.get("MASTER_DATA_PASSWORD", None)
+
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "")
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
