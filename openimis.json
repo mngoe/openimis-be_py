@@ -10,7 +10,7 @@
 		},
 		{
 			"name": "location",
-			"pip": "git+https://github.com/openimis/openimis-be-location_py.git@5c0a22adde79db76562b6ecd48c50ed7f557db16#egg=openimis-be-location"
+			"pip": "git+https://github.com/openimis/openimis-be-location_py.git@develop#egg=openimis-be-location"
 		},
 		{
 			"name": "medical_pricelist",
@@ -26,7 +26,7 @@
 		},
 		{
 			"name": "policy",
-			"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@develop-cs#egg=openimis-be-policy"
+			"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@develop#egg=openimis-be-policy_py"
 		},
 		{
 			"name": "contribution",
@@ -42,7 +42,7 @@
 		},
 		{
 			"name": "claim",
-			"pip": "git+https://github.com/openimis/openimis-be-claim_py.git@develop#egg=openimis-be-claim"
+			"pip": "git+https://github.com/mngoe/openimis-be-claim_py.git@develop-cs#egg=openimis-be-claim"
 		},
 		{
 			"name": "claim_batch",
