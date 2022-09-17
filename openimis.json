@@ -18,11 +18,11 @@
 		},
 		{
 			"name": "product",
-			"pip": "git+https://github.com/openimis/openimis-be-product_py.git@develop#egg=openimis-be-product"
+			"pip": "git+https://github.com/openimis/openimis-be-product_py.git@681a8f00517124e03bf90a6f1cf1b622ddcf0fce#egg=openimis-be-product"
 		},
 		{
 			"name": "insuree",
-			"pip": "../openimis-be-insuree_py"
+			"pip": "git+https://github.com/mngoe/openimis-be-insuree_py.git@develop-cs#egg=openimis-be-insureey"
 		},
 		{
 			"name": "policy",
@@ -106,11 +106,11 @@
 		},
 		{
             "name":"reportcs",
-            "pip":"../openimis-be-report-cs_py"
+            "pip":"git+https://github.com/mngoe/openimis-be-report-cs_py.git@develop-cs#egg=openimis-be-report-cs"
         },
 		{
 			"name": "medical",
-			"pip": "../openimis-be-medical_py"
+			"pip": "git+https://github.com/mngoe/openimis-be-medical_py.git@develop-cs#egg=openimis-be-medical"
 		}
 	]
 }
