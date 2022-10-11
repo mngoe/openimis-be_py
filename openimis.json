@@ -97,14 +97,6 @@
 			"pip": "git+https://github.com/mngoe/openimis-be-insuree_py.git@develop-cs#egg=openimis-be-insureey"
 		},
 		{
-<<<<<<< HEAD
-			"name":"self_registration",
-			"pip":"git+https://github.com/openimis/openimis-be-self_registration_py.git@develop#egg=openimis-be-self_registration"
-		}
-		
-		 
-
-=======
 			"name": "policy",
 			"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@develop#egg=openimis-be-policy_py"
 		},
@@ -119,7 +111,10 @@
 		{
 			"name": "medical",
 			"pip": "git+https://github.com/mngoe/openimis-be-medical_py.git@develop-cs#egg=openimis-be-medical"
+		},
+		{
+			"name":"self_registration",
+			"pip":"git+https://github.com/openimis/openimis-be-self_registration_py.git@develop#egg=openimis-be-self_registration"
 		}
->>>>>>> develop-cs
 	]
 }
