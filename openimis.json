@@ -6,7 +6,7 @@
 		},
 		{
 			"name": "report",
-			"pip": "git+https://github.com/openimis/openimis-be-report_py.git@b1ddf2d5d2bf649d5510761dea9df674f39e4c2b#egg=openimis-be-report"
+			"pip": "git+https://github.com/openimis/openimis-be-report_py.git@develop#egg=openimis-be-report"
 		},
 		{
 			"name": "location",
@@ -18,15 +18,7 @@
 		},
 		{
 			"name": "product",
-			"pip": "git+https://github.com/openimis/openimis-be-product_py.git@681a8f00517124e03bf90a6f1cf1b622ddcf0fce#egg=openimis-be-product"
-		},
-		{
-			"name": "insuree",
-			"pip": "git+https://github.com/mngoe/openimis-be-insuree_py.git@develop-cs#egg=openimis-be-insureey"
-		},
-		{
-			"name": "policy",
-			"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@develop#egg=openimis-be-policy_py"
+			"pip": "git+https://github.com/openimis/openimis-be-product_py.git@develop#egg=openimis-be-product"
 		},
 		{
 			"name": "contribution",
@@ -39,10 +31,6 @@
 		{
 			"name": "payment",
 			"pip": "git+https://github.com/openimis/openimis-be-payment_py.git@develop#egg=openimis-be-payment"
-		},
-		{
-			"name": "claim",
-			"pip": "git+https://github.com/mngoe/openimis-be-claim_py.git@develop-cs#egg=openimis-be-claim"
 		},
 		{
 			"name": "claim_batch",
@@ -99,6 +87,18 @@
 		{
 			"name":"calcrule_unconditional_cash_payment",
 			"pip":"git+https://github.com/openimis/openimis-be-calcrule_unconditional_cash_payment_py.git@develop#egg=openimis-be-calcrule_unconditional_cash_payment"
+		},
+        {
+			"name": "claim",
+			"pip": "git+https://github.com/mngoe/openimis-be-claim_py.git@develop-cs#egg=openimis-be-claim"
+		},
+        {
+			"name": "insuree",
+			"pip": "git+https://github.com/mngoe/openimis-be-insuree_py.git@develop-cs#egg=openimis-be-insureey"
+		},
+		{
+			"name": "policy",
+			"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@develop#egg=openimis-be-policy_py"
 		},
 		{
 			"name":"cs",
