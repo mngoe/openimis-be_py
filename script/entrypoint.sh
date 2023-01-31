@@ -25,10 +25,10 @@ case "$1" in
     if [ "$SITE_ROOT" == "api" ] 
     then
       echo "Migrating..."
-      python manage.py migrate
+      #python manage.py migrate
     fi
     echo "Starting Django..."
-    SCHEDULER_AUTOSTART=True python server.py
+    SCHEDULER_AUTOSTART=True python manage.py runserver 0.0.0.0:8000
   ;;
   "start_asgi" )
     echo "Starting Django ASGI..."
