@@ -40,7 +40,7 @@
             "name": "payer",
             "pip": "openimis-be-payer==1.4.1"
         },
-            {
+        {
             "name": "payment",
             "pip": "openimis-be-payment==1.5.0"
         },
@@ -76,7 +76,7 @@
             "name": "policyholder",
             "pip": "openimis-be-policyholder==1.5.0"
         },
-            {
+        {
             "name": "contract",
             "pip": "openimis-be-contract==1.5.0"
         },
@@ -107,7 +107,19 @@
             {
             "name": "calcrule_unconditional_cash_payment",
             "pip": "openimis-be-calcrule_unconditional_cash_payment==1.4.1"
-        }
+        },
+        {
+			"name":"cs",
+			"pip":"git+https://github.com/mngoe/openimis-be-cs_py.git@develop-cs#egg=openimis-be-cs"
+		},
+        {
+			"name":"csu",
+			"pip":"../openimis-be-csu_py"
+		},
+        {
+			"name":"program",
+			"pip":"../openimis-be-program_py"
+		}
 ]
 
 }
