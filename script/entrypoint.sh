@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
 
+export SITE_ROOT=api 
+export REMOTE_USER_AUTHENTICATION=False 
+export ROW_SECURITY=False 
+export DEBUG=True 
+
+pip install -e /openimis-be-program_py
+python manage.py runserver 0.0.0.0:8000
+
 while :; do sleep 10; done
 
 show_help() {
