@@ -114,11 +114,11 @@
 		},
         {
 			"name":"csu",
-			"pip":"git+https://github.com/mngoe/openimis-be-csu_py.git@main-csu#egg=openimis-be-csu"
+			"pip":"git+https://github.com/mngoe/openimis-be-csu_py.git@main#egg=openimis-be-csu"
 		},
         {
 			"name":"program",
-			"pip":"../openimis-be-program_py"
+			"pip":"git+https://github.com/mngoe/openimis-be-program_py.git@main-csu#egg=openimis-be-program"
 		}
 ]
 
