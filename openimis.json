@@ -10,7 +10,7 @@
         },
             {
             "name": "location",
-            "pip": "openimis-be-location==1.5.0"
+            "pip": "git+https://github.com/mngoe/openimis-be-location_py.git@main-csu#egg=openimis-be-location"
         },
             {
             "name": "medical",
@@ -110,11 +110,11 @@
         },
         {
 			"name":"cs",
-			"pip":"git+https://github.com/mngoe/openimis-be-cs_py.git@develop-cs#egg=openimis-be-cs"
+			"pip":"git+https://github.com/mngoe/openimis-be-cs_py.git@main-csu#egg=openimis-be-cs"
 		},
         {
 			"name":"csu",
-			"pip":"git+https://github.com/mngoe/openimis-be-csu_py.git@main#egg=openimis-be-csu"
+			"pip":"git+https://github.com/mngoe/openimis-be-csu_py.git@main-csu#egg=openimis-be-csu"
 		},
         {
 			"name":"program",

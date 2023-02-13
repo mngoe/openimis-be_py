@@ -10,6 +10,7 @@ pip install -e /openimis-be-program_py
 pip install -e /openimis-be-cs_py
 pip install -e /openimis-be-csu_py
 pip install -e /openimis-be-claim_py
+pip install -e /openimis-be-location_py
 cd /openimis-be/
 python modules-requirements.py openimis.json > modules-requirements.txt
 pip install -r modules-requirements.txt
