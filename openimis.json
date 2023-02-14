@@ -22,7 +22,7 @@
         },
             {
             "name": "product",
-            "pip": "openimis-be-product==1.5.0"
+            "pip": "git+https://github.com/mngoe/openimis-be-product_py.git@main-csu#egg=openimis-be-product"
         },
             {
             "name": "insuree",
