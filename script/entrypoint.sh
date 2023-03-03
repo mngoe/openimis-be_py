@@ -7,7 +7,7 @@ export ROW_SECURITY=False
 export DEBUG=True 
 
 
-#pip install -e /openimis-be-insuree_py
+pip install -e /openimis-be-insuree_py
 #cd /openimis-be/
 #python modules-requirements.py openimis.json > modules-requirements.txt
 #pip install -r modules-requirements.txt
