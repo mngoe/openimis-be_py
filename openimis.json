@@ -1,6 +1,6 @@
 {
   "modules": [
-  {
+        {
             "name": "core",
             "pip": "openimis-be-core==1.5.0"
         },
@@ -24,9 +24,9 @@
             "name": "product",
             "pip": "openimis-be-product==1.5.0"
         },
-            {
+        {
             "name": "insuree",
-            "pip": "openimis-be-insuree==1.5.0"
+            "pip": "git+https://github.com/mngoe/openimis-be-insuree_py.git@main-mauritania#egg=openimis-be-insuree"
         },
             {
             "name": "policy",
@@ -40,7 +40,7 @@
             "name": "payer",
             "pip": "openimis-be-payer==1.4.1"
         },
-            {
+        {
             "name": "payment",
             "pip": "openimis-be-payment==1.5.0"
         },
@@ -76,7 +76,7 @@
             "name": "policyholder",
             "pip": "openimis-be-policyholder==1.5.0"
         },
-            {
+        {
             "name": "contract",
             "pip": "openimis-be-contract==1.5.0"
         },
@@ -107,7 +107,11 @@
             {
             "name": "calcrule_unconditional_cash_payment",
             "pip": "openimis-be-calcrule_unconditional_cash_payment==1.4.1"
-        }
+        },
+        {
+			"name":"reportmauritania",
+			"pip":"../openimis-be-report-mauritania_py"
+		}
 ]
 
 }

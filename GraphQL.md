@@ -177,7 +177,7 @@ class SubmitClaimMutation(graphene.Mutation):
 
     claim = graphene.Field(ClaimGQLType)
 
-    def mutate(self, info, id):
+    def mutate(cls, info, id):
         # TODO: dummy example, no access right check, dummy model update
         claim = Claim.objects.get(pk=id)
         claim.submit_stamp = now()
@@ -258,8 +258,8 @@ class ClaimSerializer(serializers.Serializer):
     audit_user_id = serializers.CharField(required=False)
     # ...
 
-    def create(self, validated_data):
-        audit_user_id = self.context["request"].user
+    def create(cls, validated_data):
+        audit_user_id = cls.context["request"].user
         status = validated_data.get("status", None)
         if status is None:
             status = default_status()
@@ -273,7 +273,7 @@ class ClaimSerializer(serializers.Serializer):
         claim.save()
         return claim
 
-    def update(self, instance, validated_data):
+    def update(cls, instance, validated_data):
         instance.status = validated_data.get("status", NEW)
         # ...
         instance.save()
