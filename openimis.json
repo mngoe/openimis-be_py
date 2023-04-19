@@ -107,6 +107,10 @@
             {
             "name": "calcrule_unconditional_cash_payment",
             "pip": "openimis-be-calcrule_unconditional_cash_payment==1.4.1"
+        },
+        {
+            "name": "reporthiv",
+            "pip": "git+https://github.com/mngoe/openimis-be-report-hiv_py.git@main-hiv#egg=openimis-be-report-hiv"
         }
 ]
 
