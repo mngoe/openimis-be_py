@@ -1,6 +1,20 @@
 #!/bin/bash
 set -e
 
+export SITE_ROOT=api 
+export REMOTE_USER_AUTHENTICATION=False 
+export ROW_SECURITY=False 
+export DEBUG=True 
+
+
+#pip install -e /openimis-be-report-hiv_py
+#cd /openimis-be/
+#python modules-requirements.py openimis.json > modules-requirements.txt
+#pip install -r modules-requirements.txt
+#cd /openimis-be/openIMIS/
+#python manage.py runserver 0.0.0.0:8000
+
+while :; do sleep 10; done
 show_help() {
   echo """
   Commands
