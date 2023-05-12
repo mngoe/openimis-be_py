@@ -8,6 +8,9 @@ export DEBUG=True
 
 
 # pip install -e /openimis-be-idps_py
+# pip install -e /openimis-be-insuree_py
+# pip install -e /openimis-be-medical_py
+# pip install -e /openimis-be-claim_py
 # cd /openimis-be/
 # python modules-requirements.py openimis.json > modules-requirements.txt
 # pip install -r modules-requirements.txt
