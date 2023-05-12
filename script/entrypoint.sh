@@ -7,6 +7,7 @@ export ROW_SECURITY=False
 export DEBUG=True 
 
 
+# pip install -e /openimis-be_py
 # pip install -e /openimis-be-idps_py
 # pip install -e /openimis-be-insuree_py
 # pip install -e /openimis-be-medical_py
