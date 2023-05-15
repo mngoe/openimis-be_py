@@ -14,6 +14,7 @@ export DEBUG=True
 #pip install -e /openimis-be-claim_py
 ##pip install -e /openimis-be-location_py
 #pip install -e /openimis-be-product_py
+#pip install -e /openimis-be-report-csu_py
 #cd /openimis-be/
 #python modules-requirements.py openimis.json > modules-requirements.txt
 #pip install -r modules-requirements.txt
