@@ -27,8 +27,8 @@ RUN pip install -r modules-requirements.txt
 WORKDIR /openimis-be/openIMIS
 RUN $env:PATH = 'C:\gettext\bin;' + $env:PATH; \
     [Environment]::SetEnvironmentVariable('PATH', $env:PATH, [EnvironmentVariableTarget]::Machine); 
-RUN refreshenv;Set-Item -Path Env:NO_DATABASE -value 'True'; python manage.py compilemessages | Write-Output
-RUN refreshenv;Set-Item -Path Env:NO_DATABASE -value 'True';python manage.py collectstatic --clear --noinput | Write-Output
+RUN refreshenv;Set-Item -Path Env:NO_DATABASE -value 'False'; python manage.py compilemessages | Write-Output
+RUN refreshenv;Set-Item -Path Env:NO_DATABASE -value 'False';python manage.py collectstatic --clear --noinput | Write-Output
 ENTRYPOINT ["powershell ", "-Command","/openimis-be/script/entrypoint.ps1"]
 # CMD ["powershell ", "-Command","/openimis-be/script/entrypoint.ps1"]
 CMD ["start","database","1433","5"]
