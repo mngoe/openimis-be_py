@@ -17,8 +17,6 @@ pip install -e /openimis-be-medical_py
 pip install -e /openimis-be-policy_py
 pip install -e /openimis-be-claim_py
 cd /openimis-be/openIMIS/
-NO_DATABASE=False python manage.py compilemessages -x zh_Hans
-NO_DATABASE=False python manage.py collectstatic --clear --noinput
 python manage.py runserver 0.0.0.0:8000
 
 while :; do sleep 10; done
