@@ -6,10 +6,10 @@ export REMOTE_USER_AUTHENTICATION=False
 export ROW_SECURITY=False 
 export DEBUG=True 
 
-
 cd /openimis-be/
 python modules-requirements.py openimis.json > modules-requirements.txt
 pip install -r modules-requirements.txt
+
 pip install -e /openimis-be-core_py
 pip install -e /openimis-be-program_py
 pip install -e /openimis-be-cs_py
