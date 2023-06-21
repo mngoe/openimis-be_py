@@ -20,6 +20,7 @@ pip install -e /openimis-be-product_py
 pip install -e /openimis-be-report-csu_py
 pip install -e /openimis-be-policy_py
 pip install -e /openimis-be-insuree_py
+pip install -e /openimis-be-medical_py
 cd /openimis-be/openIMIS/
 python manage.py runserver 0.0.0.0:8000
 
