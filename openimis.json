@@ -110,7 +110,7 @@
         },
         {
             "name": "idps",
-            "pip": "git+https://github.com/mngoe/openimis-be-idps_py.git@main#egg=openimis-be-idps"
+            "pip": "git+https://github.com/mngoe/openimis-be-idps_py.git@develop-idps#egg=openimis-be-idps"
         }
 ]
 
