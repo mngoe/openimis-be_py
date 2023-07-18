@@ -3,7 +3,7 @@ ENV PYTHONUNBUFFERED 1
 ARG DB_ENGINE
 ENV DB_ENGINE=${DB_ENGINE:-mssql}
 RUN apt-get update && apt-get install -y apt-transport-https ca-certificates gettext unixodbc-dev && apt-get upgrade -y
-RUN apt-get install -y -f python3-dev
+RUN apt-get install -y -f python3-dev nano
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - || :
 RUN curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list || :
