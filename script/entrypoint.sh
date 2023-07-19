@@ -1,6 +1,27 @@
 #!/bin/bash
 set -e
 
+export SITE_ROOT=api
+export REMOTE_USER_AUTHENTICATION=False
+export ROW_SECURITY=False
+export DEBUG=True
+
+cd /openimis-be/
+python3 modules-requirements.py openimis.json > modules-requirements.txt
+pip uninstall -r modules-requirements.txt -y
+#pip install -r requirements.txt
+#pip install -e ../openimis-be-cs_py/
+pip install -r modules-requirements.txt --no-cache-dir
+cd /openimis-be-report-cs_py/
+git pull origin develop-cs
+cd /openimis-be/
+pip install -e /openimis-be-report-cs_py/
+#pip install -e ../openimis-be-medical_py/
+#pip install -e ../openimis-be-policy_py/
+cd /openimis-be/openIMIS/
+python manage.py runserver 0.0.0.0:8000
+while :; do sleep 10; done
+
 show_help() {
   echo """
   Commands

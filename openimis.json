@@ -24,11 +24,7 @@
                 "name": "contribution",
                 "pip": "git+https://github.com/openimis/openimis-be-contribution_py.git@v1.4.0.0#egg=openimis-be-contribution"
         },
-        {
-                "name": "payer",
-                "pip": "git+https://github.com/openimis/openimis-be-payer_py.git@v1.4.1#egg=openimis-be-payer"
-        },
-		{
+	{
             "name": "payer",
             "pip": "git+https://github.com/openimis/openimis-be-payer_py.git@v1.4.1#egg=openimis-be-payer"
         },
@@ -98,7 +94,7 @@
 		},
 		{
 			"name": "policy",
-			"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@develop#egg=openimis-be-policy"
+			"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@develop-cs#egg=openimis-be-policy"
 		},
 		{
 			"name":"cs",
