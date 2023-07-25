@@ -15,7 +15,7 @@ pip install -r modules-requirements.txt
 cd /openimis-be/openIMIS/
 pip install -e /openimis-be-insuree_py
 pip install -e /openimis-be-report-mauritania_py
-#python manage.py runserver 0.0.0.0:8000
+python manage.py runserver 0.0.0.0:8000
 
 while :; do sleep 10; done
 
