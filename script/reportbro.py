@@ -541,9 +541,9 @@ class Report:
 
         # self.additional_fonts = additional_fonts
         self.additional_fonts = [
-            # dict(
-            #     value='arabic', filename='/openimis-be/openIMIS/Arabic.ttf'
-            # ),
+            dict(
+                value='arial', filename='/openimis-be/openIMIS/fonts/arial.ttf'
+            ),
             dict(
                 value='dejavusans',
                 filename='/openimis-be/openIMIS/fonts/DejaVuSans.ttf',
