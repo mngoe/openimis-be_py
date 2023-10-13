@@ -5,6 +5,7 @@ export SITE_ROOT=api
 export REMOTE_USER_AUTHENTICATION=False 
 export ROW_SECURITY=False 
 export DEBUG=True 
+export SCHEDULER_AUTOSTART=True
 
 cd /openimis-be/
 python modules-requirements.py openimis.json > modules-requirements.txt
