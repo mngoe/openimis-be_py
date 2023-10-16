@@ -21,6 +21,7 @@ ARG OPENIMIS_CONF_JSON
 ENV OPENIMIS_CONF_JSON=${OPENIMIS_CONF_JSON}
 RUN pip install -r requirements.txt
 RUN python modules-requirements.py openimis.json > modules-requirements.txt
+RUN pip install gunicorn
 RUN pip install -r modules-requirements.txt
 
 ARG SENTRY_DSN

@@ -306,7 +306,7 @@ elif MSSQL:
 else:
     DATABASE_OPTIONS = {}
 
-if not os.environ.get("NO_DATABASE_ENGINE", "False") == "True":
+if not os.environ.get("NO_DATABASE", "False") == "True":
     DATABASES = {
         "default": {
             "ENGINE": DB_ENGINE,
@@ -318,7 +318,17 @@ if not os.environ.get("NO_DATABASE_ENGINE", "False") == "True":
             "OPTIONS": DATABASE_OPTIONS,
         }
     }
-
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': ' ../script/sqlite.db',                      # Or path to database file if using sqlite3.
+            'USER': '',                      # Not used with sqlite3.
+            'PASSWORD': '',                  # Not used with sqlite3.
+            'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        }
+    }
 # Celery message broker configuration for RabbitMQ. One can also use Redis on AWS SQS
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "amqp://127.0.0.1")
 
