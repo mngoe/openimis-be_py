@@ -25,7 +25,7 @@ pip install -e /openimis-be-insuree_py
 pip install -e /openimis-be-medical_py
 pip install gunicorn
 cd /openimis-be/openIMIS/
-gunicorn -b 0.0.0.0 -w 4 openIMIS.wsgi
+gunicorn -b 0.0.0.0:8000 -w 4 openIMIS.wsgi
 #python manage.py runserver 0.0.0.0:8000
 
 #while :; do sleep 10; done
