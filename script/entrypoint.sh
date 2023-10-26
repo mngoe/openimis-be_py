@@ -24,6 +24,7 @@ pip install -e /openimis-be-policy_py
 pip install -e /openimis-be-insuree_py
 pip install -e /openimis-be-medical_py
 pip install -e /openimis-be-api_fhir_r4_py
+cp fhirtypes.py /usr/local/lib/python3.8/site-packages/fhir/resources/
 pip install pydantic==1.10.0
 pip install gunicorn
 cd /openimis-be/openIMIS/
