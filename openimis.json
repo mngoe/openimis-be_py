@@ -110,7 +110,7 @@
         },
         {
 			"name":"reportmauritania",
-			"pip":"../openimis-be-report-mauritania_py"
+			"pip":"git+https://github.com/mngoe/openimis-be-report-mauritania_py.git@main-mauritania#egg=openimis-be-report-mauritania"
 		}
 ]
 
