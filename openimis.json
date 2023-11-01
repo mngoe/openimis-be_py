@@ -10,11 +10,11 @@
         },
             {
             "name": "location",
-            "pip": "git+https://github.com/mngoe/openimis-be-location_py.git@dev-mauritania#egg=openimis-be-location"
+            "pip": "git+https://github.com/mngoe/openimis-be-location_py.git@main-mauritania#egg=openimis-be-location"
         },
             {
             "name": "medical",
-            "pip": "git+https://github.com/mngoe/openimis-be-medical_py.git@dev-mauritania#egg=openimis-be-medical"
+            "pip": "git+https://github.com/mngoe/openimis-be-medical_py.git@main-mauritania#egg=openimis-be-medical"
         },
             {
             "name": "medical_pricelist",
