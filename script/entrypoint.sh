@@ -7,14 +7,13 @@ export ROW_SECURITY=False
 export DEBUG=True 
 
 
-
-
 cd /openimis-be/
 python modules-requirements.py openimis.json > modules-requirements.txt
 pip install -r modules-requirements.txt
 cd /openimis-be/openIMIS/
 pip install -e /openimis-be-insuree_py
 pip install -e /openimis-be-report-mauritania_py
+cp /openimis-be/script/reportbro.py /usr/local/lib/python3.8/site-packages/reportbro/
 python manage.py runserver 0.0.0.0:8000
 
 while :; do sleep 10; done
