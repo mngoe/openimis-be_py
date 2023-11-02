@@ -122,7 +122,7 @@
 		},
         {
 			"name":"program",
-			"pip":"git+https://github.com/mngoe/openimis-be-program_py.git@main-csu#egg=openimis-be-program"
+			"pip":"git+https://github.com/mngoe/openimis-be-program_py.git@dev-csu#egg=openimis-be-program"
 		},
         {
             "name": "controls",
