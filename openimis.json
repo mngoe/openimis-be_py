@@ -53,6 +53,10 @@
             "pip": "git+https://github.com/mngoe/openimis-be-claim_py.git@main-csu#egg=openimis-be-claim"
         },
             {
+            "name": "claim_batch",
+            "pip": "openimis-be-claim_batch==1.5.1"
+        },
+            {
             "name": "tools",
             "pip": "openimis-be-tools==1.5.0"
         },
