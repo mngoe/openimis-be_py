@@ -62,7 +62,7 @@
         },
             {
             "name": "dhis2_etl",
-            "pip": "openimis-be-dhis2_etl==1.0.0"
+            "pip": "openimis-be-dhis2_etl==v1.2.0"
         },
             {
             "name": "api_fhir_r4",
