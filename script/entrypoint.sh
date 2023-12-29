@@ -28,7 +28,7 @@ cp /openimis-be/script/fhirtypes.py /usr/local/lib/python3.8/site-packages/fhir/
 pip install pydantic==1.10.0
 pip install gunicorn
 cd /openimis-be/openIMIS/
-gunicorn -b 0.0.0.0:8000 -w 4 openIMIS.wsgi --timeout 120
+gunicorn -b 0.0.0.0:8000 -w 4 openIMIS.wsgi --timeout 240
 #gunicorn -b 0.0.0.0:8000 -w 4 openIMIS.wsgi --timeout 1800
 #python manage.py runserver 0.0.0.0:8000
 
