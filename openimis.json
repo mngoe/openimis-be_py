@@ -62,7 +62,7 @@
         },
             {
             "name": "dhis2_etl",
-            "pip": "openimis-be-dhis2_etl==1.0.0"
+            "pip": "openimis-be-dhis2_etl==v1.2.0"
         },
             {
             "name": "api_fhir_r4",
@@ -123,7 +123,11 @@
         {
 			"name":"program",
 			"pip":"git+https://github.com/mngoe/openimis-be-program_py.git@main-csu#egg=openimis-be-program"
-		}
+		},
+        {
+            "name": "controls",
+            "pip": "git+https://github.com/openimis/openimis-be-controls_py.git@main#egg=openimis-be-controls"
+        }
 ]
 
 }
