@@ -4,7 +4,9 @@ set -e
 export SITE_ROOT=api 
 export REMOTE_USER_AUTHENTICATION=False 
 export ROW_SECURITY=False 
-export DEBUG=False 
+export DEBUG=True
+export DJANGO_MIGRATE=True
+export SCHEDULER_AUTOSTART=False
 
 cd /openimis-be/
 python modules-requirements.py openimis.json > modules-requirements.txt
@@ -28,8 +30,6 @@ cp /openimis-be/script/fhirtypes.py /usr/local/lib/python3.8/site-packages/fhir/
 pip install pydantic==1.10.0
 pip install gunicorn
 cd /openimis-be/openIMIS/
-gunicorn -b 0.0.0.0:8000 -w 4 openIMIS.wsgi --timeout 240
-#gunicorn -b 0.0.0.0:8000 -w 4 openIMIS.wsgi --timeout 1800
 #python manage.py runserver 0.0.0.0:8000
 
 #while :; do sleep 10; done
@@ -53,7 +53,7 @@ init(){
   if [ "${DJANGO_MIGRATE,,}" == "true" ] || [ -z "$SCHEDULER_AUTOSTART" ]; then
         echo "Migrating..."
         python manage.py migrate
-        export SCHEDULER_AUTOSTART=True
+        export SCHEDULER_AUTOSTART=False
   fi
 }
 
@@ -92,7 +92,8 @@ case "$1" in
     SERVER_APPLICATION="${WSGI_APPLICATION:-$def_app}"
     SERVER_WORKERS="${WSGI_WORKERS:-4}"
 
-    gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION"
+    # gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION"
+    gunicorn -b 0.0.0.0:8000 -w 4 openIMIS.wsgi --timeout 240
   ;;
   "worker" )
     echo "Starting Celery with url ${CELERY_BROKER_URL} ${DB_NAME}..."
