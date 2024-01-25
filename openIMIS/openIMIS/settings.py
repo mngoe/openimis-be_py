@@ -159,7 +159,8 @@ INSTALLED_APPS = [
     "django_apscheduler",
     "channels",  # Websocket support
     "developer_tools",
-    "drf_spectacular"  # Swagger UI for FHIR API
+    "drf_spectacular",  # Swagger UI for FHIR API
+    "debug_toolbar",
 ]
 INSTALLED_APPS += OPENIMIS_APPS
 INSTALLED_APPS += ["apscheduler_runner", "signal_binding"]  # Signal binding should be last installed module
@@ -211,6 +212,11 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+]
+
+DEBUG_TOOLBAR_PANEL = [
+    "debug_toolbar.panels.profiling.ProfilingPanel"
 ]
 
 if DEBUG:
@@ -258,6 +264,12 @@ GRAPHENE = {
         "graphene_django.debug.DjangoDebugMiddleware",  # adds a _debug query to graphQL with sql debug info
     ],
 }
+
+if DEBUG:
+    import socket  # only if you haven't already imported this
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]
+    print("INTERNAL_IPS ", INTERNAL_IPS)
 
 GRAPHQL_JWT = {
     "JWT_VERIFY_EXPIRATION": True,
