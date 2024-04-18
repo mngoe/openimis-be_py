@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+export MODE=Dev
 
 show_help() {
   echo """
