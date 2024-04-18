@@ -17,8 +17,13 @@ OPENIMIS_APPS = openimis_apps()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-LOGGING_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "WARNING")
-DEFAULT_LOGGING_HANDLER = os.getenv("DJANGO_LOG_HANDLER", "debug-log")
+
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get("MODE", "PROD") == "DEV"
+
+LOGGING_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "DEBUG" if DEBUG else "WARNING")
+DEFAULT_LOGGING_HANDLER = os.getenv("DJANGO_LOG_HANDLER", "console")
 
 LOGGING = {
     "version": 1,
@@ -54,7 +59,7 @@ LOGGING = {
         "django.db.backends": {
             "level": LOGGING_LEVEL,
             "propagate": False,
-            "handlers": ["db-queries"],
+            "handlers": ["console" if os.environ.get("MODE", "PROD") == "DEV" else "db-queries"],
         },
         "openIMIS": {
             "level": LOGGING_LEVEL,
@@ -123,8 +128,7 @@ SECRET_KEY = os.environ.get(
     "SECRET_KEY", "chv^^7i_v3-04!rzu&qe#+h*a=%h(ib#5w9n$!f2q7%2$qp=zz"
 )
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+
 # SECURITY WARNING: don't run without row security in production!
 # Row security is dedicated to filter the data result sets according to users' right
 # Example: user registered at a Health Facility should only see claims recorded for that Health Facility
@@ -137,6 +141,7 @@ else:
 
 # TEST_WITHOUT_MIGRATIONS_COMMAND = 'django_nose.management.commands.test.Command'
 # TEST_RUNNER = 'core.test_utils.UnManagedModelTestRunner'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -151,7 +156,6 @@ INSTALLED_APPS = [
     "test_without_migrations",
     "rest_framework",
     "rules",
-    "rest_framework_rules",
     "health_check",  # required
     "health_check.db",  # stock Django health checkers
     "health_check.cache",
@@ -183,7 +187,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
-    "EXCEPTION_HANDLER": "openIMIS.rest_exception_handler.fhir_rest_api_exception_handler",
+    "EXCEPTION_HANDLER": "openIMIS.ExceptionHandlerDispatcher.dispatcher",
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
@@ -278,49 +282,121 @@ GRAPHQL_JWT = {
     ],
 }
 
-# Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+# no db
+DATABASES = {}
+DB_DEFAULT = os.environ.get("DB_DEFAULT", 'PSQL')
 
-DB_ENGINE = os.environ.get("DB_ENGINE", "mssql")  # sql_server.pyodbc is deprecated for Django 3.1+
+if os.environ.get("NO_DATABASE", "False") == "True":
 
-if "sql_server.pyodbc" in DB_ENGINE or "mssql" in DB_ENGINE:
-    MSSQL = True
-else:
-    MSSQL = False
-
+    DATABASES['default'] = {
+        # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ' ../script/sqlite.db',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
 if "DB_OPTIONS" in os.environ:
     DATABASE_OPTIONS = json.loads(os.environ["DB_OPTIONS"])
-elif MSSQL:
+    MSSQL_DATABASE_OPTIONS = DATABASE_OPTIONS
+    PSQL_DATABASE_OPTIONS = DATABASE_OPTIONS
+else:
     if os.name == "nt":
-        DATABASE_OPTIONS = {
+        MSSQL_DATABASE_OPTIONS = {
             "driver": "ODBC Driver 17 for SQL Server",
             "extra_params": "Persist Security Info=False;server=%s"
             % os.environ.get("DB_HOST"),
             "unicode_results": True,
         }
     else:
-        DATABASE_OPTIONS = {
+        MSSQL_DATABASE_OPTIONS = {
             "driver": "ODBC Driver 17 for SQL Server",
             "unicode_results": True,
         }
-else:
-    DATABASE_OPTIONS = {}
+    PSQL_DATABASE_OPTIONS = {'options': '-c search_path=django,public'}
 
-if not os.environ.get("NO_DATABASE_ENGINE", "False") == "True":
-    DATABASES = {
-        "default": {
-            "ENGINE": DB_ENGINE,
-            "NAME": os.environ.get("DB_NAME"),
-            "USER": os.environ.get("DB_USER"),
-            "PASSWORD": os.environ.get("DB_PASSWORD"),
-            "HOST": os.environ.get("DB_HOST"),
-            "PORT": os.environ.get("DB_PORT"),
-            "OPTIONS": DATABASE_OPTIONS,
+
+if DB_DEFAULT == 'PSQL' and os.environ.get("PSQL_DB_ENGINE", "False") != "False":
+    DATABASES["default"] = {
+        "ENGINE": os.environ.get("PSQL_DB_ENGINE", 'django.db.backends.postgresql'),
+        "NAME": os.environ.get("PSQL_DB_NAME", "imis"),
+        "USER": os.environ.get("PSQL_DB_USER", "IMISuser"),
+        "PASSWORD": os.environ.get("PSQL_DB_PASSWORD", os.environ.get("DB_PASSWORD")),
+        "HOST": os.environ.get("PSQL_DB_HOST", 'postgres'),
+        "PORT": os.environ.get("PSQL_DB_PORT", "5432"),
+        "OPTIONS": PSQL_DATABASE_OPTIONS,
+        'TEST': {
+            'NAME': os.environ.get("DB_TEST_NAME", "test_" + os.environ.get("MSSQL_DB_NAME", "imis")),
         }
     }
 
+elif DB_DEFAULT == 'MSSQL' and os.environ.get("MSSQL_DB_ENGINE", "False") != "False":
+    DATABASES["default"] = {
+        "ENGINE": os.environ.get("MSSQL_DB_ENGINE", 'mssql'),
+        "NAME": os.environ.get("MSSQL_DB_NAME", "imis"),
+        "USER": os.environ.get("MSSQL_DB_USER", "IMISuser"),
+        "PASSWORD": os.environ.get("MSSQL_DB_PASSWORD", os.environ.get("DB_PASSWORD")),
+        "HOST": os.environ.get("MSSQL_DB_HOST", 'mssql'),
+        "PORT": os.environ.get("MSSQL_DB_PORT", '1433'),
+        "OPTIONS": MSSQL_DATABASE_OPTIONS,
+        'TEST': {
+            'NAME': os.environ.get("DB_TEST_NAME", "test_" + os.environ.get("MSSQL_DB_NAME", "imis")),
+        }
+    }
+else:
+    DATABASES["default"] = {
+        "ENGINE": os.environ.get("DB_ENGINE"),
+        "NAME": os.environ.get("DB_NAME", "imis"),
+        "USER": os.environ.get("DB_USER", "IMISuser"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", os.environ.get("DB_PASSWORD")),
+        "HOST": os.environ.get("DB_HOST", 'db'),
+        "PORT": os.environ.get("DB_PORT", "5432"),
+        "OPTIONS": PSQL_DATABASE_OPTIONS if DB_DEFAULT == 'PSQL' else MSSQL_DATABASE_OPTIONS,
+        'TEST': {
+            'NAME': os.environ.get("DB_TEST_NAME", "test_" + os.environ.get("DB_NAME", "imis")),
+        }
+    }
+
+#should not add that config unless used
+if "DASHBOARD_DB_ENGINE" in os.environ:
+    DATABASES['dashboard_db'] = {
+        "ENGINE": os.environ.get("DASHBOARD_DB_ENGINE", 'mssql'),
+        "NAME": os.environ.get("DASHBOARD_DB_NAME", "imis"),
+        "USER": os.environ.get("DASHBOARD_DB_USER", "IMISuser"),
+        "PASSWORD": os.environ.get("DASHBOARD_DB_PASSWORD"),
+        "HOST": os.environ.get("DASHBOARD_DB_HOST", 'mssql'),
+        "PORT": os.environ.get("DASHBOARD_DB_PORT", '1433')
+    }
+
+if "sql_server.pyodbc" in DATABASES["default"]['ENGINE'] or "mssql" in DATABASES["default"]['ENGINE']:
+    MSSQL = True
+
+else:
+    MSSQL = False
+
+    # Database
+    # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+
+
+DATABASE_ROUTERS = ["openIMIS.routers.DashboardDatabaseRouter"]
+
+
+
+
 # Celery message broker configuration for RabbitMQ. One can also use Redis on AWS SQS
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "amqp://127.0.0.1")
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "amqp://rabitmq")
+if 'CELERY_RESULT_BACKEND' in os.environ:
+    CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND")
+
+if 'CACHE_BACKEND' in os.environ and 'CACHE_URL' in os.environ:
+    CACHES = {
+        'default': {
+            'BACKEND': os.environ.get('CACHE_BACKEND'),
+            'LOCATION': os.environ.get("CACHE_URL"),
+            'OPTIONS': json.loads(os.environ.get("CACHE_OPTIONS", ""))
+        }
+    }
 
 # This scheduler config will:
 # - Store jobs in the project database
@@ -344,11 +420,11 @@ SCHEDULER_JOBS = [
         "args": ["cron"],
         "kwargs": {"id": "openimis_test_batch", "minute": 16, "replace_existing": True},
     },
-    # {
-    #     "method": "policy.tasks.get_policies_for_renewal",
-    #     "args": ["cron"],
-    #     "kwargs": {"id": "openimis_renewal_batch", "hour": 8, "minute": 30, "replace_existing": True},
-    # },
+    {
+        "method": "policy.tasks.get_policies_for_renewal",
+        "args": ["cron"],
+        "kwargs": {"id": "openimis_renewal_batch", "hour": 8, "minute": 30, "replace_existing": True},
+    },
     # {
     #     "method": "policy_notification.tasks.send_notification_messages",
     #     "args": ["cron"],
@@ -424,15 +500,17 @@ STATIC_URL = "/%sstatic/" % SITE_ROOT()
 ASGI_APPLICATION = "openIMIS.asgi.application"
 
 # Django channels require rabbitMQ server, by default it use 127.0.0.1, port 5672
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_rabbitmq.core.RabbitmqChannelLayer",
-        "CONFIG": {
-            "host": os.environ.get("CHANNELS_HOST", "amqp://guest:guest@127.0.0.1/"),
-            # "ssl_context": ... (optional)
+if "CHANNELS_BACKEND" in os.environ and "CHANNELS_HOST" in os.environ:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": os.environ.get("CHANNELS_BACKEND"),
+            "CONFIG": {
+                "hosts": [os.environ.get("CHANNELS_HOST")],
+                # "ssl_context": ... (optional)
+            },
         },
-    },
-}
+    }
+
 
 # Django email settings
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -445,7 +523,7 @@ EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", False)
 EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", False)
 
 # By default, the maximum upload size is 2.5Mb, which is a bit short for base64 picture upload
-DATA_UPLOAD_MAX_MEMORY_SIZE = int(os.environ.get('DATA_UPLOAD_MAX_MEMORY_SIZE', 10*1024*1024))
+DATA_UPLOAD_MAX_MEMORY_SIZE = int(os.environ.get('DATA_UPLOAD_MAX_MEMORY_SIZE', 10 * 1024 * 1024))
 
 
 # Insuree number validation. One can use the validator function for specific processing or just specify the length
@@ -462,6 +540,7 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = int(os.environ.get('DATA_UPLOAD_MAX_MEMORY_SIZE', 
 # INSUREE_NUMBER_VALIDATOR = insuree_number_validator
 INSUREE_NUMBER_LENGTH = os.environ.get("INSUREE_NUMBER_LENGTH", None)
 INSUREE_NUMBER_MODULE_ROOT = os.environ.get("INSUREE_NUMBER_MODULE_ROOT", None)
+
 
 # There used to be a default password for zip files but for security reasons, it was removed. Trying to export
 # without a password defined is going to fail
