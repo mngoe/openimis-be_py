@@ -19,6 +19,7 @@
 | SITE_ROOT                   | String                               | Site root that will prefix all exposed endpoints. It's required when working with openIMIS frontend. For example, if the value is set `api` then the endpoint will appear like `your_domain_name/api/xxx`                                                                                                                                                                                              |
 | DJANGO_LOG_LEVEL            | INFO, WARNING, ERROR, DEBUG          | Define the level of logs                                                                                                                                                                                                                                                                                                                                                                               |
 | DJANGO_LOG_HANDLER          | console, debug-log                   | Depending on the value set, application will print the logs                                                                                                                                                                                                                                                                                                                                            |
+| DJANGO_DB_LOG_HANDLER          | console, debug-log                   | Depending on the value set, application will print the logs                                                                                                                                                                                                                                                                                                                                            |
 | PHOTO_ROOT_PATH             | String                               | Define the path for the photos of insurees. This setting is used in the Insuree module. The value set here will be overwritten by the InsureeConfig file.                                                                                                                                                                                                                                              |
 | DJANGO_MIGRATE              | True, False                          | Based on the value set, application runs the migration command before starting up. If the SITE_ROOT value is set to api then the migration will always run regardless of the value                                                                                                                                                                                                                     |
 | SCHEDULER_AUTOSTART         | True, False                          | All the modules will be searched for the scheduled tasks, if the value is set to True                                                                                                                                                                                                                                                                                                                  |
@@ -60,7 +61,7 @@
 | CLAIMDOC_TOKEN              | String                               | Used in backend caching. Define a token to communicate with the remote server. Default is set to 'TestToken'                                                                                     |
 | CACHE_BACKEND               | String                               | Specifies the [caching backend](https://docs.djangoproject.com/en/5.0/topics/cache/#setting-up-the-cache) to be used. Default is set to PyMemcached.                                                                                                                         |
 | CACHE_URL                   | String                               |  Defines the location of the cache backend. Default is `unix:/tmp/memcached.sock` for a Unix socket connection.                                                                                  |
-| CACHE_OPTIONS               | String                               | A JSON string representing a dictionary of additional options passed to the cache backend. Empty by default                                                                                                                                                                                                                                                                                            |
+| CACHE_OPTIONS               | String                               | A JSON string representing a dictionary of additional options passed to the cache backend. Empty by default
 
 ## Developers setup
 
@@ -319,6 +320,14 @@ module skeleton in single command` section
   - run this command: `python manage.py extract_translations`. This command will execute all steps required
     to extract frontend translations of all modules present in `openimis.json`.
   - those translations will be copied into 'extracted_translations_fe' folder in assembly backend module
+
+### To upload opensearch configuration
+
+- from `/openimis-be_py/openIMIS`:
+  - run this command: `python manage.py upload_opensearch_dashboards --host-domain <host-domain> --imis-password <password>`. This command will This command will upload dashboards config 
+  including charts, visualizations, indexes if the opensearch is available in package.
+  - `<password>` - password necessary to log as admin user to obtain token to connect with API
+  - `<host-domain>` is a hostname with http or https protocol for example `https://release.openimis.org`
 
 ## Custom exception handler for new modules REST-based modules
 

@@ -21,9 +21,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("MODE", "PROD") == "DEV"
-
-LOGGING_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "DEBUG" if DEBUG else "WARNING")
 DEFAULT_LOGGING_HANDLER = os.getenv("DJANGO_LOG_HANDLER", "console")
+DEFAULT_DB_LOGGING_HANDLER = os.getenv("DJANGO_DB_LOG_HANDLER", "db-queries")
+LOGGING_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "DEBUG" if DEBUG else "WARNING")
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+
+
 
 LOGGING = {
     "version": 1,
@@ -59,7 +65,7 @@ LOGGING = {
         "django.db.backends": {
             "level": LOGGING_LEVEL,
             "propagate": False,
-            "handlers": ["console" if os.environ.get("MODE", "PROD") == "DEV" else "db-queries"],
+            "handlers": [DEFAULT_DB_LOGGING_HANDLER],
         },
         "openIMIS": {
             "level": LOGGING_LEVEL,
@@ -513,6 +519,7 @@ if "CHANNELS_BACKEND" in os.environ and "CHANNELS_HOST" in os.environ:
 
 
 # Django email settings
+
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "localhost")
@@ -524,6 +531,7 @@ EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", False)
 
 # By default, the maximum upload size is 2.5Mb, which is a bit short for base64 picture upload
 DATA_UPLOAD_MAX_MEMORY_SIZE = int(os.environ.get('DATA_UPLOAD_MAX_MEMORY_SIZE', 10 * 1024 * 1024))
+
 
 
 # Insuree number validation. One can use the validator function for specific processing or just specify the length
@@ -538,6 +546,7 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = int(os.environ.get('DATA_UPLOAD_MAX_MEMORY_SIZE', 
 #
 #
 # INSUREE_NUMBER_VALIDATOR = insuree_number_validator
+
 INSUREE_NUMBER_LENGTH = os.environ.get("INSUREE_NUMBER_LENGTH", None)
 INSUREE_NUMBER_MODULE_ROOT = os.environ.get("INSUREE_NUMBER_MODULE_ROOT", None)
 
@@ -550,3 +559,4 @@ FRONTEND_URL = os.environ.get("FRONTEND_URL", "")
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
