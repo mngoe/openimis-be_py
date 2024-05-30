@@ -7,6 +7,7 @@ pip install -r requirements.txt
 pip install -r modules-requirements.txt
 pip install -e /openimis-be-insuree_py
 pip install -e /openimis-be-policy_py
+pip install -e /openimis-be-calculation_comores_py
 cd /openimis-be/openIMIS/
 
 show_help() {
