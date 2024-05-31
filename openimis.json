@@ -157,8 +157,8 @@
 		  "pip": "git+https://github.com/mngoe/openimis-be-calculation_comores_py.git@feature-28620#egg=openimis-be-calculation_comores"
 	  },
     {
-		  "name": "report_comores",
-		  "pip": "git+https://github.com/mngoe/openimis-be-report-comores_py.git@develop-comores#egg=openimis-be-report-comores"
+		  "name": "reportcomores",
+		  "pip": "git+https://github.com/mngoe/openimis-be-report-comores_py.git@master#egg=openimis-be-report-comores"
 	  }
   ]
 }
