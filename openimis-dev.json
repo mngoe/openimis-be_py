@@ -2,7 +2,7 @@
 	"modules": [
 	  {
 		"name": "core",
-		"pip": "openimis-be-core==v1.7.1"
+		"pip": "git+https://github.com/mngoe/openimis-be-core_py.git@develop-comores#egg=openimis-be-core"
 	  },
 	  {
 		"name": "individual",
