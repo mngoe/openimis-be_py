@@ -10,7 +10,7 @@ pip install -e /openimis-be-policy_py
 pip install -e /openimis-be-calculation_comores_py
 pip install -e /openimis-be-report-comores_py
 pip install -e /openimis-be-core_py
-cp reportbro.py /usr/local/lib/python3.10/site-packages/reportbro/
+cp script/reportbro.py /usr/local/lib/python3.10/site-packages/reportbro/
 cd /openimis-be/openIMIS/
 
 show_help() {
