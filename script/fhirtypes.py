@@ -108,7 +108,7 @@ class String(ConstrainedStr, Primitive):
 
     # regex = re.compile(r"[ \r\n\t\S]+")
     regex = re.compile(r'^[a-zA-Z0-9\s]+$')
-    allow_empty_str = False
+    allow_empty_str = True
     __visit_name__ = "string"
 
     @classmethod
