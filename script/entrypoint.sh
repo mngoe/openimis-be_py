@@ -6,7 +6,7 @@ export REMOTE_USER_AUTHENTICATION=False
 export ROW_SECURITY=False 
 export DEBUG=True
 export DJANGO_MIGRATE=True
-export SCHEDULER_AUTOSTART=True
+export SCHEDULER_AUTOSTART=False
 
 cd /openimis-be/
 python modules-requirements.py openimis.json > modules-requirements.txt
@@ -53,7 +53,7 @@ init(){
   if [ "${DJANGO_MIGRATE,,}" == "true" ] || [ -z "$SCHEDULER_AUTOSTART" ]; then
         echo "Migrating..."
         python manage.py migrate
-        export SCHEDULER_AUTOSTART=True
+        export SCHEDULER_AUTOSTART=False
   fi
 }
 
