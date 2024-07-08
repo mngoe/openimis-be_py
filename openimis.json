@@ -127,7 +127,11 @@
         {
             "name": "controls",
             "pip": "git+https://github.com/openimis/openimis-be-controls_py.git@main#egg=openimis-be-controls"
-        }
+        },
+        {
+            "name": "idps",
+            "pip": "git+https://github.com/mngoe/openimis-be-idps_py.git@develop-idps#egg=openimis-be-idps"
+        }    
 ]
 
 }
