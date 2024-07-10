@@ -6,7 +6,7 @@
         },
             {
             "name": "report",
-            "pip": "openimis-be-report==1.5.0"
+            "pip": "openimis-be-report==v1.6.1"
         },
             {
             "name": "location",
