@@ -70,7 +70,7 @@
 	  },
 	  {
 		"name": "api_fhir_r4",
-		"pip": "openimis-be-api_fhir_r4==v1.7.0"
+		"pip": "git+https://github.com/mngoe/openimis-be-api_fhir_r4_py.git@develop-comores#egg=openimis-be-api_fhir_r4"
 	  },
 	  {
 		"name": "calculation",
