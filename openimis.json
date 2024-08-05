@@ -66,7 +66,7 @@
     },
     {
       "name": "tools",
-      "pip": "openimis-be-tools==v1.7.0"
+      "pip": "git+https://github.com/mngoe/openimis-be-tools_py.git@develop-comores#egg=openimis-be-tools"
     },
     {
       "name": "api_fhir_r4",
