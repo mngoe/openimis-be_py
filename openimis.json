@@ -58,7 +58,7 @@
     },
     {
       "name": "claim",
-      "pip": "openimis-be-claim==v1.7.0"
+      "pip": "git+https://github.com/openimis/openimis-be-claim_py.git@develop#egg=openimis-be-claim"
     },
     {
       "name": "claim_batch",
@@ -153,12 +153,12 @@
       "pip": "openimis-be-controls==v1.1.0"
     },
     {
-		  "name": "calculation_comores",
-		  "pip": "git+https://github.com/mngoe/openimis-be-calculation_comores_py.git@main-comores#egg=openimis-be-calculation_comores"
-	  },
+	  "name": "calculation_comores",
+	  "pip": "git+https://github.com/mngoe/openimis-be-calculation_comores_py.git@main-comores#egg=openimis-be-calculation_comores"
+    },
     {
-		  "name": "reportcomores",
-		  "pip": "git+https://github.com/mngoe/openimis-be-report-comores_py.git@master#egg=openimis-be-report-comores"
-	  }
+	  "name": "reportcomores",
+	  "pip": "git+https://github.com/mngoe/openimis-be-report-comores_py.git@master#egg=openimis-be-report-comores"
+    }
   ]
 }
