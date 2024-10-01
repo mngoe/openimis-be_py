@@ -26,7 +26,7 @@
     },
     {
       "name": "medical",
-      "pip": "openimis-be-medical==v1.7.0"
+      "pip": "git+https://github.com/ArkeupIDComores/openimis-be-medical_py.git@develop-arkeup#egg=openimis-be-medical"
     },
     {
       "name": "medical_pricelist",
