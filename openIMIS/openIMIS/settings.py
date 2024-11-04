@@ -17,7 +17,7 @@ OPENIMIS_APPS = openimis_apps()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-LOGGING_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "WARNING")
+LOGGING_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "DEBUG")
 DEFAULT_LOGGING_HANDLER = os.getenv("DJANGO_LOG_HANDLER", "debug-log")
 
 LOGGING = {
@@ -44,16 +44,28 @@ LOGGING = {
             "backupCount": 3,
             "formatter": "standard",
         },
-        "console": {"class": "logging.StreamHandler", "formatter": "short"},
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+        # "console": {"class": "logging.StreamHandler", "formatter": "short"},
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",
     },
     "loggers": {
-        "": {
+        "django": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+         "": {
             "level": LOGGING_LEVEL,
             "handlers": [DEFAULT_LOGGING_HANDLER],
         },
         "django.db.backends": {
             "level": LOGGING_LEVEL,
-            "propagate": False,
+            "propagate": True,
             "handlers": ["db-queries"],
         },
         "openIMIS": {

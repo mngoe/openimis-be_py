@@ -93,7 +93,7 @@ case "$1" in
     SERVER_WORKERS="${WSGI_WORKERS:-4}"
 
     # gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION"
-    gunicorn -b 0.0.0.0:8000 -w 4 openIMIS.wsgi --timeout 240
+    gunicorn -b 0.0.0.0:8000 -w $SERVER_WORKERS  openIMIS.wsgi --timeout 240 --error-logfile /application.log --access-logfile /access.log
   ;;
   "worker" )
     echo "Starting Celery with url ${CELERY_BROKER_URL} ${DB_NAME}..."
