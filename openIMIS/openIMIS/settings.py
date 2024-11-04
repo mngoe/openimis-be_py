@@ -64,7 +64,7 @@ LOGGING = {
             "handlers": [DEFAULT_LOGGING_HANDLER],
         },
         "django.db.backends": {
-            "level": LOGGING_LEVEL,
+            "level": "ERROR",
             "propagate": True,
             "handlers": ["db-queries"],
         },
