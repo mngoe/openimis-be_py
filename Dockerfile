@@ -1,4 +1,4 @@
-FROM python:3.10-buster As builder
+FROM --platform=linux/amd64 python:3.10-buster
 ENV PYTHONUNBUFFERED 1
 ARG DB_ENGINE
 ENV DB_ENGINE=${DB_ENGINE:-mssql}
@@ -34,9 +34,7 @@ ENV OPENIMIS_CONF_JSON=${OPENIMIS_CONF_JSON}
 RUN python modules-requirements.py openimis.json > modules-requirements.txt && pip install -r modules-requirements.txt 
 
 WORKDIR /openimis-be/openIMIS
-
-# Compile messages (Exclude zh_Hans)
-RUN NO_DATABASE=True python manage.py compilemessages -x zh_Hans
-RUN NO_DATABASE=True python manage.py collectstatic --clear --noinput
-
+# For some reason, the zh_Hans (Simplified Chinese) of django-graphql-jwt fails to compile, excluding it
+#RUN NO_DATABASE=True python manage.py compilemessages -x zh_Hans
+#RUN NO_DATABASE=True python manage.py collectstatic --clear --noinput
 ENTRYPOINT ["/openimis-be/script/entrypoint.sh"]

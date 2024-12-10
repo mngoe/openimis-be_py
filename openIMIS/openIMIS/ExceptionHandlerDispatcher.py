@@ -26,4 +26,3 @@ def _extract_module_name(request):
     Extracts the module name from the request URL.
     """
     return request.path.split('/')[2]
-
