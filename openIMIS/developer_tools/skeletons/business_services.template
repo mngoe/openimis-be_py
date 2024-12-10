@@ -12,5 +12,5 @@ def example_service_function_job():
 
 
 class ExampleService:
-    def example_service_method_job(self):
+    def example_service_method_job(cls):
         pass

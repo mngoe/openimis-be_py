@@ -20,7 +20,7 @@ def read_all_calculation_rules():
 class {{module_name_config}}Config(AppConfig):
     name = MODULE_NAME
 
-    def ready(self):
+    def ready(cls):
         ##from core.models import ModuleConfiguration
         ##cfg = ModuleConfiguration.get_or_default(MODULE_NAME, DEFAULT_CFG)
         read_all_calculation_rules()
