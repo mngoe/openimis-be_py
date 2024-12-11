@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 python:3.10-buster
+FROM --platform=linux/amd64 python:3.10-buster as builder
 ENV PYTHONUNBUFFERED 1
 ARG DB_ENGINE
 ENV DB_ENGINE=${DB_ENGINE:-mssql}
