@@ -30,7 +30,7 @@
 				},
 					{
 					"name": "medical",
-					"pip": "openimis-be-medical==1.5.0"
+					"pip": "git+https://github.com/mngoe/openimis-be-medical_py.git@dev-csu#egg=openimis-be-medical"
 				},
 					{
 					"name": "medical_pricelist",
