@@ -48,7 +48,7 @@ init(){
   if [ "${DJANGO_MIGRATE,,}" == "true" ] || [ -z "$SCHEDULER_AUTOSTART" ]; then
         echo "Migrating..."
         python manage.py migrate
-        export SCHEDULER_AUTOSTART=True
+        export SCHEDULER_AUTOSTART=False
   fi
 }
 
