@@ -12,20 +12,20 @@ cd /openimis-be/
 python modules-requirements.py openimis.json > modules-requirements.txt
 pip install -r modules-requirements.txt
 
-pip install -e /openimis-be-core_py
+#pip install -e /openimis-be-core_py
 pip install -e /openimis-be-program_py
 pip install -e /openimis-be-cs_py
 pip install -e /openimis-be-csu_py
-pip install -e /openimis-be-claim_py
-pip install -e /openimis-be-location_py
-pip install -e /openimis-be-product_py
+#pip install -e /openimis-be-claim_py
+#pip install -e /openimis-be-location_py
+#pip install -e /openimis-be-product_py
 pip install -e /openimis-be-report-csu_py
 pip install -e /openimis-be-report-cs_py
-pip install -e /openimis-be-policy_py
-pip install -e /openimis-be-insuree_py
-pip install -e /openimis-be-medical_py
-pip install -e /openimis-be-api_fhir_r4_py
-pip install -e /openimis-be-tools_py
+#pip install -e /openimis-be-policy_py
+#pip install -e /openimis-be-insuree_py
+#pip install -e /openimis-be-medical_py
+#pip install -e /openimis-be-api_fhir_r4_py
+#pip install -e /openimis-be-tools_py
 pip install -e /openimis-be-idps_py
 cp /openimis-be/script/fhirtypes.py /usr/local/lib/python3.8/site-packages/fhir/resources/
 # pip install pydantic==1.10.0
