@@ -1,13 +1,6 @@
 #!/bin/bash
 set -e
 
-export SITE_ROOT=api 
-export REMOTE_USER_AUTHENTICATION=False 
-export ROW_SECURITY=False 
-export DEBUG=True
-export DJANGO_MIGRATE=True
-export SCHEDULER_AUTOSTART=True
-export MODE=PROD
 cd /openimis-be/
 python modules-requirements.py openimis.json > modules-requirements.txt
 pip install -r modules-requirements.txt
@@ -94,7 +87,7 @@ case "$1" in
     SERVER_APPLICATION="${WSGI_APPLICATION:-$def_app}"
     SERVER_WORKERS="${WSGI_WORKERS:-4}"
 
-    gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION" --timeout 240
+    gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION" --error-logfile /error.log --access-logfile /access.log --timeout 240
   ;;
   "worker" )
     echo "Starting Celery with url ${CELERY_BROKER_URL} ${DB_NAME}..."
