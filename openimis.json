@@ -40,26 +40,26 @@
 					"name": "product",
 					"pip": "git+https://github.com/mngoe/openimis-be-product_py.git@dev-csu#egg=openimis-be-product"
 				},
-					{
+				{
 					"name": "insuree",
-					"pip": "openimis-be-insuree==1.5.0"
-				},
-					{
+					"pip": "openimis-be-insuree==v1.7.0"
+				  },
+				  {
 					"name": "policy",
-					"pip": "openimis-be-policy==1.5.0"
-				},
+					"pip": "openimis-be-policy==v1.7.1"
+				  },
 					{
 					"name": "contribution",
 					"pip": "openimis-be-contribution==v1.7.0"
 				},
-					{
+				{
 					"name": "payer",
 					"pip": "openimis-be-payer==v1.6.0"
-				},
-				{
+				  },
+				  {
 					"name": "payment",
 					"pip": "openimis-be-payment==v1.7.1"
-				},
+				  },
 					{
 					"name": "claim",
 					"pip": "git+https://github.com/mngoe/openimis-be-claim_py.git@dev-csu#egg=openimis-be-claim"
@@ -70,7 +70,7 @@
 				},
 					{
 					"name": "tools",
-					"pip": "openimis-be-tools==1.5.0"
+      				"pip": "openimis-be-tools==v1.7.0"
 				},
 					{
 					"name": "dhis2_etl",
@@ -78,7 +78,7 @@
 				},
 					{
 					"name": "api_fhir_r4",
-					"pip": "openimis-be-api_fhir_r4==1.5.2"
+					"pip": "openimis-be-api_fhir_r4==v1.7.0"
 				},
 					{
 					"name": "calculation",

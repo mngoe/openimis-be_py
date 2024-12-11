@@ -2,8 +2,8 @@
 set -e
 
 cd /openimis-be/
-python modules-requirements.py openimis.json > modules-requirements.txt
-pip install -r modules-requirements.txt
+#python modules-requirements.py openimis.json > modules-requirements.txt
+#pip install -r modules-requirements.txt
 
 #pip install -e /openimis-be-core_py
 pip install -e /openimis-be-program_py
@@ -20,8 +20,8 @@ pip install -e /openimis-be-report-cs_py
 #pip install -e /openimis-be-api_fhir_r4_py
 #pip install -e /openimis-be-tools_py
 pip install -e /openimis-be-idps_py
-cp /openimis-be/script/fhirtypes.py /usr/local/lib/python3.8/site-packages/fhir/resources/
-# pip install pydantic==1.10.0
+#cp /openimis-be/script/fhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/
+pip install pydantic==1.10.0
 pip install gunicorn
 pip install django-debug-toolbar
 cd /openimis-be/openIMIS/
