@@ -46,7 +46,7 @@
 				  },
 				  {
 					"name": "policy",
-					"pip": "openimis-be-policy==v1.7.1"
+					"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@dev-csu#egg=openimis-be-policy"
 				  },
 					{
 					"name": "contribution",
