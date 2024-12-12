@@ -42,11 +42,11 @@
 				},
 				{
 					"name": "insuree",
-					"pip": "openimis-be-insuree==v1.7.0"
+					"pip": "git+https://github.com/mngoe/openimis-be-insuree_py.git@test-csu#egg=openimis-be-insuree"
 				  },
 				  {
 					"name": "policy",
-					"pip": "openimis-be-policy==v1.7.1"
+					"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@test-csu#egg=openimis-be-policy"
 				  },
 					{
 					"name": "contribution",
@@ -70,7 +70,7 @@
 				},
 					{
 					"name": "tools",
-      				"pip": "openimis-be-tools==v1.7.0"
+      		"pip": "git+https://github.com/mngoe/openimis-be-tools_py.git@test-csu#egg=openimis-be-tools"
 				},
 					{
 					"name": "dhis2_etl",
@@ -78,7 +78,7 @@
 				},
 					{
 					"name": "api_fhir_r4",
-					"pip": "openimis-be-api_fhir_r4==v1.7.0"
+					"pip": "git+https://github.com/mngoe/openimis-be-api_fhir_r4_py.git@test-csu#egg=openimis-be-openimis-be-api_fhir_r4_py"
 				},
 					{
 					"name": "calculation",
