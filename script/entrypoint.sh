@@ -19,7 +19,7 @@ pip install -e /openimis-be-report-cs_py
 #pip install -e /openimis-be-medical_py
 #pip install -e /openimis-be-api_fhir_r4_py
 #pip install -e /openimis-be-tools_py
-pip install -e /openimis-be-idps_py
+#pip install -e /openimis-be-idps_py
 #cp /openimis-be/script/fhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/
 pip install pydantic==1.10.0
 pip install gunicorn
