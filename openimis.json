@@ -70,7 +70,7 @@
 				},
 					{
 					"name": "tools",
-      		"pip": "git+https://github.com/mngoe/openimis-be-tools_py.git@test-csu#egg=openimis-be-tools"
+      				"pip": "openimis-be-tools==v1.7.0"
 				},
 					{
 					"name": "dhis2_etl",
@@ -78,7 +78,7 @@
 				},
 					{
 					"name": "api_fhir_r4",
-					"pip": "git+https://github.com/mngoe/openimis-be-api_fhir_r4_py.git@test-csu#egg=openimis-be-openimis-be-api_fhir_r4_py"
+					"pip": "openimis-be-api_fhir_r4==v1.7.0"
 				},
 					{
 					"name": "calculation",
