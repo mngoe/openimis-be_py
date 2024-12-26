@@ -1,4 +1,4 @@
-"pip": "git+https://github.com/ArkeupIDComores/openimis-be-location_py.git@develop-arkeup#egg=openimis-be-location"{
+{
 	"modules": [
 	  {
 		"name": "core",
