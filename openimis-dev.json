@@ -1,4 +1,4 @@
-{
+"pip": "git+https://github.com/ArkeupIDComores/openimis-be-location_py.git@develop-arkeup#egg=openimis-be-location"{
 	"modules": [
 	  {
 		"name": "core",
@@ -22,7 +22,7 @@
 	  },
 	  {
 		"name": "location",
-		"pip": "openimis-be-location==v1.7.0"
+		"pip": "git+https://github.com/ArkeupIDComores/openimis-be-location_py.git@develop-arkeup#egg=openimis-be-location"
 	  },
 	  {
 		"name": "medical",
