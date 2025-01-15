@@ -21,9 +21,9 @@ pip install -e /openimis-be-report-cs_py
 #pip install -e /openimis-be-tools_py
 #pip install -e /openimis-be-idps_py
 #cp /openimis-be/script/fhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/
-pip install pydantic==1.10.0
-pip install gunicorn
-pip install django-debug-toolbar
+# pip install pydantic==1.10.0
+# pip install gunicorn
+# pip install django-debug-toolbar
 cd /openimis-be/openIMIS/
 #python manage.py runserver 0.0.0.0:8000
 
