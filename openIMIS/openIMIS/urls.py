@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.urls import  re_path as url, include
 from django.contrib import admin
 from django.urls import path
 from django.views.decorators.csrf import csrf_exempt
@@ -30,5 +30,6 @@ urlpatterns = [
         "%sgraphql" % SITE_ROOT(),
         csrf_exempt(jwt_cookie(OpenIMISGraphQLView.as_view(graphiql=DEBUG))),
     ),
+    path("__debug__/", include("debug_toolbar.urls")),
     url(r"^ht/", include("health_check.urls")),
 ] + openimis_urls()

@@ -1,4 +1,3 @@
-**/.vscode
 **/.idea
 **/venv
 **/.env
@@ -14,4 +13,7 @@ modules-tests.sh
 openIMIS/locale/en/LC_MESSAGES/django.mo
 **/staticfiles
 extracted_translations_fe
-openIMIS/csImports/**
+script/config.py
+**/src/*
+**/images/insurees
+**/.vscode

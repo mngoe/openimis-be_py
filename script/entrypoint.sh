@@ -1,36 +1,29 @@
 #!/bin/bash
 set -e
 
-export SITE_ROOT=api 
-export REMOTE_USER_AUTHENTICATION=False 
-export ROW_SECURITY=False 
-export DEBUG=True
-export DJANGO_MIGRATE=True
-export SCHEDULER_AUTOSTART=False
-
 cd /openimis-be/
-python modules-requirements.py openimis.json > modules-requirements.txt
-pip install -r modules-requirements.txt
+#python modules-requirements.py openimis.json > modules-requirements.txt
+#pip install -r modules-requirements.txt
 
-pip install -e /openimis-be-core_py
+#pip install -e /openimis-be-core_py
 pip install -e /openimis-be-program_py
 pip install -e /openimis-be-cs_py
 pip install -e /openimis-be-csu_py
-pip install -e /openimis-be-claim_py
-pip install -e /openimis-be-location_py
-pip install -e /openimis-be-product_py
+#pip install -e /openimis-be-claim_py
+#pip install -e /openimis-be-location_py
+#pip install -e /openimis-be-product_py
 pip install -e /openimis-be-report-csu_py
 pip install -e /openimis-be-report-cs_py
-pip install -e /openimis-be-policy_py
-pip install -e /openimis-be-insuree_py
-pip install -e /openimis-be-medical_py
-pip install -e /openimis-be-api_fhir_r4_py
-pip install -e /openimis-be-tools_py
-cp /openimis-be/script/fhirtypes.py /usr/local/lib/python3.8/site-packages/fhir/resources/
-# pip install pydantic==1.10.0
-pip install "fhir.resources==7.0.2"
+#pip install -e /openimis-be-policy_py
+#pip install -e /openimis-be-insuree_py
+#pip install -e /openimis-be-medical_py
+#pip install -e /openimis-be-api_fhir_r4_py
+#pip install -e /openimis-be-tools_py
+#pip install -e /openimis-be-idps_py
+#cp /openimis-be/script/fhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/
 pip install pydantic==1.10.0
 pip install gunicorn
+pip install django-debug-toolbar
 cd /openimis-be/openIMIS/
 #python manage.py runserver 0.0.0.0:8000
 
@@ -44,7 +37,7 @@ show_help() {
   start            : start django
   worker           : start Celery worker
   start_asgi       : use daphne -b ASGI_IP:WSGI_PORT -p SERVER_PORT  ASGI_APPLICATION
-  start_wsgi       : use gunicorn -b 0.0.0.0 -w 4 openIMIS.wsgi
+  start_wsgi       : use gunicorn -b WSGI_IP:WSGI_PORT -w WSGI_WORKERS WSGI_APPLICATION
   manage           : run django manage.py
   eval             : eval shell command
   bash             : run bash
@@ -94,8 +87,7 @@ case "$1" in
     SERVER_APPLICATION="${WSGI_APPLICATION:-$def_app}"
     SERVER_WORKERS="${WSGI_WORKERS:-4}"
 
-    # gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION"
-    gunicorn -b 0.0.0.0:8000 -w $SERVER_WORKERS  openIMIS.wsgi --timeout 240 --error-logfile /application.log --access-logfile /access.log
+    gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION" --error-logfile /error.log --access-logfile /access.log --timeout 240
   ;;
   "worker" )
     echo "Starting Celery with url ${CELERY_BROKER_URL} ${DB_NAME}..."

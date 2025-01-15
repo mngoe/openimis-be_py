@@ -106,7 +106,8 @@ class String(ConstrainedStr, Primitive):
     could be trimmed to nothing, which would be treated as an invalid element value.
     Therefore strings SHOULD always contain non-whitespace content"""
 
-    regex = re.compile(r"[ \r\n\t\S]+")
+    # regex = re.compile(r"[ \r\n\t\S]+")
+    regex = re.compile(r'^[a-zA-Z0-9\s]+$')
     allow_empty_str = False
     __visit_name__ = "string"
 
