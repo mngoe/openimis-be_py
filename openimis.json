@@ -18,7 +18,7 @@
 				},
 					{
 					"name": "report",
-					"pip": "openimis-be-report==v1.6.1"
+					"pip": "git+https://github.com/Y-Note-SAS/openimis-be-report_py.git@test-csu#egg=openimis-be-report"
 				},
 					{
 					"name": "location",
@@ -70,7 +70,7 @@
 				},
 					{
 					"name": "tools",
-      				"pip": "openimis-be-tools==v1.7.0"
+      				"pip": "git+https://github.com/mngoe/openimis-be-tools_py.git@test-csu#egg=openimis-be-tools"
 				},
 					{
 					"name": "dhis2_etl",
@@ -167,10 +167,6 @@
 				{
 					"name": "controls",
 					"pip": "openimis-be-controls==v1.1.0"
-				},
-				{
-					"name": "idps",
-					"pip": "git+https://github.com/mngoe/openimis-be-idps_py.git@develop-idps#egg=openimis-be-idps"
-				}    
+				}  
 		]
   }

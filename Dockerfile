@@ -33,6 +33,9 @@ ARG OPENIMIS_CONF_JSON
 ENV OPENIMIS_CONF_JSON=${OPENIMIS_CONF_JSON}
 RUN python modules-requirements.py openimis.json > modules-requirements.txt && pip install -r modules-requirements.txt 
 
+RUN pip install pydantic==1.10.0
+RUN pip install gunicorn
+RUN pip install django-debug-toolbar
 WORKDIR /openimis-be/openIMIS
 # For some reason, the zh_Hans (Simplified Chinese) of django-graphql-jwt fails to compile, excluding it
 #RUN NO_DATABASE=True python manage.py compilemessages -x zh_Hans

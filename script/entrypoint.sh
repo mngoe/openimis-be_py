@@ -6,9 +6,9 @@ cd /openimis-be/
 #pip install -r modules-requirements.txt
 
 #pip install -e /openimis-be-core_py
-pip install -e /openimis-be-program_py
-pip install -e /openimis-be-cs_py
-pip install -e /openimis-be-csu_py
+#pip install -e /openimis-be-program_py
+#pip install -e /openimis-be-cs_py
+#pip install -e /openimis-be-csu_py
 #pip install -e /openimis-be-claim_py
 #pip install -e /openimis-be-location_py
 #pip install -e /openimis-be-product_py
@@ -86,8 +86,8 @@ case "$1" in
     SERVER_PORT="${WSGI_PORT:-$def_port}"
     SERVER_APPLICATION="${WSGI_APPLICATION:-$def_app}"
     SERVER_WORKERS="${WSGI_WORKERS:-4}"
-
-    gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION" --error-logfile /error.log --access-logfile /access.log --timeout 240
+    gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION"
+    #gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION" --error-logfile /error.log --access-logfile /access.log --timeout 240
   ;;
   "worker" )
     echo "Starting Celery with url ${CELERY_BROKER_URL} ${DB_NAME}..."
