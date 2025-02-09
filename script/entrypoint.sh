@@ -26,7 +26,7 @@ pip install gunicorn
 pip install openpyxl
 pip install django-debug-toolbar
 cd /openimis-be/openIMIS/
-#python manage.py runserver 0.0.0.0:8000
+#python server.py 0.0.0.0:8000
 
 #while :; do sleep 10; done
 
