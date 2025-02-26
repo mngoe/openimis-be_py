@@ -167,6 +167,10 @@
 				{
 					"name": "controls",
 					"pip": "openimis-be-controls==v1.1.0"
-				} 
+				},
+        {
+          "name": "cache_manager",
+          "pip": "git+https://github.com/Y-Note-SAS/openimis-be-cache-manager_py.git@master#egg=openimis-be-cache-manager"
+        }
 		]
   }
