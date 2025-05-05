@@ -90,7 +90,7 @@
 	  },
 	  {
 		"name": "invoice",
-		"pip": "openimis-be-invoice==v1.7.0"
+		"pip": "git+https://github.com/Y-Note-SAS/openimis-be-invoice_py.git@develop-comores#egg=openimis-be-invoice"
 	  },
 	  {
 		"name": "calcrule_contribution_legacy",
