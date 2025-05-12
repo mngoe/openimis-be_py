@@ -159,6 +159,10 @@
 	  {
 		"name": "reportcomores",
 		"pip": "git+https://github.com/mngoe/openimis-be-report-comores_py.git@master#egg=openimis-be-report-comores"
+	  },
+	  {
+		"name": "policy_notification",
+		"pip": "git+https://github.com/Y-Note-SAS/openimis-be-policy_notification_py.git@develop-comores#egg=openimis-be-policy_notification"
 	  }
 	]
   }
