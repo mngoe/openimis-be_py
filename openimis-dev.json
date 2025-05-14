@@ -122,7 +122,7 @@
 	  },
 	  {
 		"name": "im_export",
-		"pip": "openimis-be-im_export==v1.2.0"
+		"pip": "git+https://github.com/Y-Note-SAS/openimis-be-im_export_py.git@develop-comores#egg=openimis-be-im_export"
 	  },
 	  {
 		"name": "dhis2_etl",
