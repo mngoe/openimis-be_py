@@ -154,11 +154,11 @@
 	  },
 	  {
 		  "name": "calculation_comores",
-		  "pip": "git+https://github.com/mngoe/openimis-be-calculation_comores_py.git@main-comores#egg=openimis-be-calculation_comores"
+		  "pip": "git+https://github.com/mngoe/openimis-be-calculation_comores_py.git@develop-comores#egg=openimis-be-calculation_comores"
 	  },
 	  {
 		"name": "reportcomores",
-		"pip": "git+https://github.com/mngoe/openimis-be-report-comores_py.git@master#egg=openimis-be-report-comores"
+		"pip": "git+https://github.com/mngoe/openimis-be-report-comores_py.git@develop-comores#egg=openimis-be-report-comores"
 	  },
 	  {
 		"name": "policy_notification",
