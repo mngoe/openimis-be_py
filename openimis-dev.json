@@ -46,7 +46,7 @@
 	  },
 	  {
 		"name": "contribution",
-		"pip": "git+https://github.com/mngoe/openimis-be-contribution_py.git@develop-comores#egg=openimis-be-contribution"
+		"pip": "openimis-be-contribution==v1.7.0"
 	  },
 	  {
 		"name": "payer",
