@@ -269,3 +269,151 @@ msgstr "Family %(id)s does not exist"
 
 msgid "config.no_chfid"
 msgstr "No CHFID provided, yet the configuration is not active."
+
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:18
+msgid "policy_notification.sms_on_activation"
+msgstr ""
+"The policy for the family/group %(InsuranceID)s - %(Name)s with the "
+"insurance product %(ProductCode)s - %(ProductName)s has been activated from "
+"the date %(EffectiveDate)s until the expiry date %(ExpiryDate)s."
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:22
+msgid "policy_notification.sms_on_effective"
+msgstr ""
+"The policy for the family/group %(InsuranceID)s - %(Name)s with the " 
+"insurance product %(ProductCode)s - %(ProductName)s starts insurance "
+"coverage today and expires on %(ExpiryDate)s."
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:26
+msgid "policy_notification.sms_before_expiry"
+msgstr ""
+"Dear beneficiary, we would like to remind you that your contribution is still pending. "
+"If payment is not made by the deadline, your family's entitlement to benefits will be suspended."
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:30
+msgid "policy_notification.sms_on_expiration"
+msgstr ""
+"Dear beneficiary, please be informed that your family's entitlement to benefits has been suspended."
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:34
+msgid "policy_notification.sms_after_expiry"
+msgstr ""
+"Dear beneficiary, to continue receiving AMG benefits, we advise you to promptly settle your contribution."
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:38
+msgid "policy_notification.sms_on_renewal"
+msgstr ""
+"The policy for the family/group %(InsuranceID)s - %(Name)s with the "
+"insurance product %(ProductCode)s - %(ProductName)s has been renewed from "
+"the date %(EffectiveDate)s until the expiry date %(ExpiryDate)s."
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:42
+msgid "policy_notification.sms_control_number_assigned"
+msgstr ""
+"The control number %(ControlNumber)s was assigned for the request issued on "
+"%(DateRequest)s at %(TimeRequest)s for payment of the set of policies "
+"containing the family/group %(InsuranceID)s - %(Name)s with the insurance "
+"product %(ProductCode)s - %(ProductCode)s and alltogether %(NumberPolicies)s "
+"policies. The amount of payment associated with the request is "
+"%(AmountToBePaid)s."
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:46
+msgid "policy_notification.sms_control_number_error_bulk_payment"
+msgstr ""
+"The control number %(ControlNumber)s cannot be assigned for the request "
+"issued on %(DateRequest)s at %(TimeRequest)s for payment of the set of "
+"policies containing the family/group %(InsuranceID)s - %(Name)s with the "
+"insurance product %(ProductCode)s - %(ProductCode)s and alltogether "
+"%(NumberPolicies)s policies. The reason is %(ErrorMessage)s."
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:50
+msgid "policy_notification.sms_control_number_error_single_payment"
+msgstr ""
+"The control number %(ControlNumber)s cannot be assigned for the request "
+"issued on %(DateRequest)s at %(TimeRequest)s for payment of the policy for "
+"the family/group %(InsuranceID)s with the insurance product "
+"%(ProductCode)s . The reason is %(ErrorMessage)s"
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:54
+msgid "policy_notification.sms_paid_and_activated"
+msgstr ""
+"The payment %(Payment)s performed on %(DatePayment)s for the control number "
+"%(ControlNumber)s received and the policy for the family/group "
+"%(InsuranceID)s - %(Name)s with the insurance product %(ProductCode)s - "
+"%(ProductName)s activated from the date %(EffectiveDate)s until the expiry "
+"date %(ExpiryDate)s. The allocated payment for the policy is %(Payment)s."
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:58
+msgid "policy_notification.sms_paid_and_not_activated"
+msgstr ""
+"The payment %(Payment)s performed on %(DatePayment)s for the control number "
+"%(ControlNumber)s received but the policy for the family/group "
+"%(InsuranceID)s - %(Name)s with the insurance product %(ProductCode)s - "
+"%(ProductName)s has not been activated. The allocated payment for the policy "
+"is %(Payment)s but still %(PaymentLeft)s should be paid for activation of "
+"the policy."
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:62
+msgid "policy_notification.sms_paid_and_not_matched"
+msgstr ""
+"The payment %(Payment)s performed on %(DatePayment)s for the control number "
+"%(ControlNumber)s received but the policies in the set containing the family/"
+"group %(InsuranceID)s - %(Name)s with the insurance product %(ProductCode)s "
+"- %(ProductName)s cannot be matched for time being"
+
+#: policy_notification/notification_client.py:30
+msgid "Family without phone number assigned"
+msgstr ""
+
+#: policy_notification/views.py:16 policy_notification/views.py:16
+msgid "unauthorized"
+msgstr ""
+
+#: policy_notification/reports/communication_by_notification/report_builder.py:6
+msgid "policy_notification.Mode.0"
+msgstr "All"
+
+#: policy_notification/reports/communication_by_notification/report_builder.py:7
+msgid "policy_notification.Mode.1"
+msgstr "Approval and phone number"
+
+#: policy_notification/reports/communication_by_notification/report_builder.py:8
+msgid "policy_notification.Mode.2"
+msgstr "Approval only"
+
+#: policy_notification/reports/communication_by_notification/report_builder.py:9
+msgid "policy_notification.Mode.3"
+msgstr "Phone number only"
+
+#: policy_notification/reports/communication_by_notification/report_builder.py:10
+msgid "policy_notification.Mode.4"
+msgstr "No approval and phone number"
+
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:17
+msgid "policy_notification.sms_request_payment_for_activation_beneficiary"
+msgstr ""
+"Dear beneficiary, please proceed as soon as possible with the payment "
+"of your contribution in order to maintain your eligibility for AMG benefits. "
+"For further information, please contact 0000000."
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:21
+msgid "policy_notification.sms_request_payment_for_paamg"
+msgstr ""
+"A PAAMG policy for the family/group %(InsuranceID)s - %(Name)s with the " 
+"insurance product %(ProductCode)s - %(ProductName)s requires payment of %(AmountToBePaid)s " 
+"for 12 months. Please process the payment."
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:25
+msgid "policy_notification.sms_on_periodic_payment"
+msgstr ""
+"Dear beneficiary, this is a reminder that the due date for your contribution "
+"payment is %(DateDue)s."
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:29
+msgid "policy_notification.sms_on_periodic_payment_confirmation"
+msgstr ""
+"Dear beneficiary, we are pleased to confirm the renewal of your contribution "
+"on %(PaymentDate)s."
+ 
