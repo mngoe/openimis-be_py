@@ -365,10 +365,7 @@ msgstr ""
 #: policy_notification/notification_client.py:30
 msgid "Family without phone number assigned"
 msgstr ""
-
-#: policy_notification/views.py:16 policy_notification/views.py:16
-msgid "unauthorized"
-msgstr ""
+ 
 
 #: policy_notification/reports/communication_by_notification/report_builder.py:6
 msgid "policy_notification.Mode.0"
