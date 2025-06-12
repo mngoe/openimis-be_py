@@ -13,9 +13,9 @@ pip install -e /openimis-be-report-comores_py
 #pip install -e /openimis-be-location_py
 cp script/reportbro.py /usr/local/lib/python3.10/site-packages/reportbro/
 cp script/fhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/
-cp script/DSTU2fhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/DSTU2/
-cp script/R4Bfhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/R4B/
-cp script/STU3fhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/STU3/
+cp script/DSTU2fhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/DSTU2/fhirtypes.py
+cp script/R4Bfhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/R4B/fhirtypes.py
+cp script/STU3fhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/STU3/fhirtypes.py
 cd /openimis-be/openIMIS/
 export MODE=DEV
 show_help() {
