@@ -322,10 +322,6 @@ msgstr ""
 msgid "Family without phone number assigned"
 msgstr "Famille sans numéro de téléphone attribué"
 
-#: policy_notification/views.py:16 policy_notification/views.py:16
-msgid "unauthorized"
-msgstr "non autorisé"
-
 #: policy_notification/reports/communication_by_notification/report_builder.py:6
 msgid "policy_notification.Mode.0"
 msgstr "Tous"
