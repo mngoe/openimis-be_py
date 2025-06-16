@@ -228,7 +228,7 @@ msgstr "Seules les polices inactives peuvent être mises à jour"
 
 #, fuzzy
 msgid "policy.validation.members_count_above_max"
-msgstr "Le nombre d'assurés %(nombre) est supérieur au maximum de la police : %(max)s"
+msgstr "Le nombre d'assurés %(nombre)s est supérieur au maximum de la police : %(max)s"
 
 #, fuzzy
 msgid "insuree.mutation.failed_to_create_family"
