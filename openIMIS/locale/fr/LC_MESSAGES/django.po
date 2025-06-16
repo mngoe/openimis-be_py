@@ -177,7 +177,7 @@ msgid "policy.mutation.policy_not_idle"
 msgstr "Seules les polices inactives peuvent être mises à jour"
 
 msgid "policy.validation.members_count_above_max"
-msgstr "Le nombre d'assurés %(nombre)s est supérieur au maximum de la police : %(max)s"
+msgstr "Le nombre d'assurés %(count)s est supérieur au maximum de la police : %(max)s"
 
 msgid "insuree.mutation.failed_to_create_family"
 msgstr "Échec de la création de la famille"
