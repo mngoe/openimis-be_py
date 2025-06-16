@@ -24,6 +24,7 @@ pip install -e /openimis-be-report-cs_py
 # pip install pydantic==1.10.0
 # pip install gunicorn
 # pip install django-debug-toolbar
+pip install openpyxl
 cd /openimis-be/openIMIS/
 #python manage.py runserver 0.0.0.0:8000
 
