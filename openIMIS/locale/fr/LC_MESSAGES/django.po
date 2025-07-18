@@ -226,3 +226,46 @@ msgstr "La famille %(id) n'existe pas"
 
 msgid "config.no_chfid"
 msgstr "Aucun CHFID fourni, pourtant la configuration n'est pas active."
+
+msgid "Enrolment Officer"
+msgstr "Agent d'inscription"
+
+msgid "Manager"
+msgstr "Gestionnaire"
+
+msgid "Accountant"
+msgstr "Comptable"
+
+msgid "Clerk"
+msgstr "Employé de bureau"
+
+msgid "Medical Officer"
+msgstr "Officier médical"
+
+msgid "Scheme Administrator"
+msgstr "Administrateur de régime"
+
+msgid "IMIS Administrator"
+msgstr "Administrateur IMIS"
+
+msgid "Receptionist"
+msgstr "Réceptionniste"
+
+msgid "Claim Administrator"
+msgstr "Administrateur des réclamations"
+
+msgid "Claim Contributor"
+msgstr "Contributeur aux réclamations"
+
+msgid "HF Administrator"
+msgstr "Administrateur d'établissement de santé"
+
+msgid "Offline Administrator"
+msgstr "Administrateur hors ligne"
+
+msgid "Schema Admin"
+msgstr "Administrateur de schéma"
+
+msgid "Task Triage"
+msgstr "Triage des tâches"
+
