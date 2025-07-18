@@ -2,7 +2,7 @@
 	"modules": [
 	  {
 		"name": "core",
-		"pip": "git+https://github.com/mngoe/openimis-be-core_py.git@develop-comores#egg=openimis-be-core"
+		"pip": "git+https://github.com/mngoe/openimis-be-core_py.git@test-comores#egg=openimis-be-core"
 	  },
 	  {
 		"name": "individual",
@@ -38,11 +38,11 @@
 	  },
 	  {
 		"name": "insuree",
-		"pip": "git+https://github.com/mngoe/openimis-be-insuree_py.git@develop-comores#egg=openimis-be-insuree"
+		"pip": "git+https://github.com/mngoe/openimis-be-insuree_py.git@test-comores#egg=openimis-be-insuree"
 	  },
 	  {
 		"name": "policy",
-		"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@develop-comores#egg=openimis-be-policy"
+		"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@test-comores#egg=openimis-be-policy"
 	  },
 	  {
 		"name": "contribution",
@@ -58,7 +58,7 @@
 	  },
 	  {
 		"name": "claim",
-		"pip": "git+https://github.com/mngoe/openimis-be-claim_py.git@dev-comores#egg=openimis-be-claim"
+		"pip": "git+https://github.com/mngoe/openimis-be-claim_py.git@test-comores#egg=openimis-be-claim"
 	  },
 	  {
 		"name": "claim_batch",
@@ -66,11 +66,11 @@
 	  },
 	  {
 		"name": "tools",
-		"pip": "git+https://github.com/mngoe/openimis-be-tools_py.git@develop-comores#egg=openimis-be-tools"
+		"pip": "git+https://github.com/mngoe/openimis-be-tools_py.git@test-comores#egg=openimis-be-tools"
 	  },
 	  {
 		"name": "api_fhir_r4",
-		"pip": "git+https://github.com/mngoe/openimis-be-api_fhir_r4_py.git@develop-comores#egg=openimis-be-api_fhir_r4"
+		"pip": "git+https://github.com/mngoe/openimis-be-api_fhir_r4_py.git@test-comores#egg=openimis-be-api_fhir_r4"
 	  },
 	  {
 		"name": "calculation",
@@ -90,7 +90,7 @@
 	  },
 	  {
 		"name": "invoice",
-		"pip": "git+https://github.com/Y-Note-SAS/openimis-be-invoice_py.git@develop-comores#egg=openimis-be-invoice"
+		"pip": "git+https://github.com/Y-Note-SAS/openimis-be-invoice_py.git@test-comores#egg=openimis-be-invoice"
 	  },
 	  {
 		"name": "calcrule_contribution_legacy",
@@ -122,7 +122,7 @@
 	  },
 	  {
 		"name": "im_export",
-		"pip": "git+https://github.com/Y-Note-SAS/openimis-be-im_export_py.git@develop-comores#egg=openimis-be-im_export"
+		"pip": "git+https://github.com/Y-Note-SAS/openimis-be-im_export_py.git@test-comores#egg=openimis-be-im_export"
 	  },
 	  {
 		"name": "dhis2_etl",
@@ -154,15 +154,15 @@
 	  },
 	  {
 		  "name": "calculation_comores",
-		  "pip": "git+https://github.com/mngoe/openimis-be-calculation_comores_py.git@develop-comores#egg=openimis-be-calculation_comores"
+		  "pip": "git+https://github.com/mngoe/openimis-be-calculation_comores_py.git@test-comores#egg=openimis-be-calculation_comores"
 	  },
 	  {
 		"name": "reportcomores",
-		"pip": "git+https://github.com/mngoe/openimis-be-report-comores_py.git@develop-comores#egg=openimis-be-report-comores"
+		"pip": "git+https://github.com/mngoe/openimis-be-report-comores_py.git@test-comores#egg=openimis-be-report-comores"
 	  },
 	  {
 		"name": "policy_notification",
-		"pip": "git+https://github.com/Y-Note-SAS/openimis-be-policy_notification_py.git@develop-comores#egg=openimis-be-policy_notification"
+		"pip": "git+https://github.com/Y-Note-SAS/openimis-be-policy_notification_py.git@test-comores#egg=openimis-be-policy_notification"
 	  }
 	]
   }
