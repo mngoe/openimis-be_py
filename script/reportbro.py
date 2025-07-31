@@ -559,6 +559,13 @@ class Report:
                 bold_filename='/openimis-be/openIMIS/fonts/Times_New_Roman.ttf',
                 italic_filename='/openimis-be/openIMIS/fonts/Times_New_Roman.ttf',
                 bold_italic_filename='/openimis-be/openIMIS/fonts/Times_New_Roman.ttf'
+            ),
+            dict(
+                value='notosans',
+                filename='/openimis-be/openIMIS/fonts/NotoSans-Regular.ttf',
+                bold_filename='/openimis-be/openIMIS/fonts/NotoSans-Bold.ttf',
+                italic_filename='/openimis-be/openIMIS/fonts/NotoSans-Italic.ttf',
+                bold_italic_filename='/openimis-be/openIMIS/fonts/NotoSans-BoldItalic.ttf'
             )
         ]
         self.page_limit = page_limit
