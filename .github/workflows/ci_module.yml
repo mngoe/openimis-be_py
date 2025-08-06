@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Set up Python 3.10
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -85,7 +85,7 @@ jobs:
           path: './current-module'
 
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -116,8 +116,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r ../requirements.txt
           python modules-requirements.py ../openimis.json > modules-requirements.txt
+          # Remove conflicting Git reference for claim
+          sed -i '/git+https:\/\/github.com\/mngoe\/openimis-be-claim_py.git@test-csu/d' modules-requirements.txt
           cat modules-requirements.txt
           pip install --no-cache-dir -r modules-requirements.txt
+          pip install -e ../../current-module
 
       - name: Environment info
         run: |
@@ -167,7 +170,7 @@ jobs:
           --health-cmd="/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${SA_PASSWORD} -Q 'SELECT 1' || exit 1"
     steps:
       - name: Set up Python 3.10
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -297,7 +300,7 @@ jobs:
           --health-retries 10
     steps:
       - name: Set up Python 3.10
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -413,7 +416,7 @@ jobs:
           --health-retries 10
     steps:
       - name: Set up Python 3.10
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -517,7 +520,7 @@ jobs:
     needs: build_backend
     steps:
       - name: Set up Python 3.10
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
       - name: Download site-packages artifact
