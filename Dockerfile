@@ -2,6 +2,7 @@ FROM --platform=linux/amd64 python:3.10-buster as builder
 ENV PYTHONUNBUFFERED 1
 ARG DB_ENGINE
 ENV DB_ENGINE=${DB_ENGINE:-mssql}
+RUN echo "deb http://archive.debian.org/debian buster main" > /etc/apt/sources.list && echo "deb http://archive.debian.org/debian-security buster/updates main" >> /etc/apt/sources.list
 RUN apt-get update && apt-get install -y apt-transport-https ca-certificates gettext unixodbc-dev && apt-get upgrade -y
 RUN apt-get install -y -f python3-dev
 RUN apt-get -y install git
