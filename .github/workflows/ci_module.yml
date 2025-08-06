@@ -67,9 +67,9 @@ jobs:
       
           # Clone the repository
           rm -rf ./openimis
-          git clone --depth=1 --branch=$TARGET_BRANCH https://github.com/openimis/openimis-be_py.git ./openimis || {
+          git clone --depth=1 --branch=$TARGET_BRANCH https://github.com/mngoe/openimis-be_py.git ./openimis || {
             echo "Failed to clone $TARGET_BRANCH, falling back to develop"
-            git clone --depth=1 --branch=develop https://github.com/openimis/openimis-be_py.git ./openimis
+            git clone --depth=1 --branch=develop https://github.com/mngoe/openimis-be_py.git ./openimis
           }
       
           # Verify the cloned branch
