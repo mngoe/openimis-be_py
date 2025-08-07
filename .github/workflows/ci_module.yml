@@ -116,9 +116,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r ../requirements.txt
-          python modules-requirements.py ../openimis.json > modules-requirements.txt
-          # Remove conflicting Git reference for claim
-          # sed -i '/git+https:\/\/github.com\/mngoe\/openimis-be-claim_py.git@test-csu/d' modules-requirements.txt
+          python modules-requirements.py ../openimis.json > modules-requirements.txt 
           cat modules-requirements.txt
           pip install --no-cache-dir -r modules-requirements.txt
           pip install -e ../../current-module
