@@ -48,7 +48,7 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Pull openIMIS Backend
+      - name: Pull openIMIS Backend 
         run: |
           # Determine the target branch
           if [ "${{ github.event_name }}" == "pull_request" ]; then
@@ -73,9 +73,14 @@ jobs:
           }
       
           # Verify the cloned branch
-          cd ./openimis
+          cd ./openimis 
           CLONED_BRANCH=$(git rev-parse --abbrev-ref HEAD)
           echo "Cloned branch: $CLONED_BRANCH"
+          ls -la script/  # Debug: list contents of script directory
+          if [ ! -f "script/modules-requirements.py" ]; then
+            echo "ERROR: modules-requirements.py not found in ./openimis/script"
+            exit 1
+          fi
 
       - name: Copy Current branch
         uses: actions/checkout@v4
