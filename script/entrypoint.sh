@@ -26,6 +26,7 @@ pip install pydantic==1.10.0
 pip install gunicorn
 pip install openpyxl
 pip install django-debug-toolbar
+pip install -r requirements.txt
 cd /openimis-be/openIMIS/
 #python server.py 0.0.0.0:8000
 
