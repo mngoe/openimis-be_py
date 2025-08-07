@@ -4,7 +4,7 @@ import sys
 
 
 sys.path.insert(0, './openIMIS/openIMIS')
-from openimisconf import load_openimis_conf
+from .openimisconf import load_openimis_conf
 
 conf_file_path = 'openimis.json'
 
