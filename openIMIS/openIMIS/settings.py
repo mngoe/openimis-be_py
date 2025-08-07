@@ -170,7 +170,7 @@ INSTALLED_APPS = [
     "channels",  # Websocket support
     "developer_tools",
     "drf_spectacular",  # Swagger UI for FHIR API
-    "debug_toolbar",
+    # "debug_toolbar",
 ]
 INSTALLED_APPS += OPENIMIS_APPS
 INSTALLED_APPS += ["apscheduler_runner", "signal_binding"]  # Signal binding should be last installed module
@@ -222,12 +222,12 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-DEBUG_TOOLBAR_PANEL = [
-    "debug_toolbar.panels.profiling.ProfilingPanel"
-]
+# DEBUG_TOOLBAR_PANEL = [
+#     "debug_toolbar.panels.profiling.ProfilingPanel"
+# ]
 
 if DEBUG:
     # Attach profiler middleware
