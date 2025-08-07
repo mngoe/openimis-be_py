@@ -119,7 +119,7 @@ jobs:
           # Remove conflicting Git reference for claim
           # sed -i '/git+https:\/\/github.com\/mngoe\/openimis-be-claim_py.git@test-csu/d' modules-requirements.txt
           cat modules-requirements.txt
-          pip install --no-cache-dir -r modules-requirements.txt
+          # pip install --no-cache-dir -r modules-requirements.txt
           # pip install -e ../../current-module
 
       - name: Environment info
