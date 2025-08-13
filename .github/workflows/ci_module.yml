@@ -160,6 +160,18 @@ jobs:
           export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^\(.*\)/openimis-be-\(.*\)_py$#\1#')"
           echo "MODULE_NAME=$MODULE_NAME" >> $GITHUB_ENV
 
+          # Extraire le nom du module depuis le dépôt (fork ou officiel)
+          MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^\(.*\)/openimis-be-\(.*\)_py$#\2#')"
+          echo "MODULE_NAME=$MODULE_NAME" >> $GITHUB_ENV
+
+          # Extraire le nom de la branche (sans refs/heads/)
+          BRANCH_NAME="${GITHUB_REF##*/}"
+          echo "BRANCH_NAME=$BRANCH_NAME"
+
+          # Impression dans les logs pour débogage
+          echo "Detected module: $MODULE_NAME"
+          echo "Detected branch: $BRANCH_NAME"
+
       - name: Download site-packages artifact
         uses: actions/download-artifact@v4
         with:
