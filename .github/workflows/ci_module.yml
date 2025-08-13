@@ -223,6 +223,7 @@ jobs:
           DB_NAME: imis
           DB_USER: sa
           DB_PASSWORD: GitHub999
+          PASSWORD_MIN_LENGTH: 8
           #DEV_SERVER: true
           SITE_ROOT: api
           #REMOTE_USER_AUTHENTICATION: False
