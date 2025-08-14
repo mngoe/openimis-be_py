@@ -224,7 +224,7 @@ jobs:
         # Run the tests regardless if previous steps failed (if setup fails the tests should crash instantly)
         if: success() || failure()
         run: |
-          python -V1
+          python -V
           python manage.py test --debug-mode --timing --keepdb $MODULE_NAME
         env:
           SECRET_KEY: secret
