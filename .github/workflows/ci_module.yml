@@ -210,13 +210,6 @@ jobs:
           DB_NAME: imis
           DB_USER: sa
           DB_PASSWORD: GitHub999
-        ###
-      - name: Show migrations and run migrations with verbosity
-        working-directory: ./openimis/openIMIS
-        run: |
-          python manage.py showmigrations
-          python manage.py migrate --verbosity 3
-        ###
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
