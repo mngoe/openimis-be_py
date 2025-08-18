@@ -24,9 +24,9 @@ pip install -e /openimis-be-report-cs_py
 #cp /openimis-be/script/fhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/
 pip install pydantic==1.10.0
 pip install gunicorn
-pip install openpyxl
 pip install django-debug-toolbar
 pip install -r requirements.txt
+pip install openpyxl
 cd /openimis-be/openIMIS/
 #python server.py 0.0.0.0:8000
 
