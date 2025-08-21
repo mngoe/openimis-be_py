@@ -2,7 +2,7 @@
 		"modules": [
 		{
 					"name": "core",
-					"pip": "git+https://github.com/mngoe/openimis-be-core_py.git@hotfix-csu#egg=openimis-be-core"
+					"pip": "git+https://github.com/mngoe/openimis-be-core_py.git@main-csu#egg=openimis-be-core"
 				},
 				{
 					"name": "individual",
@@ -18,19 +18,19 @@
 				},
 					{
 					"name": "report",
-					"pip": "git+https://github.com/Y-Note-SAS/openimis-be-report_py.git@hotfix-csu#egg=openimis-be-report"
+					"pip": "git+https://github.com/Y-Note-SAS/openimis-be-report_py.git@main-csu#egg=openimis-be-report"
 				},
 					{
 					"name": "location",
-					"pip": "git+https://github.com/mngoe/openimis-be-location_py.git@hotfix-csu#egg=openimis-be-location"
+					"pip": "git+https://github.com/mngoe/openimis-be-location_py.git@main-csu#egg=openimis-be-location"
 				},
 				{
 					"name": "reportcsu",
-					"pip": "git+https://github.com/mngoe/openimis-be-report-csu_py.git@hotfix-csu#egg=openimis-be-report-csu"
+					"pip": "git+https://github.com/mngoe/openimis-be-report-csu_py.git@main-csu#egg=openimis-be-report-csu"
 				},
 					{
 					"name": "medical",
-					"pip": "git+https://github.com/mngoe/openimis-be-medical_py.git@hotfix-csu#egg=openimis-be-medical"
+					"pip": "git+https://github.com/mngoe/openimis-be-medical_py.git@main-csu#egg=openimis-be-medical"
 				},
 					{
 					"name": "medical_pricelist",
@@ -38,15 +38,15 @@
 				},
 					{
 					"name": "product",
-					"pip": "git+https://github.com/mngoe/openimis-be-product_py.git@hotfix-csu#egg=openimis-be-product"
+					"pip": "git+https://github.com/mngoe/openimis-be-product_py.git@main-csu#egg=openimis-be-product"
 				},
 				{
 					"name": "insuree",
-					"pip": "git+https://github.com/mngoe/openimis-be-insuree_py.git@hotfix-csu#egg=openimis-be-insuree"
+					"pip": "git+https://github.com/mngoe/openimis-be-insuree_py.git@main-csu#egg=openimis-be-insuree"
 				  },
 				  {
 					"name": "policy",
-					"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@hotfix-csu#egg=openimis-be-policy"
+					"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@main-csu#egg=openimis-be-policy"
 				  },
 					{
 					"name": "contribution",
@@ -62,7 +62,7 @@
 				  },
 					{
 					"name": "claim",
-					"pip": "git+https://github.com/mngoe/openimis-be-claim_py.git@hotfix-csu#egg=openimis-be-claim"
+					"pip": "git+https://github.com/mngoe/openimis-be-claim_py.git@main-csu#egg=openimis-be-claim"
 				},
 					{
 					"name": "claim_batch",
@@ -70,7 +70,7 @@
 				},
 					{
 					"name": "tools",
-      				"pip": "git+https://github.com/mngoe/openimis-be-tools_py.git@hotfix-csu#egg=openimis-be-tools"
+      				"pip": "git+https://github.com/mngoe/openimis-be-tools_py.git@main-csu#egg=openimis-be-tools"
 				},
 					{
 					"name": "dhis2_etl",
@@ -154,15 +154,15 @@
 				},
 				{
 					"name":"cs",
-					"pip":"git+https://github.com/mngoe/openimis-be-cs_py.git@hotfix-csu#egg=openimis-be-cs"
+					"pip":"git+https://github.com/mngoe/openimis-be-cs_py.git@main-csu#egg=openimis-be-cs"
 				},
 				{
 					"name":"csu",
-					"pip":"git+https://github.com/mngoe/openimis-be-csu_py.git@hotfix-csu#egg=openimis-be-csu"
+					"pip":"git+https://github.com/mngoe/openimis-be-csu_py.git@main-csu#egg=openimis-be-csu"
 				},
 				{
 					"name":"program",
-					"pip":"git+https://github.com/mngoe/openimis-be-program_py.git@hotfix-csu#egg=openimis-be-program"
+					"pip":"git+https://github.com/mngoe/openimis-be-program_py.git@main-csu#egg=openimis-be-program"
 				},
 				{
 					"name": "controls",
@@ -170,7 +170,7 @@
 				},
 				{
 					"name": "idps",
-					"pip": "git+https://github.com/mngoe/openimis-be-idps_py.git@hotfix-csu#egg=openimis-be-idps"
+					"pip": "git+https://github.com/mngoe/openimis-be-idps_py.git@develop-idps#egg=openimis-be-idps"
 				}    
 		]
   }
