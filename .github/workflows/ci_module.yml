@@ -225,7 +225,8 @@ jobs:
         if: success() || failure()
         run: |
           python -V
-          python manage.py test --debug-mode --timing --keepdb $MODULE_NAME
+          #python manage.py test --debug-mode --timing --keepdb $MODULE_NAME
+          DJANGO_SETTINGS_MODULE=openIMIS.settings python -Wd -X dev -m coverage run --source=$MODULE_NAME manage.py test --debug-mode --timing --keepdb $MODULE_NAME
         env:
           SECRET_KEY: secret
           MODE: DEV
