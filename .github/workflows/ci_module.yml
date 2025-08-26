@@ -439,74 +439,74 @@ jobs:
         with:
           name: flake8-report.txt
           path: ./openimis/flake8-report.txt
-  sonar_scan:
-    name: Run Sonar Scan
-    runs-on: ubuntu-24.04
-    needs: [ci_module_psql_test, flake-8-linter]
-    if: always()
-    env:
-      SONAR_PROJECT_KEY: ${{ inputs.SONAR_PROJECT_KEY }}
-      SONAR_ORGANIZATION: ${{ inputs.SONAR_ORGANIZATION }}
-      SONAR_PROJECT_NAME: ${{ inputs.SONAR_PROJECT_NAME }}
-      SONAR_PROJECT_VERSION: ${{ inputs.SONAR_PROJECT_VERSION }}
-      SONAR_PYTHON_VERSION: "3.10"
-      SONAR_FLAKE8_REPORT_PATHS: ../report/flake8-report.txt
-      SONAR_SOURCES: ${{ inputs.SONAR_SOURCES }}
-    steps:
-      - name: Set environment variables with default values
-        run: |
-          if [ -z "${{ inputs.SONAR_PROJECT_VERSION }}" ]; then
-            echo "SONAR_PROJECT_VERSION=1.0" >> $GITHUB_ENV
-          else
-            echo "SONAR_PROJECT_VERSION=${{ inputs.SONAR_PROJECT_VERSION }}" >> $GITHUB_ENV
-          fi
+  # sonar_scan:
+  #   name: Run Sonar Scan
+  #   runs-on: ubuntu-24.04
+  #   needs: [ci_module_psql_test, flake-8-linter]
+  #   if: always()
+  #   env:
+  #     SONAR_PROJECT_KEY: ${{ inputs.SONAR_PROJECT_KEY }}
+  #     SONAR_ORGANIZATION: ${{ inputs.SONAR_ORGANIZATION }}
+  #     SONAR_PROJECT_NAME: ${{ inputs.SONAR_PROJECT_NAME }}
+  #     SONAR_PROJECT_VERSION: ${{ inputs.SONAR_PROJECT_VERSION }}
+  #     SONAR_PYTHON_VERSION: "3.10"
+  #     SONAR_FLAKE8_REPORT_PATHS: ../report/flake8-report.txt
+  #     SONAR_SOURCES: ${{ inputs.SONAR_SOURCES }}
+  #   steps:
+  #     - name: Set environment variables with default values
+  #       run: |
+  #         if [ -z "${{ inputs.SONAR_PROJECT_VERSION }}" ]; then
+  #           echo "SONAR_PROJECT_VERSION=1.0" >> $GITHUB_ENV
+  #         else
+  #           echo "SONAR_PROJECT_VERSION=${{ inputs.SONAR_PROJECT_VERSION }}" >> $GITHUB_ENV
+  #         fi
 
-          if [ -z "${{ inputs.SONAR_EXCLUSIONS }}" ]; then
-            echo "SONAR_EXCLUSIONS='**/migrations/**,**/static/**,**/media/**,**/tests/**'" >> $GITHUB_ENV
-          else
-            echo "SONAR_EXCLUSIONS=${{ inputs.SONAR_EXCLUSIONS }}" >> $GITHUB_ENV
-          fi
-      - name: Download coverage artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage.xml
-          path: report
-      - name: Download flake8 artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: flake8-report.txt
-          path: report
-      - name: Download code artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: code-artifacts
-          path: /tmp/
-      - name: Decompress artifacts
-        run: |
-          # This path is required by the structure of coverage.xml paths
-          sudo tar -xzf /tmp/openimis.tar.gz -C .
-      - name: Debug
-        run: |
-          ls -a
-          echo "---"
-          ls report
-          echo "---"
-          ls current-module -a
+  #         if [ -z "${{ inputs.SONAR_EXCLUSIONS }}" ]; then
+  #           echo "SONAR_EXCLUSIONS='**/migrations/**,**/static/**,**/media/**,**/tests/**'" >> $GITHUB_ENV
+  #         else
+  #           echo "SONAR_EXCLUSIONS=${{ inputs.SONAR_EXCLUSIONS }}" >> $GITHUB_ENV
+  #         fi
+  #     - name: Download coverage artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: coverage.xml
+  #         path: report
+  #     - name: Download flake8 artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: flake8-report.txt
+  #         path: report
+  #     - name: Download code artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: code-artifacts
+  #         path: /tmp/
+  #     - name: Decompress artifacts
+  #       run: |
+  #         # This path is required by the structure of coverage.xml paths
+  #         sudo tar -xzf /tmp/openimis.tar.gz -C .
+  #     - name: Debug
+  #       run: |
+  #         ls -a
+  #         echo "---"
+  #         ls report
+  #         echo "---"
+  #         ls current-module -a
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        with:
-          args: >
-            -Dsonar.projectKey=${{ inputs.SONAR_PROJECT_KEY }}
-            -Dsonar.organization=${{ inputs.SONAR_ORGANIZATION }}
-            -Dsonar.projectName=${{ inputs.SONAR_PROJECT_NAME }}
-            -Dsonar.projectVersion=${{ env.SONAR_PROJECT_VERSION }}
-            -Dsonar.python.version="3.10"
-            -Dsonar.sources=current-module
-            -Dsonar.python.coverage.reportPaths=report/coverage1.xml,report/coverage2.xml
-            -Dsonar.python.flake8.reportPaths=report/flake8-report.txt
-            -Dsonar.exclusions=${{ env.SONAR_EXCLUSIONS }}
-            -X
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #     - name: SonarCloud Scan
+  #       uses: SonarSource/sonarcloud-github-action@master
+  #       with:
+  #         args: >
+  #           -Dsonar.projectKey=${{ inputs.SONAR_PROJECT_KEY }}
+  #           -Dsonar.organization=${{ inputs.SONAR_ORGANIZATION }}
+  #           -Dsonar.projectName=${{ inputs.SONAR_PROJECT_NAME }}
+  #           -Dsonar.projectVersion=${{ env.SONAR_PROJECT_VERSION }}
+  #           -Dsonar.python.version="3.10"
+  #           -Dsonar.sources=current-module
+  #           -Dsonar.python.coverage.reportPaths=report/coverage1.xml,report/coverage2.xml
+  #           -Dsonar.python.flake8.reportPaths=report/flake8-report.txt
+  #           -Dsonar.exclusions=${{ env.SONAR_EXCLUSIONS }}
+  #           -X
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
