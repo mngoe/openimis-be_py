@@ -204,6 +204,14 @@ jobs:
           /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -Q "DROP DATABASE IF EXISTS $DB_NAME_TEST"
           /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -Q "CREATE DATABASE $DB_NAME_TEST"
           /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -d $DB_NAME_TEST -i ./sql_mssql/output/fullDemoDatabase.sql | grep . | uniq -c
+
+          # Ajout : Log du schéma de la table tblLocations pour vérifier les colonnes
+          echo "Logging schema of tblLocations..."
+          /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -d $DB_NAME_TEST -Q "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tblLocations' ORDER BY ORDINAL_POSITION" | grep . | uniq -c
+
+          # Ajout : Log de toutes les tables pour débogage
+          echo "Logging all tables in $DB_NAME_TEST..."
+          /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -d $DB_NAME_TEST -Q "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'" | grep . | uniq -c
         env:
           DB_HOST: localhost
           DB_PORT: 1433
