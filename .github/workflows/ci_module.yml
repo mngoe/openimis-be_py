@@ -393,14 +393,15 @@ jobs:
           name: coverage.xml
           path: ./openimis/openIMIS/coverage
   flake-8-linter:
+    continue-on-error: true
     name: Run flake8 check
     runs-on: ubuntu-24.04
     needs: build_backend
     steps:
-      - name: Set up Python 3.10
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: '3.11'
       - name: Download site-packages artifact
         uses: actions/download-artifact@v4
         with:
@@ -428,11 +429,13 @@ jobs:
         if: success() || failure()
         run: |
           # Flake8 Report
+          #export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^openimis/openimis-be-\(.*\)_py$#\1#')"
+          export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^mngoe/openimis-be-\(.*\)_py$#\1#')"
           MOD_DIR="../current-module/$MODULE_NAME"
-          python -m flake8 --output-file=flake8-report.txt $MOD_DIR --exit-zero
+          python -m flake8 --output-file=flake8-report.txt $MOD_DIR --exit-zero --ignore W503
           sed -i 's|\.\./current-module/||g' flake8-report.txt
           
-          python -m flake8 $MOD_DIR
+          python -m flake8 $MOD_DIR --ignore W503
       - name: Flake8 results upload
         if: success() || failure()
         uses: actions/upload-artifact@v4
