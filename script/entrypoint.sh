@@ -49,9 +49,7 @@ show_help() {
 init(){
   if [ "${DJANGO_MIGRATE,,}" == "true" ] || [ -z "$SCHEDULER_AUTOSTART" ]; then
         echo "Migrating..."
-        # python manage.py migrate
-        python manage.py showmigrations
-        python manage.py migrate --verbosity 3
+        python manage.py migrate
         export SCHEDULER_AUTOSTART=False
   fi
 }
