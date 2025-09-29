@@ -5697,7 +5697,6 @@ msgstr ""
 msgid "mutation.claim_too_many_additional_diagnoses"
 msgstr ""
 
-#, fuzzy
 msgid "mutation.service_explanation_required"
 msgstr "Explication du service requise"
 
