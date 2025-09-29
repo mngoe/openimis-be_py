@@ -4842,10 +4842,6 @@ msgid "Missing the claim admin code"
 msgstr ""
 
 #, fuzzy
-msgid "Claim Administrator"
-msgstr ""
-
-#, fuzzy
 msgid "Missing patient `birthDate` attribute"
 msgstr ""
 
