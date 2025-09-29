@@ -4786,10 +4786,6 @@ msgid "rest-hook"
 msgstr ""
 
 #, fuzzy
-msgid "Enrolment Officer"
-msgstr ""
-
-#, fuzzy
 msgid "Medical"
 msgstr ""
 
@@ -5703,7 +5699,7 @@ msgstr ""
 
 #, fuzzy
 msgid "mutation.service_explanation_required"
-msgstr ""
+msgstr "Explication du service requise"
 
 #, fuzzy
 msgid "mutation.code_name_too_long"
@@ -6022,7 +6018,7 @@ msgstr ""
 "de votre cotisation en date du %(PaymentDate)s"
 
 msgid "Enrolment Officer"
-msgstr "Agent d'inscription numero"
+msgstr "Agent d'inscription"
 
 msgid "Manager"
 msgstr "Gestionnaire"
