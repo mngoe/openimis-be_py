@@ -4786,10 +4786,6 @@ msgid "rest-hook"
 msgstr ""
 
 #, fuzzy
-msgid "Enrolment Officer"
-msgstr ""
-
-#, fuzzy
 msgid "Medical"
 msgstr ""
 
