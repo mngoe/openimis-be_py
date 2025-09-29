@@ -456,6 +456,5 @@ msgstr "Schema Admin"
 msgid "Task Triage"
 msgstr "Task Triage"
 
-#, fuzzy
 msgid "mutation.service_explanation_required"
 msgstr "service_explanation_required"

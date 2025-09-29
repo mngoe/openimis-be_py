@@ -5693,8 +5693,7 @@ msgstr ""
 msgid "mutation.claim_too_many_additional_diagnoses"
 msgstr ""
 
-#, fuzzy
-msgid "claim.mutation.service_explanation_required"
+msgid "mutation.service_explanation_required"
 msgstr "Explication du service requise"
 
 #, fuzzy
@@ -6014,7 +6013,7 @@ msgstr ""
 "de votre cotisation en date du %(PaymentDate)s"
 
 msgid "Enrolment Officer"
-msgstr "Agent d'inscription numero"
+msgstr "Agent d'inscription"
 
 msgid "Manager"
 msgstr "Gestionnaire"
@@ -6054,4 +6053,3 @@ msgstr "Administrateur de schéma"
 
 msgid "Task Triage"
 msgstr "Triage des tâches"
-
