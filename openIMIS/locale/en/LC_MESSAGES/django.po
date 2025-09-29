@@ -311,3 +311,6 @@ msgstr "Schema Admin"
 
 msgid "Task Triage"
 msgstr "Task Triage"
+
+msgid "mutation.service_explanation_required"
+msgstr "Service explanation required"
