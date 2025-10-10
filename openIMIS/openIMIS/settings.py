@@ -4,6 +4,7 @@ Django settings for openIMIS project.
 import json
 import logging
 import os
+import sys
 
 from dotenv import load_dotenv
 from .openimisapps import openimis_apps, get_locale_folders
@@ -186,6 +187,7 @@ INSTALLED_APPS = [
 ]
 INSTALLED_APPS += OPENIMIS_APPS
 INSTALLED_APPS += ["apscheduler_runner", "signal_binding"]  # Signal binding should be last installed module
+IS_TESTING =  'test' in sys.argv
 
 AUTHENTICATION_BACKENDS = []
 
@@ -412,7 +414,8 @@ DATABASE_ROUTERS = ["openIMIS.routers.DashboardDatabaseRouter"]
 
 
 
-
+CACHE_OBJECT_DEFAULT =  (os.environ.get("CACHE_OBJECT_DEFAULT", '').lower() == 'true')
+CACHE_OBJECT_TTL =  int(os.environ.get("CACHE_OBJECT_TTL", 3600))
 # Celery message broker configuration for RabbitMQ. One can also use Redis on AWS SQS
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "amqp://rabitmq")
 if 'CELERY_RESULT_BACKEND' in os.environ:
