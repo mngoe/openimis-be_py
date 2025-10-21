@@ -485,7 +485,7 @@ SCHEDULER_JOBS = [
     {
         "method": "policy.tasks.get_policies_for_renewal",
         "args": ["cron"],
-        "kwargs": {"id": "openimis_renewal_batch", "hour": 8, "minute": 30, "replace_existing": True},
+        "kwargs": {"id": "openimis_renewal_batch", "hour": 11, "minute": 30, "replace_existing": True},
     },
     # {
     #     "method": "policy_notification.tasks.send_notification_messages",
