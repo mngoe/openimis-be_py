@@ -437,6 +437,17 @@ SCHEDULER_JOBS = [
         "kwargs": {"id": "openimis_notification_batch", 'day_of_week': '*',
                    "hour": "8-20", "minute": "0", "replace_existing": True},
     },
+    {
+        "method": "claim.tasks.process_claim_task",
+        "args": ["cron"],
+        "kwargs": {
+            "id": "openimis_claim_process_batch",
+            'day_of_week': 'mon-fri',
+            "hour": "8",
+            "minute": "0", 
+            "replace_existing": True
+        },
+    },
     # {
     #     "method": "claim_ai_quality.tasks.claim_ai_processing",
     #     "args": ["cron"],
