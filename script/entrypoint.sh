@@ -2,7 +2,7 @@
 set -e
 
 cd /openimis-be/
-# python modules-requirements.py openimis.json > modules-requirements.txt
+python modules-requirements.py openimis.json > modules-requirements.txt
 pip uninstall -r modules-requirements.txt -y
 pip install -r modules-requirements.txt
 
