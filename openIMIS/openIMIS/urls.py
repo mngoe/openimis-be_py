@@ -30,6 +30,5 @@ urlpatterns = [
         "%sgraphql" % SITE_ROOT(),
         csrf_exempt(jwt_cookie(OpenIMISGraphQLView.as_view(graphiql=DEBUG))),
     ),
-    path("" , include('amg_payement.urls')),
     url(r"^ht/", include("health_check.urls")),
 ] + openimis_urls()
