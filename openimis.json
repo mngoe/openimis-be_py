@@ -78,7 +78,7 @@
     },
     {
       "name": "contribution_plan",
-      "pip": "openimis-be-contribution-plan==v1.7.0"
+      "pip": "git+https://github.com/Iandraina-etech/openimis-be-contribution_plan_py.git@dev-comores#egg=openimis-be-contribution-plan"
     },
     {
       "name": "policyholder",
