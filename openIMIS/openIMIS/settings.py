@@ -145,15 +145,6 @@ if "ALLOWED_HOSTS" in os.environ:
 else:
     ALLOWED_HOSTS = ["*"]
 
-if "CSRF_TRUSTED_ORIGINS" in os.environ:
-    CSRF_TRUSTED_ORIGINS = json.loads(os.environ["CSRF_TRUSTED_ORIGINS"])
-else:
-    # Définissez vos origines par défaut
-    CSRF_TRUSTED_ORIGINS = [
-        'https://dev.amg.km',
-        'https://test.amg.km',
-    ]
-
 # TEST_WITHOUT_MIGRATIONS_COMMAND = 'django_nose.management.commands.test.Command'
 # TEST_RUNNER = 'core.test_utils.UnManagedModelTestRunner'
 
