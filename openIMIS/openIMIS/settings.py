@@ -435,7 +435,7 @@ SCHEDULER_JOBS = [
         "method": "policy_notification.tasks.send_notification_messages",
         "args": ["cron"],
         "kwargs": {"id": "openimis_notification_batch", 'day_of_week': '*',
-                   "hour": "8-20", "minute": "0", "replace_existing": True},
+                   "hour": "8-20", "minute": "*/5", "replace_existing": True},
     },
     {
         "method": "claim.tasks.process_claim_task",
