@@ -163,6 +163,10 @@
     {
       "name": "policy_notification",
       "pip": "git+https://github.com/Y-Note-SAS/openimis-be-policy_notification_py.git@test-comores#egg=openimis-be-policy_notification"
+    },
+    {
+      "name": "amg_payement",
+      "pip": "git+https://github.com/Iandraina-etech/openimis-be-amg_payement_py.git@test-comores#egg=openimis-be-amg_payement"
     }
   ]
 }
