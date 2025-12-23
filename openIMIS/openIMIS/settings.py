@@ -8,6 +8,7 @@ import os
 from dotenv import load_dotenv
 from .openimisapps import openimis_apps, get_locale_folders
 from datetime import timedelta
+from celery.schedules import crontab
 
 load_dotenv()
 
@@ -394,6 +395,14 @@ DATABASE_ROUTERS = ["openIMIS.routers.DashboardDatabaseRouter"]
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "amqp://rabitmq")
 if 'CELERY_RESULT_BACKEND' in os.environ:
     CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND")
+    
+CELERY_BEAT_SCHEDULE = {
+    "openimis_notification_batch": {
+        "task": "policy_notification.tasks.send_notification_messages",
+        "schedule": crontab(minute="*/5", hour="6-22"),
+    },
+}
+
 
 if 'CACHE_BACKEND' in os.environ and 'CACHE_URL' in os.environ:
     CACHES = {
