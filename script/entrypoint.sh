@@ -90,7 +90,7 @@ case "$1" in
     SERVER_PORT="${WSGI_PORT:-$def_port}"
     SERVER_APPLICATION="${WSGI_APPLICATION:-$def_app}"
     SERVER_WORKERS="${WSGI_WORKERS:-4}"
-    gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION"
+    gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION" --timeout 300
     #gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION" --error-logfile /error.log --access-logfile /access.log --timeout 240
   ;;
   "worker" )
