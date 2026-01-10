@@ -6014,7 +6014,7 @@ msgstr ""
 "de votre cotisation en date du %(PaymentDate)s"
 
 msgid "Enrolment Officer"
-msgstr "Agent d'inscription numero"
+msgstr "Agent d'inscription"
 
 msgid "Manager"
 msgstr "Gestionnaire"
