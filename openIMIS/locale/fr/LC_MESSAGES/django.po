@@ -347,12 +347,14 @@ msgstr "Aucune approbation ni numéro de téléphone"
 #: policy_notification/notification_templates/DefaultNotificationTemplates.py:17
 msgid "policy_notification.sms_request_payment_for_activation_beneficiary"
 msgstr ""
+"holo https://test.amg.km/amg-pay/payments/initier-paiement?policyUuid=%(PolicyUuid)s"
 "AMG: payez %(AmountToBePaid)s kmf (code %(InsuranceID)s) pour activer votre couverture. "
 "MVola #4441514010318*%(AmountToBePaid)s*%(InsuranceID)s# ou bdc 10380750002. infos 7332135"
 
 #: policy_notification/notification_templates/DefaultNotificationTemplates.py:21
 msgid "policy_notification.sms_request_payment_for_paamg"
 msgstr ""
+"holo https://test.amg.km/amg-pay/payments/initier-paiement?policyUuid=%(PolicyUuid)s"
 "Une police PAAMG pour la famille/groupe %(InsuranceID)s - %(Name)s avec le "
 "produit d'assurance %(ProductCode)s - %(ProductName)s nécessite un paiement de "
 "%(AmountToBePaid)s pour 12 mois. Veuillez effectuer le paiement."
@@ -360,8 +362,9 @@ msgstr ""
 #: policy_notification/notification_templates/DefaultNotificationTemplates.py:25
 msgid "policy_notification.sms_on_periodic_payment"
 msgstr ""
+"holo https://test.amg.km/amg-pay/payments/initier-paiement?policyUuid=%(PolicyUuid)s"
 "Cher assuré, nous vous rappelons que la date limite pour le paiement "
-"de votre cotisation est le %(DateDue)."
+"de votre cotisation est le %(DateDue)s."
 
 #: policy_notification/notification_templates/DefaultNotificationTemplates.py:29
 msgid "policy_notification.sms_on_periodic_payment_confirmation"
@@ -411,3 +414,32 @@ msgstr "Administrateur de schéma"
 msgid "Task Triage"
 msgstr "Triage des tâches"
 
+
+msgid "payement.sms_on_approved"
+msgstr "La police de l’assuré %(InsureeUuid)s a été activée après le paiement de %(Amount)s le %(Date)s. Réf. openIMIS : %(PurchaseRef)s — Réf. HOLO : %(PaymentRef)s."
+
+msgid "payement.sms_on_rejected"
+msgstr "Le paiement pour la police de l’assuré %(InsureeUuid)s a échoué en raison de : %(RejectionReason)s."
+
+msgid "payement.sms_on_cancel"
+msgstr "Le paiement pour la police de l’assuré %(InsureeUuid)s a été annulé."
+
+msgid "payement.wrong_amount"
+msgstr "Le paiement de la police de l’assuré %(InsureeUuid)s a été effectué, mais le montant ne correspond pas. La police n’a donc pas été activée. Raison : %(RejectionReason)s."
+
+
+
+msgid "claim_notification.sms_on_submitted"
+msgstr "Une préauthorisation %(code)s a été soumise et demande votre validation."
+
+msgid "claim_notification.sms_on_pending"
+msgstr "Rappel : la préauthorisation %(code)s est toujours en attente de validation."
+
+msgid "claim_notification.sms_on_approved"
+msgstr "La préauthorisation %(code)s a été approuvée."
+
+msgid "claim_notification.sms_on_rejected"
+msgstr "La préauthorisation %(code)s a été refusée."
+
+msgid "claim_notification.on_admin_validation"
+msgstr "La préauthorisation %(code)s a été validée par l'administrateur FOSA".
