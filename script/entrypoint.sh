@@ -17,6 +17,7 @@ cp script/DSTU2fhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resourc
 cp script/R4Bfhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/R4B/fhirtypes.py
 cp script/STU3fhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/STU3/fhirtypes.py
 cd /openimis-be/openIMIS/
+python manage.py compilemessages -x zh_Hans
 export MODE=DEV
 show_help() {
   echo """
