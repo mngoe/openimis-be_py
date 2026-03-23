@@ -431,12 +431,12 @@ SCHEDULER_JOBS = [
         "args": ["cron"],
         "kwargs": {"id": "openimis_renewal_batch", "hour": 8, "minute": 30, "replace_existing": True},
     },
-    {
-        "method": "policy_notification.tasks.send_notification_messages",
-        "args": ["cron"],
-        "kwargs": {"id": "openimis_notification_batch", 'day_of_week': '*',
-                   "hour": "8-20", "minute": "0", "replace_existing": True},
-    },
+    # {
+    #     "method": "policy_notification.tasks.send_notification_messages",
+    #     "args": ["cron"],
+    #     "kwargs": {"id": "openimis_notification_batch", 'day_of_week': '*',
+    #                "hour": "8-20", "minute": "*/5", "replace_existing": True},
+    # },
     {
         "method": "claim.tasks.process_claim_task",
         "args": ["cron"],
@@ -537,8 +537,8 @@ EMAIL_HOST = os.environ.get("EMAIL_HOST", "localhost")
 EMAIL_PORT = os.environ.get("EMAIL_PORT", "1025")
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
-EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", False)
-EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", False)
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "False").lower() == "true"
+EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "False").lower() == "true"
 
 # By default, the maximum upload size is 2.5Mb, which is a bit short for base64 picture upload
 DATA_UPLOAD_MAX_MEMORY_SIZE = int(os.environ.get('DATA_UPLOAD_MAX_MEMORY_SIZE', 10 * 1024 * 1024))
