@@ -6,6 +6,7 @@ import logging
 import os
 
 from dotenv import load_dotenv
+from sentry_sdk.scrubber import (DEFAULT_DENYLIST, EventScrubber)
 from .openimisapps import openimis_apps, get_locale_folders
 from datetime import timedelta
 
@@ -90,6 +91,70 @@ SENTRY_DSN = os.environ.get("SENTRY_DSN", None)
 SENTRY_SAMPLE_RATE = os.environ.get("SENTRY_SAMPLE_RATE", "0.2")
 IS_SENTRY_ENABLED = False
 
+
+SENSITIVE_KEYS = {
+    "password", "passwd", "pwd",
+    "token", "access_token", "refresh_token",
+    "authorization", "auth",
+    "api_key", "apikey",
+    "secret",
+    "host", "port", "user", "username",
+    "dbname"
+}
+
+denylist = DEFAULT_DENYLIST + ["dsn", "conn_params"]
+denylist += list(SENSITIVE_KEYS)
+
+def sanitize(value):
+    """Nettoyage récursif"""
+    if isinstance(value, dict):
+        clean = {}
+        for k, v in value.items():
+            if any(s in k.lower() for s in SENSITIVE_KEYS):
+                clean[k] = "***"
+            else:
+                clean[k] = sanitize(v)
+        return clean
+
+    elif isinstance(value, list):
+        return [sanitize(v) for v in value]
+
+    elif isinstance(value, str):
+        # Nettoyage des messages texte (très important pour psycopg2)
+        value = value.replace("password", "***")
+        value = value.replace("user", "***")
+        value = value.replace("host", "***")
+        value = value.replace("port", "***")
+        return value
+
+    return value
+
+
+def before_send(event, hint):
+    try:
+        # Nettoyage global (clé principale)
+        event = sanitize(event)
+
+        # Cas spécifique : exception message
+        if "exception" in event:
+            for exc in event["exception"].get("values", []):
+                if "value" in exc:
+                    exc["value"] = sanitize(exc["value"])
+
+                # stacktrace
+                if "stacktrace" in exc:
+                    for frame in exc["stacktrace"].get("frames", []):
+                        if "vars" in frame:
+                            frame["vars"] = sanitize(frame["vars"])
+
+        return event
+
+    except Exception:
+        # En cas de bug dans le scrubber, ne jamais bloquer Sentry
+        return event
+
+
+
 if SENTRY_DSN is not None:
     try:
         import sentry_sdk
@@ -110,6 +175,8 @@ if SENTRY_DSN is not None:
             # SHA as release, however you may want to set
             # something more human-readable.
             # release="myapp@1.0.0",
+            event_scrubber=EventScrubber(denylist=denylist),
+            before_send=before_send,
         )
         IS_SENTRY_ENABLED = True
     except ModuleNotFoundError:
