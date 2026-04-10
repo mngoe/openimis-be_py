@@ -119,14 +119,6 @@ def sanitize(value):
     elif isinstance(value, list):
         return [sanitize(v) for v in value]
 
-    elif isinstance(value, str):
-        # Nettoyage des messages texte (très important pour psycopg2)
-        value = value.replace("password", "***")
-        value = value.replace("user", "***")
-        value = value.replace("host", "***")
-        value = value.replace("port", "***")
-        return value
-
     return value
 
 
