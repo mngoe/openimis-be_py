@@ -170,7 +170,7 @@
 				},
         {
           "name": "cache_manager",
-          "pip": "git+https://github.com/Y-Note-SAS/openimis-be-cache-manager_py.git@master#egg=openimis-be-cache-manager"
+          "pip": "git+https://github.com/Y-Note-SAS/openimis-be-cache-manager_py.git@test-csu#egg=openimis-be-cache-manager"
         }
 		]
   }
