@@ -24,7 +24,9 @@ COPY requirements.txt /.
 RUN pip install -r requirements.txt
 
 ARG SENTRY_DSN
+COPY sentry-requirements.txt /.
 RUN test -z "$SENTRY_DSN" || pip install -r sentry-requirements.txt && :
+RUN pip install -r sentry-requirements.txt
 
 RUN mkdir /openimis-be
 COPY . /openimis-be

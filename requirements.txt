@@ -4,7 +4,7 @@ celery>=4.4
 channels~=3.0.3
 channels-redis==3.2.0
 channels-rabbitmq==2.0.0
-django~=4.2
+django~=4.2.22
 djangorestframework
 django-cryptography==1.1
 django-filter~=22.1
@@ -32,7 +32,7 @@ waitress
 wheel
 whitenoise
 django-health-check
-requests~=2.31.0
+requests~=2.32.4
 apscheduler==3.10.1
 # As from v0.4, Django-apscheduler has a migration that is incompatible with SQL Server
 # (autoincrement int => bigint) so we are using our own fork with a squashed migration
@@ -53,3 +53,5 @@ pillow>=10.2.0 # not directly required, pinned by Snyk to avoid a vulnerability
 
 django-redis==5.4.0
 django-opensearch-dsl==0.5.1
+
+openpyxl>=3.0.10
