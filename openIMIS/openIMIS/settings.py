@@ -4,8 +4,10 @@ Django settings for openIMIS project.
 import json
 import logging
 import os
+import sys
 
 from dotenv import load_dotenv
+from sentry_sdk.scrubber import (DEFAULT_DENYLIST, EventScrubber)
 from .openimisapps import openimis_apps, get_locale_folders
 from datetime import timedelta
 
@@ -78,6 +80,61 @@ SENTRY_DSN = os.environ.get("SENTRY_DSN", None)
 SENTRY_SAMPLE_RATE = os.environ.get("SENTRY_SAMPLE_RATE", "0.2")
 IS_SENTRY_ENABLED = False
 
+
+SENSITIVE_KEYS = {
+    "password", "passwd", "pwd",
+    "token", "access_token", "refresh_token",
+    "authorization", "auth",
+    "api_key", "apikey",
+    "secret",
+    "host", "port", "user", "username",
+    "dbname"
+}
+
+denylist = DEFAULT_DENYLIST + ["dsn", "conn_params"]
+denylist += list(SENSITIVE_KEYS)
+
+def sanitize(value):
+    """Nettoyage récursif"""
+    if isinstance(value, dict):
+        clean = {}
+        for k, v in value.items():
+            if any(s in k.lower() for s in SENSITIVE_KEYS):
+                clean[k] = "***"
+            else:
+                clean[k] = sanitize(v)
+        return clean
+
+    elif isinstance(value, list):
+        return [sanitize(v) for v in value]
+
+    return value
+
+
+def before_send(event, hint):
+    try:
+        # Nettoyage global (clé principale)
+        event = sanitize(event)
+
+        # Cas spécifique : exception message
+        if "exception" in event:
+            for exc in event["exception"].get("values", []):
+                if "value" in exc:
+                    exc["value"] = sanitize(exc["value"])
+
+                # stacktrace
+                if "stacktrace" in exc:
+                    for frame in exc["stacktrace"].get("frames", []):
+                        if "vars" in frame:
+                            frame["vars"] = sanitize(frame["vars"])
+
+        return event
+
+    except Exception:
+        # En cas de bug dans le scrubber, ne jamais bloquer Sentry
+        return event
+
+
 if SENTRY_DSN is not None:
     try:
         import sentry_sdk
@@ -98,6 +155,8 @@ if SENTRY_DSN is not None:
             # SHA as release, however you may want to set
             # something more human-readable.
             # release="myapp@1.0.0",
+            event_scrubber=EventScrubber(denylist=denylist),
+            before_send=before_send,
         )
         IS_SENTRY_ENABLED = True
     except ModuleNotFoundError:
@@ -174,6 +233,7 @@ INSTALLED_APPS = [
 ]
 INSTALLED_APPS += OPENIMIS_APPS
 INSTALLED_APPS += ["apscheduler_runner", "signal_binding"]  # Signal binding should be last installed module
+IS_TESTING =  'test' in sys.argv
 
 AUTHENTICATION_BACKENDS = []
 
@@ -342,6 +402,7 @@ if DB_DEFAULT == 'PSQL' and os.environ.get("PSQL_DB_ENGINE", "False") != "False"
         "PASSWORD": os.environ.get("PSQL_DB_PASSWORD", os.environ.get("DB_PASSWORD")),
         "HOST": os.environ.get("PSQL_DB_HOST", 'postgres'),
         "PORT": os.environ.get("PSQL_DB_PORT", "5432"),
+        "CONN_MAX_AGE": 0,
         "OPTIONS": PSQL_DATABASE_OPTIONS,
         'TEST': {
             'NAME': os.environ.get("DB_TEST_NAME", "test_" + os.environ.get("MSSQL_DB_NAME", "imis")),
@@ -400,6 +461,9 @@ DATABASE_ROUTERS = ["openIMIS.routers.DashboardDatabaseRouter"]
 
 
 
+
+CACHE_OBJECT_DEFAULT =  (os.environ.get("CACHE_OBJECT_DEFAULT", '').lower() == 'true')
+CACHE_OBJECT_TTL =  int(os.environ.get("CACHE_OBJECT_TTL", 3600))
 
 # Celery message broker configuration for RabbitMQ. One can also use Redis on AWS SQS
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "amqp://rabitmq")
@@ -480,7 +544,7 @@ SCHEDULER_JOBS = [
     {
         "method": "policy.tasks.get_policies_for_renewal",
         "args": ["cron"],
-        "kwargs": {"id": "openimis_renewal_batch", "hour": 8, "minute": 30, "replace_existing": True},
+        "kwargs": {"id": "openimis_renewal_batch", "hour": 2, "minute": 5, "replace_existing": True},
     },
     # {
     #     "method": "policy_notification.tasks.send_notification_messages",

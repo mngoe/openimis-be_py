@@ -2,8 +2,9 @@
 set -e
 
 cd /openimis-be/
-# python modules-requirements.py openimis.json > modules-requirements.txt
-# pip install -r modules-requirements.txt
+python modules-requirements.py openimis.json > modules-requirements.txt
+pip uninstall -r modules-requirements.txt -y
+pip install -r modules-requirements.txt
 
 #pip install -e /openimis-be-core_py
 #pip install -e /openimis-be-program_py
@@ -25,6 +26,7 @@ pip install pydantic==1.10.0
 pip install gunicorn
 pip install django-debug-toolbar
 pip install -r requirements.txt
+pip install -r sentry-requirements.txt
 pip install openpyxl
 cd /openimis-be/openIMIS/
 #python server.py 0.0.0.0:8000
@@ -90,6 +92,7 @@ case "$1" in
     SERVER_WORKERS="${WSGI_WORKERS:-4}"
     # gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION"
     gunicorn -c gunicorn.conf.py openIMIS.wsgi
+    # gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION" --timeout 300
     #gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION" --error-logfile /error.log --access-logfile /access.log --timeout 240
   ;;
   "worker" )
