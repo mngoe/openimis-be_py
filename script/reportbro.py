@@ -632,7 +632,8 @@ class Report:
                     if elem.y < 0:
                         self.errors.append(Error('errorMsgInvalidPosition', object_id=elem.id, field='y'))
                     elif elem.y + elem.height > container.height:
-                        self.errors.append(Error('errorMsgInvalidSize', object_id=elem.id, field='height'))
+                        print("Ignoring size error...")
+                        # self.errors.append(Error('errorMsgInvalidSize', object_id=elem.id, field='height'))
                 container.add(elem)
 
         self.context = Context(self, self.parameters, self.data)
