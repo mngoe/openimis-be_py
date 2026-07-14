@@ -64,6 +64,10 @@ INSTALLED_APPS = [
     "drf_spectacular",  # Swagger UI for FHIR API
     "axes",
     "django_opensearch_dsl",
+    "mptt",
+    "hordak",
+    "apscheduler_runner",
+    "signal_binding"
 ]
 INSTALLED_APPS += OPENIMIS_APPS
 INSTALLED_APPS += ["apscheduler_runner", "signal_binding", "receiver_binding"]  # Signal binding should be last installed module
@@ -125,7 +129,6 @@ MIDDLEWARE = [
     "csp.middleware.CSPMiddleware",
 ]
 
-INSTALLED_APPS += ["mptt", "hordak", "apscheduler_runner", "signal_binding"]
 DEFAULT_CURRENCY = "EUR"
 CURRENCIES = ["XAF", "XOF", "USD"] #Add other currencies here
 HORDAK_DECIMAL_PLACES = 2
