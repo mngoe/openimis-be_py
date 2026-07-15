@@ -129,11 +129,6 @@ MIDDLEWARE = [
     "csp.middleware.CSPMiddleware",
 ]
 
-DEFAULT_CURRENCY = "EUR"
-CURRENCIES = ["XAF", "XOF", "USD"] #Add other currencies here
-HORDAK_DECIMAL_PLACES = 2
-HORDAK_MAX_DIGITS = 13 #
-
 if DEBUG:
     # Attach profiler middleware
     MIDDLEWARE.append(
