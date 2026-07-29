@@ -66,7 +66,6 @@ INSTALLED_APPS = [
     "django_opensearch_dsl",
     "mptt",
     "hordak",
-    "apscheduler_runner",
     "signal_binding"
 ]
 INSTALLED_APPS += OPENIMIS_APPS
