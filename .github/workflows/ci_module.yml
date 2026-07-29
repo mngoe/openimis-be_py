@@ -240,6 +240,11 @@ jobs:
           python -V
           #export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^openimis/openimis-be-\(.*\)_py$#\1#')"
           export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^\(.*\)/openimis-be-\(.*\)_py$#\2#')"
+          python -c "
+          import hordak, os
+          m=os.path.join(os.path.dirname(hordak.__file__), 'migrations')
+          print(sorted([f for f in os.listdir(m) if f.endswith('.py')])[-10:])
+          "
           python manage.py test --keepdb $MODULE_NAME
         env:
           SECRET_KEY: secret
