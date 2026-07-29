@@ -65,8 +65,7 @@ INSTALLED_APPS = [
     "axes",
     "django_opensearch_dsl",
     "mptt",
-    "hordak",
-    "signal_binding"
+    "hordak"
 ]
 INSTALLED_APPS += OPENIMIS_APPS
 INSTALLED_APPS += ["apscheduler_runner", "signal_binding", "receiver_binding"]  # Signal binding should be last installed module
