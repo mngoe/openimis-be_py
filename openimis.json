@@ -171,6 +171,10 @@
         {
           "name": "cache_manager",
           "pip": "git+https://github.com/Y-Note-SAS/openimis-be-cache-manager_py.git@test-csu#egg=openimis-be-cache-manager"
+        },
+		{
+          "name": "medical_controller",
+          "pip": "git+https://github.com/Y-Note-SAS/openimis-be-medical_controller_py.git@feature-37552#egg=openimis-be-medical_controller"
         }
 		]
   }
