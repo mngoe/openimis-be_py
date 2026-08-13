@@ -100,7 +100,7 @@ case "$1" in
     SERVER_WORKERS="${WSGI_WORKERS:-4}"
     # gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION"
     #gunicorn -c gunicorn.conf.report.py openIMIS.wsgi
-    gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION" --timeout 300
+    gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION" --timeout 600
     #gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION" --error-logfile /error.log --access-logfile /access.log --timeout 240
   ;;
   "worker" )
