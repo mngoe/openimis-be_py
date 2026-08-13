@@ -174,7 +174,7 @@
         },
 		{
           "name": "medical_controller",
-          "pip": "git+https://github.com/Y-Note-SAS/openimis-be-medical_controller_py.git@feature-37552#egg=openimis-be-medical_controller"
+          "pip": "git+https://github.com/Y-Note-SAS/openimis-be-medical_controller_py.git@test-csu#egg=openimis-be-medical_controller"
         }
 		]
   }
