@@ -171,6 +171,10 @@
 				{
 					"name": "idps",
 					"pip": "git+https://github.com/mngoe/openimis-be-idps_py.git@develop-idps#egg=openimis-be-idps"
-				}    
+				},
+				{
+					"name": "medical_controller",
+					"pip": "git+https://github.com/Y-Note-SAS/openimis-be-medical_controller_py.git@main-csu#egg=openimis-be-medical_controller"
+				}
 		]
   }
