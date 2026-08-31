@@ -311,3 +311,23 @@ msgstr "Schema Admin"
 
 msgid "Task Triage"
 msgstr "Task Triage"
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:18
+msgid "policy_notification.sms_on_activation"
+msgstr "AMG: Coverage active. Use code %(InsuranceID)s to access care "
+"at approved hospitals. Thank you. Info: 7332135"
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:26
+msgid "policy_notification.sms_before_expiry"
+msgstr "AMG: Unpaid fee %(AmountToBePaid)s kmf (code %(InsuranceID)s). "
+"Pay to stay covered. MVola #4441514010318*%(AmountToBePaid)s*%(InsuranceID)s#. Info: 7332135"
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:30
+msgid "policy_notification.sms_on_expiration"
+msgstr "AMG: Coverage closed (unpaid fee). Pay %(AmountToBePaid)s kmf (code %(InsuranceID)s) "
+"via MVola #4441514010318*%(AmountToBePaid)s*%(InsuranceID)s#. Info: 7332135"
+
+#: policy_notification/notification_templates/DefaultNotificationTemplates.py:17
+msgid "policy_notification.sms_request_payment_for_activation_beneficiary"
+msgstr "AMG: Pay %(AmountToBePaid)s kmf (code %(InsuranceID)s) to activate coverage. "
+"MVola #4441514010318*%(AmountToBePaid)s*%(InsuranceID)s#. Info: 7332135"
