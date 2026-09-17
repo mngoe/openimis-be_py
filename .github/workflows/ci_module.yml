@@ -191,7 +191,7 @@ jobs:
           if [ ${GITHUB_REF##*/} = "main" ]; then export DBBRANCH="main"; else export DBBRANCH="develop"; fi
           echo "Branch ${GITHUB_REF##*/}, usign ${DBBRANCH} branch for database"
           git clone --depth=1 --branch=$DBBRANCH https://github.com/openimis/database_ms_sqlserver.git ./sql_mssql
-          cd sql_mssql/ && bash concatenate_files.sh && cd ..
+          cd sql_mssql/ && bash script/concatenate_files.sh && cd ..
 
           curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
           curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list
