@@ -206,6 +206,8 @@ jobs:
           /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -Q "DROP DATABASE IF EXISTS $DB_NAME_TEST"
           /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -Q "CREATE DATABASE $DB_NAME_TEST"
           /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -d $DB_NAME_TEST -i ./sql_mssql/output/fullDemoDatabase.sql | grep . | uniq -c
+          /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -d $DB_NAME_TEST -Q "SELECT COUNT(*) FROM tblLanguages"
+          /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -d $DB_NAME -Q "SELECT COUNT(*) FROM tblLanguages"
 
         env:
           DB_HOST: localhost
