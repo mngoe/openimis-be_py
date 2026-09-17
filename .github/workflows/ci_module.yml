@@ -308,6 +308,8 @@ jobs:
           echo 'set search_path to public' >> ~/.psqlrc
           PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -c "DROP DATABASE IF EXISTS \"$DB_NAME_TEST\";"
           PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -c "CREATE DATABASE \"$DB_NAME_TEST\";"
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -c "DROP DATABASE IF EXISTS \"$DB_NAME\";"
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -c "CREATE DATABASE \"$DB_NAME\";"
           
           PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -f  ./sql_psql/database\ scripts/00_dump.sql | grep . | uniq -c
           PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -f  ./sql_psql/database\ scripts/02_aux_functions.sql | grep . | uniq -c
@@ -315,6 +317,13 @@ jobs:
           PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -f  ./sql_psql/database\ scripts/04_functions.sql | grep . | uniq -c
           PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -f  ./sql_psql/database\ scripts/05_stored_procs.sql | grep . | uniq -c
           PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -f  ./sql_psql/database\ scripts/demo_db.sql | grep . | uniq -c
+
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/00_dump.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/02_aux_functions.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/03_views.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/04_functions.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/05_stored_procs.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/demo_db.sql | grep . | uniq -c
 
         env:
           DB_HOST: localhost
