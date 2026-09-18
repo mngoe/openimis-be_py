@@ -382,6 +382,7 @@ jobs:
           python -V
           # This has to exit 0, or report is not generated
           python manage.py showmigrations
+          echo $MODULE_NAME
           python -m coverage run --source=$MODULE_NAME --omit=*/migrations/* ./manage.py test --debug-mode --verbosity=3 --keepdb $MODULE_NAME
         env:
           SECRET_KEY: secret
