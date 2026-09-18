@@ -338,8 +338,11 @@ jobs:
         if: success() || failure()
         run: |
           python -V
-          # This has to exit 0, or report is not generated 
-          #python -m coverage run --source=$MODULE_NAME --omit=*/migrations/* ./manage.py test --keepdb $MODULE_NAME
+          # This has to exit 0, or report is not generated
+          python manage.py showmigrations
+          grep -R "HFCode" ./*/migrations
+          grep -R "AlterField" ./*/migrations
+          python -m coverage run --source=$MODULE_NAME --omit=*/migrations/* ./manage.py test --keepdb $MODULE_NAME
         env:
           SECRET_KEY: secret
           MODE: DEV
