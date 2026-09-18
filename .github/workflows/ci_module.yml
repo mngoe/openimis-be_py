@@ -324,6 +324,48 @@ jobs:
           PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/04_functions.sql | grep . | uniq -c
           PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/05_stored_procs.sql | grep . | uniq -c
           PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/demo_db.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -c 'DROP VIEW IF EXISTS "public"."uvwServiceExpenditures";'
+          cat > /tmp/uvwServiceExpenditures.sql <<'EOF'
+          CREATE OR REPLACE VIEW "public"."uvwServiceExpenditures" AS
+          SELECT SUM("CS"."RemuneratedAmount")"ServiceExpenditure",MONTH(coalesce("C"."DateTo","C"."DateFrom"))MonthTime,QUARTER(coalesce("C"."DateTo","C"."DateFrom"))QuarterTime,YEAR(coalesce("C"."DateTo","C"."DateFrom"))YearTime,
+          "R"."RegionName" "Region","HFD"."DistrictName","PR"."ProductCode","PR"."ProductName",DATEDIFF_YEAR("I"."DOB",coalesce("C"."DateTo","C"."DateFrom"))"Age","I"."Gender",
+          "S"."ServType","S"."ServCode","S"."ServName",CASE WHEN DATEDIFF_DAY("C"."DateFrom", "C"."DateTo") > 0 THEN N'I' ELSE N'O' END "ServCareType",
+          "HF"."HFLevel","HF"."HFCode","HF"."HFName","C"."VisitType", "ICD"."ICDCode", "ICD"."ICDName",
+          "DIns"."DistrictName" "IDistrictName" , "W"."WardName", "V"."VillageName", "HFD"."DistrictName" "HFDistrict", "HFR"."RegionName" "HFRegion", "HFR"."RegionName" "ProdRegion"
+
+          FROM "tblClaimServices" "CS" INNER JOIN "tblClaim" "C" ON "CS"."ClaimID" = "C"."ClaimID"
+          INNER JOIN "tblProduct" "PR" ON "CS"."ProdID" = "PR"."ProdID"
+          INNER JOIN "tblInsuree" "I" ON "C"."InsureeID" = "I"."InsureeID"
+          INNER JOIN "tblFamilies" "F" ON "I"."FamilyID" = "F"."FamilyID"
+          INNER JOIN "tblVillages" "V" ON "V"."VillageId" = "F"."LocationId"
+          INNER JOIN "tblWards" "W" ON "W"."WardId" = "V"."WardId"
+          INNER JOIN "tblDistricts" "DIns" ON "DIns"."DistrictId" = "W"."DistrictId"
+          INNER JOIN "tblServices" "S" ON "CS"."ServiceID" = "S"."ServiceID"
+          INNER JOIN "tblHF" "HF" ON "C"."HFID" = "HF"."HfID"
+          INNER JOIN "tblICDCodes" "ICD" ON "C"."ICDID" = "ICD"."ICDID"
+          INNER JOIN "tblDistricts" "HFD" ON "HF"."LocationId" = "HFD"."DistrictId"
+          INNER JOIN "tblRegions" "R" ON "R"."RegionId" = "DIns"."Region"
+          INNER JOIN "tblRegions" "HFR" ON "HFR"."RegionId" = "HFD"."Region"
+          
+          WHERE "CS"."ValidityTo" IS NULL
+          AND "C"."ValidityTo" IS NULL
+          AND "PR"."ValidityTo" IS NULL
+          AND "I"."ValidityTo" IS NULL
+          AND "S"."ValidityTo" IS NULL
+          AND "HF"."ValidityTo" IS NULL
+          AND "HFD"."ValidityTo" IS NULL
+
+          AND coalesce("CS"."PriceValuated",0) > 0
+          --Also add a criteria if they want the batch id as well
+
+          GROUP BY MONTH(coalesce("C"."DateTo","C"."DateFrom")),QUARTER(coalesce("C"."DateTo","C"."DateFrom")),YEAR(coalesce("C"."DateTo","C"."DateFrom")),
+          "R"."RegionName", "PR"."ProductCode","PR"."ProductName",DATEDIFF_YEAR("I"."DOB",coalesce("C"."DateTo","C"."DateFrom")),"I"."Gender",
+          "S"."ServType","S"."ServCode","S"."ServName",DATEDIFF_DAY("C"."DateFrom", "C"."DateTo"),
+          "HF"."HFLevel","HF"."HFCode","HF"."HFName","C"."VisitType", "ICD"."ICDCode", "ICD"."ICDName",
+          "DIns"."DistrictName" , "W"."WardName", "V"."VillageName", "HFD"."DistrictName", "HFR"."RegionName"
+          ;
+          EOF
+
 
         env:
           DB_HOST: localhost
