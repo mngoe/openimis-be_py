@@ -207,6 +207,7 @@ jobs:
           /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -d $DB_NAME_TEST -i ./sql_mssql/output/fullDemoDatabase.sql | grep . | uniq -c
           echo "Populating database..."
           /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -d $DB_NAME -i ./sql_mssql/output/fullDemoDatabase.sql | grep . | uniq -c
+          cat ./sql_mssql/output/fullDemoDatabase.sql
 
         env:
           DB_HOST: localhost
