@@ -395,6 +395,7 @@ jobs:
           DB_USER: postgres
           DB_PASSWORD: GitHub999
           #DEV_SERVER: true
+          NO_DATABASE: true
           SITE_ROOT: api
           CI_EXCLUDED_MODULE: ${{ vars.CI_EXCLUDED_MODULE }}
       - name: Django full PSQL
