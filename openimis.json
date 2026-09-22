@@ -90,7 +90,7 @@
         },
         {
             "name": "invoice",
-            "pip": "git+https://github.com/openimis/openimis-be-invoice_py.git@develop#egg=openimis-be-invoice"
+            "pip": "git+https://github.com/openimis/openimis-be-invoice_py.git@feature-37884#egg=openimis-be-invoice"
         },
         {
             "name": "calcrule_contribution_legacy",
