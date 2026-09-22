@@ -33,59 +33,21 @@ on:
         required: false
         type: string
 
-      branchName:
-        required: false
-        type: string
-        default: 'test-csu'
-
 jobs:
   build_backend:
     name: Build Backend
     runs-on: ubuntu-24.04
     steps:
-      - name: Set up Python 3.11
+      - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.10"
 
       - name: Pull openIMIS Backend
         run: |
-          # ------------------------------------------------------------------
-          # Determine which branch of openimis-be_py we should use
-          # ------------------------------------------------------------------
-          if [[ "${{ github.event_name }}" == "pull_request" || "${{ github.event_name }}" == "pull_request_target" ]]; then
-            # For PRs → always use the base branch (where the PR is merged into)
-            TARGET_BRANCH="${{ github.event.pull_request.base.ref }}"
-            echo "Event is a Pull Request → using base branch: $TARGET_BRANCH"
-          else
-            # For push (direct commit on a branch), workflow_dispatch, etc.
-            # → use the CURRENT branch name (e.g. feature/xyz, hotfix/abc, main, develop…)
-            CURRENT_BRANCH="${GITHUB_REF#refs/heads/}"
-            TARGET_BRANCH="$CURRENT_BRANCH"
-            echo "Not a PR → using current branch: $TARGET_BRANCH"
-          fi
+          rm ./openimis -rf
+          git clone --depth=1 --branch=test-csu https://github.com/mngoe/openimis-be_py.git ./openimis
 
-          # Final fallback only if something went terribly wrong
-          if [[ -z "$TARGET_BRANCH" ]]; then
-            echo "WARNING: TARGET_BRANCH is empty! Falling back to 'develop'"
-            TARGET_BRANCH="develop"
-          fi
-
-          echo "TARGET_BRANCH=$TARGET_BRANCH" >> $GITHUB_ENV
-          echo "Cloning openimis-be_py from branch: $TARGET_BRANCH"
-
-          # Clone with the determined branch
-          rm -rf ./openimis
-          git clone --depth=1 --branch=test-csu https://github.com/mngoe/openimis-be_py.git ./openimis || {
-            echo "Failed to clone branch '$TARGET_BRANCH' – falling back to 'develop'"
-            git clone --depth=1 --branch=develop https://github.com/openimis/openimis-be_py.git ./openimis
-            echo "Cloned fallback branch: develop"
-          }
-
-          # Verify what we actually got
-          cd ./openimis
-          CLONED_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          echo "Actually cloned branch: $CLONED_BRANCH"
       - name: Copy Current branch
         uses: actions/checkout@v4
         with:
@@ -109,21 +71,28 @@ jobs:
           sudo apt-get update
           sudo apt-get install jq
 
-          export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^openimis/openimis-be-\(.*\)_py$#\1#')"
-          
+          #export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^openimis/openimis-be-\(.*\)_py$#\1#')"
+          # pour gérer à la fois les dépôts openimis et les forks
+          export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^\(.*\)/openimis-be-\(.*\)_py$#\1#')"
           echo "MODULE_NAME=$MODULE_NAME" >> $GITHUB_ENV
+          export MODULES=$(jq -r '(.modules[].name)' ./openimis.json | xargs)
+          # Remove some module from MODULES
+          MODULES=$(echo "$MODULES" | sed -E "s/\b$(echo "${CI_EXCLUDED_MODULE// /\\b|\\b}")\b/ /g" | xargs)
+          echo "MODULES=$MODULES" >> $GITHUB_ENV
           
           # Add or replace MODULE_NAME module in openimis.json (local version)
-          #echo $(jq --arg name "$MODULE_NAME" 'if [.modules[].name  ==  ($name)]| max then (.modules[]  | select(.name == ($name)) | .pip)|="-e ../../current-module" else .modules |= .+ [{name:($name), pip:"../../current-module"}] end' openimis.json)  > openimis.json
+          # echo $(jq --arg name "$MODULE_NAME" 'if [.modules[].name  ==  ($name)]| max then (.modules[]  | select(.name == ($name)) | .pip)|="-e ../current-module" else .modules |= .+ [{name:($name), pip:"../current-module"}] end' openimis.json)  > openimis.json
           cat openimis.json
 
-      - name: Install Python dependencies
-        working-directory: ./openimis/script
+      - name: Install Python dependencies3.10
+        working-directory: ./openimis
         run: |
           python -m pip install --upgrade pip
-          pip install -r ../requirements.txt
-          python modules-requirements.py ../openimis.json > modules-requirements.txt
+          pip install -r requirements.txt
+          pip install -r sentry-requirements.txt
+          python modules-requirements.py openimis.json > modules-requirements.txt
           cat modules-requirements.txt
+          pip uninstall -r modules-requirements.txt -y
           pip install --no-cache-dir -r modules-requirements.txt
 
       - name: Environment info
@@ -152,34 +121,144 @@ jobs:
         with:
           name: code-artifacts
           path: openimis.tar.gz
-  ci_module_psql_test_module_only:
-    name: Run Module Tests (PSQL)
+  # ci_module_mssql_tests:
+  #   name: Run All Tests (MSSQL)
+  #   runs-on: ubuntu-24.04
+  #   needs: build_backend
+  #   services:
+  #     mssql:
+  #       image: mcr.microsoft.com/mssql/server:2017-latest
+  #       env:
+  #         ACCEPT_EULA: Y
+  #         SA_PASSWORD: GitHub999
+  #       ports:
+  #         - 1433:1433
+  #       # this health-cmd needed because the mssql container does not provide a health check
+  #       options: >-
+  #         --health-interval=10s
+  #         --health-timeout=5s
+  #         --health-start-period=10s
+  #         --health-retries=10
+  #         --health-cmd="/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${SA_PASSWORD} -Q 'SELECT 1' || exit 1"
+  #   steps:
+  #     - name: Set up Python 3.10
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: "3.10"
+
+  #     - name: Download site-packages artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: site-packages
+  #         path: /tmp/
+
+
+  #     - name: Locate site-packages
+  #       run: |
+  #         SITE_PACKAGES=$(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
+  #         echo "SITE_PACKAGES=$SITE_PACKAGES" >> $GITHUB_ENV
+  #         #export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^openimis/openimis-be-\(.*\)_py$#\1#')"
+  #         # pour gérer à la fois les dépôts openimis et les forks
+  #         export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^\(.*\)/openimis-be-\(.*\)_py$#\1#')"
+  #         echo "MODULE_NAME=$MODULE_NAME" >> $GITHUB_ENV
+
+  #         # Extraire le nom du module depuis le dépôt (fork ou officiel)
+  #         MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^\(.*\)/openimis-be-\(.*\)_py$#\2#')"
+  #         echo "MODULE_NAME=$MODULE_NAME" >> $GITHUB_ENV
+
+  #         # Extraire le nom de la branche (sans refs/heads/)
+  #         BRANCH_NAME="${GITHUB_REF##*/}"
+  #         echo "BRANCH_NAME=$BRANCH_NAME"
+
+  #         # Impression dans les logs pour débogage
+  #         echo "Detected module: $MODULE_NAME"
+  #         echo "Detected branch: $BRANCH_NAME"
+
+  #     - name: Download site-packages artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: code-artifacts
+  #         path: /tmp/
+
+  #     - name: Decompress artifacts
+  #       run: |
+  #         sudo tar -xzf /tmp/site-packages.tar.gz -C ${{ env.SITE_PACKAGES }}
+  #         sudo tar -xzf /tmp/openimis.tar.gz -C .
+  #     - name: Initialize MSSQL
+  #       run: |
+  #         export DB_NAME_TEST="test_$DB_NAME"
+          
+  #         if [ ${GITHUB_REF##*/} = "main" ]; then export DBBRANCH="main"; else export DBBRANCH="develop"; fi
+  #         echo "Branch ${GITHUB_REF##*/}, usign ${DBBRANCH} branch for database"
+  #         git clone --depth=1 --branch=$DBBRANCH https://github.com/openimis/database_ms_sqlserver.git ./sql_mssql
+  #         cd sql_mssql/ && bash script/concatenate_files.sh && cd ..
+
+  #         curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+  #         curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list
+  #         sudo apt-get update
+  #         sudo apt-get install mssql-tools unixodbc-dev
+          
+  #         #Main db has to exists for tests to run correctly, psql container creates empty main db by default
+  #         /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -Q "DROP DATABASE IF EXISTS $DB_NAME"
+  #         /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -Q "CREATE DATABASE $DB_NAME"
+
+  #         /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -Q "DROP DATABASE IF EXISTS $DB_NAME_TEST"
+  #         /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -Q "CREATE DATABASE $DB_NAME_TEST"
+  #         /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -d $DB_NAME_TEST -i ./sql_mssql/output/fullDemoDatabase.sql | grep . | uniq -c
+  #         /opt/mssql-tools/bin/sqlcmd -S $DB_HOST -U $DB_USER -P $DB_PASSWORD -d $DB_NAME -i ./sql_mssql/output/fullDemoDatabase.sql | grep . | uniq -c
+
+  #       env:
+  #         DB_HOST: localhost
+  #         DB_PORT: 1433
+  #         DB_NAME: imis
+  #         DB_USER: sa
+  #         DB_PASSWORD: GitHub999
+  #     - name: Cache dependencies
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: ~/.cache/pip
+  #         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+  #           ${{ runner.os }}-pip-
+  #           ${{ runner.os }}-
+  #     - name: Django tests MSSQL
+  #       working-directory: ./openimis/openIMIS
+  #       # Run the tests regardless if previous steps failed (if setup fails the tests should crash instantly)
+  #       if: success() || failure()
+  #       run: |
+  #         python -V
+  #         python manage.py migrate
+  #         python manage.py test --debug-mode --timing --keepdb $MODULE_NAME
+  #         #DJANGO_SETTINGS_MODULE=openIMIS.settings python -Wd -X dev -m coverage run --source=$MODULE_NAME manage.py test --debug-mode --timing --keepdb $MODULE_NAME
+  #       env:
+  #         SECRET_KEY: secret
+  #         MODE: DEV
+  #         DB_ENGINE: mssql
+  #         #DJANGO_SETTINGS_MODULE: hat.settings
+  #         DB_HOST: localhost
+  #         DB_PORT: 1433
+  #         DB_NAME: imis
+  #         DB_USER: sa
+  #         DB_PASSWORD: GitHub999
+  #         PASSWORD_MIN_LENGTH: 8
+  #         #DEV_SERVER: true
+  #         SITE_ROOT: api
+  #         #REMOTE_USER_AUTHENTICATION: False
+  #         CI_EXCLUDED_MODULE: ${{ vars.CI_EXCLUDED_MODULE }}
+  ci_module_psql_test:
+    name: Run All Tests (PSQL)
     runs-on: ubuntu-24.04
     needs: build_backend
     services:
-      opensearch:
-        image: opensearchproject/opensearch:latest
-        ports:
-          - 9200:9200
-        env:
-          discovery.type: single-node
-          cluster.name: my_opensearch_local
-          http.port: 9200
-          plugins.security.ssl.http.enabled: false
-          OPENSEARCH_INITIAL_ADMIN_PASSWORD: B9wc9VrqX7pY
-        options: >-
-          --health-cmd "curl -f -u admin:${OPENSEARCH_INITIAL_ADMIN_PASSWORD} http://localhost:9200/_cluster/health || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
       pgsql:
-        image: ghcr.io/openimis/openimis-pgsql:develop
+        image: postgres
         env:
           DB_HOST: localhost
           DB_PORT: 5432
-          POSTGRES_DB: test_imis
+          POSTGRES_DB: imis
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: YourStrong!Passw0rd
+          POSTGRES_PASSWORD: GitHub999
         ports:
           - 5432:5432
         options: >-
@@ -188,10 +267,10 @@ jobs:
           --health-timeout 5s
           --health-retries 10
     steps:
-      - name: Set up Python 3.11
+      - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.10"
 
       - name: Download site-packages artifact
         uses: actions/download-artifact@v4
@@ -203,6 +282,10 @@ jobs:
         run: |
           SITE_PACKAGES=$(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
           echo "SITE_PACKAGES=$SITE_PACKAGES" >> $GITHUB_ENV
+          #export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^openimis/openimis-be-\(.*\)_py$#\1#')"
+          # pour gérer à la fois les dépôts openimis et les forks
+          export MODULE_NAME="$(echo "$GITHUB_REPOSITORY" | sed 's#^\(.*\)/openimis-be-\(.*\)_py$#\2#')"
+          echo "MODULE_NAME=$MODULE_NAME" >> $GITHUB_ENV
 
       - name: Download site-packages artifact
         uses: actions/download-artifact@v4
@@ -217,150 +300,135 @@ jobs:
       - name: Initialize PSQL
         run: |
           export DB_NAME_TEST="test_$DB_NAME"
+          
           if [ ${GITHUB_REF##*/} = "main" ]; then export DBBRANCH="main"; else export DBBRANCH="develop"; fi
           echo "Branch ${GITHUB_REF##*/}, usign ${DBBRANCH} branch for database"
           git clone  --depth=1 --branch=$DBBRANCH https://github.com/openimis/database_postgresql.git ./sql_psql
-          sudo bash ./sql_psql/install_postgres_json_schema_extension.sh
+          
           echo 'set search_path to public' >> ~/.psqlrc
-          PGPASSWORD=YourStrong!Passw0rd psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -f  ./sql_psql/database\ scripts/json_schema_extension.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -c "DROP DATABASE IF EXISTS \"$DB_NAME_TEST\";"
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -c "CREATE DATABASE \"$DB_NAME_TEST\";"
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -c "DROP DATABASE IF EXISTS \"$DB_NAME\";"
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -c "CREATE DATABASE \"$DB_NAME\";"
+          
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -f  ./sql_psql/database\ scripts/00_dump.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -f  ./sql_psql/database\ scripts/02_aux_functions.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -f  ./sql_psql/database\ scripts/03_views.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -f  ./sql_psql/database\ scripts/04_functions.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -f  ./sql_psql/database\ scripts/05_stored_procs.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -f  ./sql_psql/database\ scripts/demo_db.sql | grep . | uniq -c
+
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/00_dump.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/02_aux_functions.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/03_views.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/04_functions.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/05_stored_procs.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME -f  ./sql_psql/database\ scripts/demo_db.sql | grep . | uniq -c
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -c 'DROP VIEW IF EXISTS "public"."uvwServiceExpenditures";'
+          cat > /tmp/uvwServiceExpenditures.sql <<'EOF'
+          CREATE OR REPLACE VIEW "public"."uvwServiceExpenditures" AS
+          SELECT SUM("CS"."RemuneratedAmount")"ServiceExpenditure",MONTH(coalesce("C"."DateTo","C"."DateFrom"))MonthTime,QUARTER(coalesce("C"."DateTo","C"."DateFrom"))QuarterTime,YEAR(coalesce("C"."DateTo","C"."DateFrom"))YearTime,
+          "R"."RegionName" "Region","HFD"."DistrictName","PR"."ProductCode","PR"."ProductName",DATEDIFF_YEAR("I"."DOB",coalesce("C"."DateTo","C"."DateFrom"))"Age","I"."Gender",
+          "S"."ServType","S"."ServCode","S"."ServName",CASE WHEN DATEDIFF_DAY("C"."DateFrom", "C"."DateTo") > 0 THEN N'I' ELSE N'O' END "ServCareType",
+          "HF"."HFLevel","HF"."HFCode","HF"."HFName","C"."VisitType", "ICD"."ICDCode", "ICD"."ICDName",
+          "DIns"."DistrictName" "IDistrictName" , "W"."WardName", "V"."VillageName", "HFD"."DistrictName" "HFDistrict", "HFR"."RegionName" "HFRegion", "HFR"."RegionName" "ProdRegion"
+
+          FROM "tblClaimServices" "CS" INNER JOIN "tblClaim" "C" ON "CS"."ClaimID" = "C"."ClaimID"
+          INNER JOIN "tblProduct" "PR" ON "CS"."ProdID" = "PR"."ProdID"
+          INNER JOIN "tblInsuree" "I" ON "C"."InsureeID" = "I"."InsureeID"
+          INNER JOIN "tblFamilies" "F" ON "I"."FamilyID" = "F"."FamilyID"
+          INNER JOIN "tblVillages" "V" ON "V"."VillageId" = "F"."LocationId"
+          INNER JOIN "tblWards" "W" ON "W"."WardId" = "V"."WardId"
+          INNER JOIN "tblDistricts" "DIns" ON "DIns"."DistrictId" = "W"."DistrictId"
+          INNER JOIN "tblServices" "S" ON "CS"."ServiceID" = "S"."ServiceID"
+          INNER JOIN "tblHF" "HF" ON "C"."HFID" = "HF"."HfID"
+          INNER JOIN "tblICDCodes" "ICD" ON "C"."ICDID" = "ICD"."ICDID"
+          INNER JOIN "tblDistricts" "HFD" ON "HF"."LocationId" = "HFD"."DistrictId"
+          INNER JOIN "tblRegions" "R" ON "R"."RegionId" = "DIns"."Region"
+          INNER JOIN "tblRegions" "HFR" ON "HFR"."RegionId" = "HFD"."Region"
+          
+          WHERE "CS"."ValidityTo" IS NULL
+          AND "C"."ValidityTo" IS NULL
+          AND "PR"."ValidityTo" IS NULL
+          AND "I"."ValidityTo" IS NULL
+          AND "S"."ValidityTo" IS NULL
+          AND "HF"."ValidityTo" IS NULL
+          AND "HFD"."ValidityTo" IS NULL
+
+          AND coalesce("CS"."PriceValuated",0) > 0
+          --Also add a criteria if they want the batch id as well
+
+          GROUP BY MONTH(coalesce("C"."DateTo","C"."DateFrom")),QUARTER(coalesce("C"."DateTo","C"."DateFrom")),YEAR(coalesce("C"."DateTo","C"."DateFrom")),
+          "R"."RegionName", "PR"."ProductCode","PR"."ProductName",DATEDIFF_YEAR("I"."DOB",coalesce("C"."DateTo","C"."DateFrom")),"I"."Gender",
+          "S"."ServType","S"."ServCode","S"."ServName",DATEDIFF_DAY("C"."DateFrom", "C"."DateTo"),
+          "HF"."HFLevel","HF"."HFCode","HF"."HFName","C"."VisitType", "ICD"."ICDCode", "ICD"."ICDName",
+          "DIns"."DistrictName" , "W"."WardName", "V"."VillageName", "HFD"."DistrictName", "HFR"."RegionName"
+          ;
+          EOF
+
+
         env:
           DB_HOST: localhost
           DB_PORT: 5432
           DB_NAME: imis
           DB_USER: postgres
-          DB_PASSWORD: YourStrong!Passw0rd
-      
-      
+          DB_PASSWORD: GitHub999
       - name: Django tests PSQL
         working-directory: ./openimis/openIMIS
-
+        id: django-test-psql
         # Run the tests regardless if previous steps failed (if setup fails the tests should crash instantly)
         if: success() || failure()
         run: |
           python -V
-          #export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^openimis/openimis-be-\(.*\)_py$#\1#')"
-          export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^\(.*\)/openimis-be-\(.*\)_py$#\2#')"
-          python -c "
-          import hordak, os
-          m=os.path.join(os.path.dirname(hordak.__file__), 'migrations')
-          print(sorted([f for f in os.listdir(m) if f.endswith('.py')])[-10:])
-          "
-          python manage.py test --keepdb $MODULE_NAME
+          # This has to exit 0, or report is not generated
+          python manage.py showmigrations
+          echo $MODULE_NAME
+          python -m coverage run --source=$MODULE_NAME --omit=*/migrations/* ./manage.py test --debug-mode --verbosity=3 --keepdb $MODULE_NAME
         env:
           SECRET_KEY: secret
           MODE: DEV
-          DB_DEFAULT: postgresql
-          CELERY_BROKER_URL: "memory://openIMIS-test//"
-          CELERY_RESULT_BACKEND: "cache+memory://openIMIS-test//"
+          DB_ENGINE: django.db.backends.postgresql
           #DJANGO_SETTINGS_MODULE: hat.settings
           DB_HOST: localhost
           DB_PORT: 5432
-          DB_NAME: test_imis
-          DB_TEST_NAME: test_imis
+          DB_NAME: imis
           DB_USER: postgres
-          DB_PASSWORD: YourStrong!Passw0rd
+          DB_PASSWORD: GitHub999
           #DEV_SERVER: true
           SITE_ROOT: api
           CI_EXCLUDED_MODULE: ${{ vars.CI_EXCLUDED_MODULE }}
-          OPENSEARCH_ADMIN: admin
-          OPENSEARCH_PASSWORD: B9wc9VrqX7pY
-          OPEN_SEARCH_HTTP_PORT: 9200
-          OPENSEARCH_HOSTS: "localhost:9200"
-  # ci_module_psql_test:
-  #   name: Run All Tests (PSQL)
-  #   runs-on: ubuntu-24.04
-  #   needs: build_backend
-  #   services:
-  #     pgsql:
-  #       image: ghcr.io/openimis/openimis-pgsql:develop
-  #       env:
-  #         DB_HOST: localhost
-  #         DB_PORT: 5432
-  #         POSTGRES_DB: test_imis
-  #         POSTGRES_USER: postgres
-  #         POSTGRES_PASSWORD: YourStrong!Passw0rd
-  #       ports:
-  #         - 5432:5432
-  #       options: >-
-  #         --health-cmd pg_isready
-  #         --health-interval 10s
-  #         --health-timeout 5s
-  #         --health-retries 10
-  #   steps:
-  #     - name: Set up Python 3.11
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: '3.11'
-
-  #     - name: Download site-packages artifact
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: site-packages
-  #         path: /tmp/
-
-  #     - name: Locate site-packages
-  #       run: |
-  #         SITE_PACKAGES=$(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
-  #         echo "SITE_PACKAGES=$SITE_PACKAGES" >> $GITHUB_ENV
-
-  #     - name: Download site-packages artifact
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: code-artifacts
-  #         path: /tmp/
-
-  #     - name: Decompress artifacts
-  #       run: |
-  #         sudo tar -xzf /tmp/site-packages.tar.gz -C ${{ env.SITE_PACKAGES }}
-  #         sudo tar -xzf /tmp/openimis.tar.gz -C .
-  #     - name: Initialize PSQL
-  #       run: |
-  #         if [ ${GITHUB_REF##*/} = "main" ]; then export DBBRANCH="main"; else export DBBRANCH="develop"; fi
-  #         echo "Branch ${GITHUB_REF##*/}, usign ${DBBRANCH} branch for database"
-  #         git clone  --depth=1 --branch=$DBBRANCH https://github.com/openimis/database_postgresql.git ./sql_psql
-  #         sudo bash ./sql_psql/install_postgres_json_schema_extension.sh
-  #         echo 'set search_path to public' >> ~/.psqlrc
-  #         PGPASSWORD=YourStrong!Passw0rd psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -f  ./sql_psql/database\ scripts/json_schema_extension.sql | grep . | uniq -c
-  #       env:
-  #         DB_HOST: localhost
-  #         DB_PORT: 5432
-  #         DB_NAME: test_imis
-  #         DB_TEST_NAME: test_imis
-  #         DB_USER: postgres
-  #         DB_PASSWORD: YourStrong!Passw0rd
-      
-      
-  #     - name: Django tests PSQL
-  #       working-directory: ./openimis/openIMIS
-  #       # Run the tests regardless if previous steps failed (if setup fails the tests should crash instantly)
-  #       if: success() || failure()
-  #       run: |
-  #         python -V
-  #         export MODULES=$(jq -r '(.modules[].name)' ../openimis.json | xargs)
-  #         MODULES=$(echo "$MODULES" | sed -E "s/\b$(echo "${CI_EXCLUDED_MODULE// /\\b|\\b}")\b/ /g" | xargs)
-  #         echo $MODULES
-  #         python manage.py test --keepdb $MODULES
-  #       env:
-  #         SECRET_KEY: secret
-  #         MODE: DEV
-  #         DB_DEFAULT: postgresql
-  #         CELERY_BROKER_URL: "memory://openIMIS-test//"
-  #         CELERY_RESULT_BACKEND: "cache+memory://openIMIS-test//"
-  #         #DJANGO_SETTINGS_MODULE: hat.settings
-  #         DB_HOST: localhost
-  #         DB_PORT: 5432
-  #         DB_NAME: test_imis
-  #         DB_TEST_NAME: test_imis
-  #         DB_USER: postgres
-  #         DB_PASSWORD: YourStrong!Passw0rd
-  #         #DEV_SERVER: true
-  #         SITE_ROOT: api
-  #         CI_EXCLUDED_MODULE: ${{ vars.CI_EXCLUDED_MODULE }}
-  #         OPENSEARCH_ADMIN: admin
-  #         OPENSEARCH_PASSWORD: B9wc9VrqX7pY
-  #         OPEN_SEARCH_HTTP_PORT: 9200
-  #         OPENSEARCH_HOSTS: "localhost:9200"
-  #         OPENSEARCH_DSL_AUTOSYNC: False
+      - name: Django full PSQL
+        working-directory: ./openimis/openIMIS
+        id: django-full-psql
+        # Run the tests regardless if previous steps failed (if setup fails the tests should crash instantly)
+        run: |
+          export MODULES=$(jq -r '(.modules[].name)' ../openimis.json | xargs)
+          # Remove some module from MODULES
+          MODULES=$(echo "$MODULES" | sed -E "s/\b$(echo "${CI_EXCLUDED_MODULE// /\\b|\\b}")\b/ /g" | xargs)
+          echo "MODULES=$MODULES" >> $GITHUB_ENV  
+          python manage.py test --debug-mode --timing --keepdb $MODULE_NAME
+        continue-on-error: true
+        env:
+          SECRET_KEY: secret
+          MODE: DEV
+          DB_ENGINE: django.db.backends.postgresql
+          #DJANGO_SETTINGS_MODULE: hat.settings
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_NAME: imis
+          DB_USER: postgres
+          DB_PASSWORD: GitHub999
+          #DEV_SERVER: true
+          SITE_ROOT: api
+          CI_EXCLUDED_MODULE: ${{ vars.CI_EXCLUDED_MODULE }}
+      # Check if the full test failed but not the PSQL
+      - name: Set warning status if full test step failed
+        id: check-status
+        run: echo "status=${{ steps.django-full-psql.outcome == 'failure' && steps.django-test-psql.outcome == 'success' }}" >> $GITHUB_OUTPUT
+      # Print a warning message if the previous step failed
+      - name: Print warning
+        if: steps.check-status.outputs.status == 'true'
+        run: echo "::warning::Global test failed, check if it is not because of your changes"
       # - name: Generate Coverage Report
       #   if: always()
       #   working-directory: ./openimis/openIMIS
@@ -373,13 +441,13 @@ jobs:
       #     sed -E 's|/home/runner/work/(.*?)/(.*?)/current-module/|./current-module/|' coverage.xml >> coverage/coverage1.xml
       #     sed -E 's|/home/runner/work/(.*?)/(.*?)/current-module/|./|' coverage.xml >> coverage/coverage2.xml
           
-      #     cat coverage.xml
-      # - name: Coverage results
-      #   if: success() || failure()
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: coverage.xml
-      #     path: ./openimis/openIMIS/coverage
+  #         cat coverage.xml
+  #     - name: Coverage results
+  #       if: success() || failure()
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: coverage.xml
+  #         path: ./openimis/openIMIS/coverage
   flake-8-linter:
     continue-on-error: true
     name: Run flake8 check
@@ -417,12 +485,13 @@ jobs:
         if: success() || failure()
         run: |
           # Flake8 Report
-          export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^openimis/openimis-be-\(.*\)_py$#\1#')"
+          #export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^openimis/openimis-be-\(.*\)_py$#\1#')"
+          export MODULE_NAME="$(echo "$GITHUB_REPOSITORY" | sed 's#^\(.*\)/openimis-be-\(.*\)_py$#\2#')"
           MOD_DIR="../current-module/$MODULE_NAME"
           python -m flake8 --output-file=flake8-report.txt $MOD_DIR --exit-zero --ignore W503
           sed -i 's|\.\./current-module/||g' flake8-report.txt
           
-          python -m flake8 $MOD_DIR --ignore W503,E501
+          python -m flake8 $MOD_DIR --ignore W503
       - name: Flake8 results upload
         if: success() || failure()
         uses: actions/upload-artifact@v4
@@ -439,7 +508,7 @@ jobs:
   #     SONAR_ORGANIZATION: ${{ inputs.SONAR_ORGANIZATION }}
   #     SONAR_PROJECT_NAME: ${{ inputs.SONAR_PROJECT_NAME }}
   #     SONAR_PROJECT_VERSION: ${{ inputs.SONAR_PROJECT_VERSION }}
-  #     SONAR_PYTHON_VERSION: '3.11'
+  #     SONAR_PYTHON_VERSION: "3.10"
   #     SONAR_FLAKE8_REPORT_PATHS: ../report/flake8-report.txt
   #     SONAR_SOURCES: ${{ inputs.SONAR_SOURCES }}
   #   steps:
@@ -491,7 +560,7 @@ jobs:
   #           -Dsonar.organization=${{ inputs.SONAR_ORGANIZATION }}
   #           -Dsonar.projectName=${{ inputs.SONAR_PROJECT_NAME }}
   #           -Dsonar.projectVersion=${{ env.SONAR_PROJECT_VERSION }}
-  #           -Dsonar.python.version=3.11
+  #           -Dsonar.python.version="3.10"
   #           -Dsonar.sources=current-module
   #           -Dsonar.python.coverage.reportPaths=report/coverage1.xml,report/coverage2.xml
   #           -Dsonar.python.flake8.reportPaths=report/flake8-report.txt
