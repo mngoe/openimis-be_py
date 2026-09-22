@@ -174,7 +174,7 @@
         },
         {
           "name": "ledger",
-          "pip": "git+https://github.com/Y-Note-SAS/openimis-be-ledger_py.git@test-ledger#egg=openimis-be-ledger"
+          "pip": "git+https://github.com/Y-Note-SAS/openimis-be-ledger_py.git@feature-37591#egg=openimis-be-ledger"
         }
     ]
 }
