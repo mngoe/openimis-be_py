@@ -367,6 +367,7 @@ jobs:
           EOF
 
           PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -c 'DROP VIEW IF EXISTS "public"."uvwOverallAssessment";'
+          PGPASSWORD=GitHub999 psql -U $DB_USER -h $DB_HOST -d $DB_NAME_TEST -c 'DROP VIEW IF EXISTS "public"."uvwServiceUtilization";'
 
         env:
           DB_HOST: localhost
