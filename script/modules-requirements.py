@@ -23,8 +23,4 @@ def extract_requirement(module):
 
 OPENIMIS_CONF = load_openimis_conf(conf_file_path)
 MODULES = list(map(extract_requirement, OPENIMIS_CONF["modules"]))
-<<<<<<< HEAD
 print("\n".join(MODULES))
-=======
-print("\n".join(MODULES))
->>>>>>> origin/main-csu
