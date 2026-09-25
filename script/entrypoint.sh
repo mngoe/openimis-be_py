@@ -11,6 +11,7 @@ pip install -e /openimis-be-cs_py -c requirements.txt
 pip install -e /openimis-be-csu_py -c requirements.txt
 pip install -e /openimis-be-report-csu_py -c requirements.txt
 pip install -e /openimis-be-report-cs_py -c requirements.txt
+pip install -e /openimis-be-medical_controller_py -c requirements.txt
 #pip install -e /openimis-be-core_py
 #pip install -e /openimis-be-program_py
 #pip install -e /openimis-be-cs_py
@@ -32,7 +33,7 @@ pip install -e /openimis-be-report-cs_py -c requirements.txt
 # pip install django-debug-toolbar
 pip install openpyxl
 cd /openimis-be/openIMIS/
-#python manage.py runserver 0.0.0.0:8000
+#python server.py 0.0.0.0:8000
 
 #while :; do sleep 10; done
 

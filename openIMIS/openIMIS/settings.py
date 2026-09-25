@@ -147,7 +147,6 @@ def before_send(event, hint):
         return event
 
 
-
 if SENTRY_DSN is not None:
     try:
         import sentry_sdk
@@ -242,7 +241,7 @@ INSTALLED_APPS = [
     "channels",  # Websocket support
     "developer_tools",
     "drf_spectacular",  # Swagger UI for FHIR API
-    "debug_toolbar",
+    # "debug_toolbar",
 ]
 INSTALLED_APPS += OPENIMIS_APPS
 INSTALLED_APPS += ["apscheduler_runner", "signal_binding"]  # Signal binding should be last installed module
@@ -295,12 +294,12 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-DEBUG_TOOLBAR_PANEL = [
-    "debug_toolbar.panels.profiling.ProfilingPanel"
-]
+# DEBUG_TOOLBAR_PANEL = [
+#     "debug_toolbar.panels.profiling.ProfilingPanel"
+# ]
 
 if DEBUG:
     # Attach profiler middleware
@@ -415,6 +414,7 @@ if DB_DEFAULT == 'PSQL' and os.environ.get("PSQL_DB_ENGINE", "False") != "False"
         "PASSWORD": os.environ.get("PSQL_DB_PASSWORD", os.environ.get("DB_PASSWORD")),
         "HOST": os.environ.get("PSQL_DB_HOST", 'postgres'),
         "PORT": os.environ.get("PSQL_DB_PORT", "5432"),
+        "CONN_MAX_AGE": 0,
         "OPTIONS": PSQL_DATABASE_OPTIONS,
         'TEST': {
             'NAME': os.environ.get("DB_TEST_NAME", "test_" + os.environ.get("MSSQL_DB_NAME", "imis")),
