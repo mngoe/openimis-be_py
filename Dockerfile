@@ -1,7 +1,8 @@
-FROM --platform=linux/amd64 python:3.10-buster as builder
+FROM --platform=linux/amd64 python:3.11-bookworm AS builder
 ENV PYTHONUNBUFFERED 1
 ARG DB_ENGINE
 ENV DB_ENGINE=${DB_ENGINE:-mssql}
+RUN echo "deb http://archive.debian.org/debian buster main" > /etc/apt/sources.list && echo "deb http://archive.debian.org/debian-security buster/updates main" >> /etc/apt/sources.list
 RUN apt-get update && apt-get install -y apt-transport-https ca-certificates gettext unixodbc-dev && apt-get upgrade -y
 RUN apt-get install -y -f python3-dev
 RUN apt-get -y install git
@@ -23,7 +24,9 @@ COPY requirements.txt /.
 RUN pip install -r requirements.txt
 
 ARG SENTRY_DSN
+COPY sentry-requirements.txt /.
 RUN test -z "$SENTRY_DSN" || pip install -r sentry-requirements.txt && :
+RUN pip install -r sentry-requirements.txt
 
 RUN mkdir /openimis-be
 COPY . /openimis-be
@@ -32,7 +35,6 @@ WORKDIR /openimis-be
 ARG OPENIMIS_CONF_JSON
 ENV OPENIMIS_CONF_JSON=${OPENIMIS_CONF_JSON}
 RUN python modules-requirements.py openimis.json > modules-requirements.txt && pip install -r modules-requirements.txt 
-
 RUN pip install pydantic==1.10.0
 RUN pip install gunicorn
 RUN pip install django-debug-toolbar

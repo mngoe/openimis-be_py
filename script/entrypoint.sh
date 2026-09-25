@@ -4,8 +4,13 @@ set -e
 cd /openimis-be/
 python modules-requirements.py openimis.json > modules-requirements.txt
 pip uninstall -r modules-requirements.txt -y
-pip install -r modules-requirements.txt
-
+pip install -r modules-requirements.txt -c requirements.txt
+pip install -r sentry-requirements.txt
+pip install -e /openimis-be-program_py -c requirements.txt
+pip install -e /openimis-be-cs_py -c requirements.txt
+pip install -e /openimis-be-csu_py -c requirements.txt
+pip install -e /openimis-be-report-csu_py -c requirements.txt
+pip install -e /openimis-be-report-cs_py -c requirements.txt
 #pip install -e /openimis-be-core_py
 #pip install -e /openimis-be-program_py
 #pip install -e /openimis-be-cs_py
@@ -13,8 +18,8 @@ pip install -r modules-requirements.txt
 #pip install -e /openimis-be-claim_py
 #pip install -e /openimis-be-location_py
 #pip install -e /openimis-be-product_py
-pip install -e /openimis-be-report-csu_py
-pip install -e /openimis-be-report-cs_py
+#pip install -e /openimis-be-report-csu_py
+#pip install -e /openimis-be-report-cs_py
 #pip install -e /openimis-be-policy_py
 #pip install -e /openimis-be-insuree_py
 #pip install -e /openimis-be-medical_py
@@ -22,11 +27,9 @@ pip install -e /openimis-be-report-cs_py
 #pip install -e /openimis-be-tools_py
 #pip install -e /openimis-be-idps_py
 #cp /openimis-be/script/fhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/
-pip install pydantic==1.10.0
-pip install gunicorn
-pip install django-debug-toolbar
-pip install -r requirements.txt
-pip install -r sentry-requirements.txt
+# pip install pydantic==1.10.0
+# pip install gunicorn
+# pip install django-debug-toolbar
 pip install openpyxl
 cd /openimis-be/openIMIS/
 #python server.py 0.0.0.0:8000
@@ -90,9 +93,8 @@ case "$1" in
     SERVER_PORT="${WSGI_PORT:-$def_port}"
     SERVER_APPLICATION="${WSGI_APPLICATION:-$def_app}"
     SERVER_WORKERS="${WSGI_WORKERS:-4}"
-    gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION"
-    #[Use this on report server]: gunicorn -c gunicorn.conf.report.py openIMIS.wsgi
-    #gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION" --error-logfile /error.log --access-logfile /access.log --timeout 240
+    SERVER_TIMEOUT="${WSGI_TIMEOUT:-600}" 
+    gunicorn -b "$SERVER_IP:$SERVER_PORT" -w $SERVER_WORKERS "$SERVER_APPLICATION" --error-logfile /error.log --access-logfile /access.log --timeout $SERVER_TIMEOUT
   ;;
   "worker" )
     echo "Starting Celery with url ${CELERY_BROKER_URL} ${DB_NAME}..."
