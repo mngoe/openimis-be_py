@@ -11,6 +11,7 @@ pip install -e /openimis-be-cs_py -c requirements.txt
 pip install -e /openimis-be-csu_py -c requirements.txt
 pip install -e /openimis-be-report-csu_py -c requirements.txt
 pip install -e /openimis-be-report-cs_py -c requirements.txt
+pip install -e /openimis-be-medical_controller_py -c requirements.txt
 #pip install -e /openimis-be-core_py
 #pip install -e /openimis-be-program_py
 #pip install -e /openimis-be-cs_py
