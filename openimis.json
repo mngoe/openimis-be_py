@@ -38,7 +38,7 @@
         },
         {
             "name": "insuree",
-            "pip": "git+https://github.com/mngoe/openimis-be-insuree_py.git@fix-import#egg=openimis-be-insuree"
+            "pip": "git+https://github.com/openimis/openimis-be-insuree_py.git@develop#egg=openimis-be-insuree"
         },
         {
             "name": "policy",
@@ -90,7 +90,7 @@
         },
         {
             "name": "invoice",
-            "pip": "git+https://github.com/Y-Note-SAS/openimis-be-invoice_py.git@feature-37884#egg=openimis-be-invoice"
+            "pip": "git+https://github.com/openimis/openimis-be-invoice_py.git@develop#egg=openimis-be-invoice"
         },
         {
             "name": "calcrule_contribution_legacy",
