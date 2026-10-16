@@ -458,9 +458,8 @@ msgstr ""
 msgid "claim.validation.claimservice_frequency_validity"
 msgstr ""
 
-#, fuzzy
 msgid "mutation.code_name_duplicated"
-msgstr ""
+msgstr "Le code de prestation existe déjà"
 
 #, fuzzy
 msgid "insuree.mutation.failed_to_update_family"
@@ -5669,21 +5668,17 @@ msgstr ""
 msgid "User is not creator of bill events: %(events)s, events can't be deleted."
 msgstr ""
 
-#, fuzzy
 msgid "mutation.restored_from_does_not_exist"
-msgstr ""
+msgstr "La prestation que vous souhaitez rétablir n'existe pas"
 
-#, fuzzy
 msgid "mutation.cannot_restore_not_rejected_claim"
-msgstr ""
+msgstr "La prestation doit être rejetée pour pouvoir être rétablie"
 
-#, fuzzy
 msgid "mutation.no_restore_rights"
-msgstr ""
+msgstr "Vous n'avez pas les droits pour rétablir cette prestation"
 
-#, fuzzy
 msgid "mutation.max_restored_claim"
-msgstr ""
+msgstr "Nombre maximum de rétablissements autorisé : %(max_restore)s"
 
 #, fuzzy
 msgid "mutation.claim_not_editable"
