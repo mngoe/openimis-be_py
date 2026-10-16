@@ -269,3 +269,17 @@ msgstr "Administrateur de schéma"
 msgid "Task Triage"
 msgstr "Triage des tâches"
 
+msgid "mutation.code_name_duplicated"
+msgstr "Le code de prestation existe déjà"
+
+msgid "mutation.restored_from_does_not_exist"
+msgstr "La prestation que vous souhaitez rétablir n'existe pas"
+
+msgid "mutation.cannot_restore_not_rejected_claim"
+msgstr "La prestation doit être rejetée pour pouvoir être rétablie"
+
+msgid "mutation.no_restore_rights"
+msgstr "Vous n'avez pas les droits pour rétablir cette prestation"
+
+msgid "mutation.max_restored_claim"
+msgstr "Nombre maximum de rétablissements autorisé : %(max_restore)s"
