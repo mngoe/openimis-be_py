@@ -42,7 +42,7 @@
 	  },
 	  {
 		"name": "policy",
-		"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@test-csu#egg=openimis-be-policy"
+		"pip": "git+https://github.com/mngoe/openimis-be-policy_py.git@test-comores#egg=openimis-be-policy"
 	  },
 	  {
 		"name": "contribution",
@@ -90,7 +90,7 @@
 	  },
 	  {
 		"name": "invoice",
-		"pip": "git+https://github.com/Y-Note-SAS/openimis-be-invoice_py.git@test-csu#egg=openimis-be-invoice"
+		"pip": "git+https://github.com/Y-Note-SAS/openimis-be-invoice_py.git@test-comores#egg=openimis-be-invoice"
 	  },
 	  {
 		"name": "calcrule_contribution_legacy",
