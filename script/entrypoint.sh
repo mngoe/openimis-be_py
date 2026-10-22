@@ -3,6 +3,7 @@ set -e
 
 cd /openimis-be/
 python modules-requirements.py openimis.json > modules-requirements.txt
+pip uninstall -r modules-requirements.txt -y
 pip install -r requirements.txt
 pip install -r modules-requirements.txt
 #pip install -e /openimis-be-insuree_py
