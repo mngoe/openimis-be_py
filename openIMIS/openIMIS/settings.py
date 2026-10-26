@@ -4,8 +4,10 @@ Django settings for openIMIS project.
 import json
 import logging
 import os
+import sys
 
 from dotenv import load_dotenv
+from sentry_sdk.scrubber import (DEFAULT_DENYLIST, EventScrubber)
 from .openimisapps import openimis_apps, get_locale_folders
 from datetime import timedelta
 
@@ -55,10 +57,22 @@ LOGGING = {
             "backupCount": 3,
             "formatter": "standard",
         },
-        "console": {"class": "logging.StreamHandler", "formatter": "short"},
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+        # "console": {"class": "logging.StreamHandler", "formatter": "short"},
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",
     },
     "loggers": {
-        "": {
+        "django": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+         "": {
             "level": LOGGING_LEVEL,
             "handlers": [DEFAULT_LOGGING_HANDLER],
         },
@@ -77,6 +91,61 @@ LOGGING = {
 SENTRY_DSN = os.environ.get("SENTRY_DSN", None)
 SENTRY_SAMPLE_RATE = os.environ.get("SENTRY_SAMPLE_RATE", "0.2")
 IS_SENTRY_ENABLED = False
+
+
+SENSITIVE_KEYS = {
+    "password", "passwd", "pwd",
+    "token", "access_token", "refresh_token",
+    "authorization", "auth",
+    "api_key", "apikey",
+    "secret",
+    "host", "port", "user", "username",
+    "dbname"
+}
+
+denylist = DEFAULT_DENYLIST + ["dsn", "conn_params"]
+denylist += list(SENSITIVE_KEYS)
+
+def sanitize(value):
+    """Nettoyage récursif"""
+    if isinstance(value, dict):
+        clean = {}
+        for k, v in value.items():
+            if any(s in k.lower() for s in SENSITIVE_KEYS):
+                clean[k] = "***"
+            else:
+                clean[k] = sanitize(v)
+        return clean
+
+    elif isinstance(value, list):
+        return [sanitize(v) for v in value]
+
+    return value
+
+
+def before_send(event, hint):
+    try:
+        # Nettoyage global (clé principale)
+        event = sanitize(event)
+
+        # Cas spécifique : exception message
+        if "exception" in event:
+            for exc in event["exception"].get("values", []):
+                if "value" in exc:
+                    exc["value"] = sanitize(exc["value"])
+
+                # stacktrace
+                if "stacktrace" in exc:
+                    for frame in exc["stacktrace"].get("frames", []):
+                        if "vars" in frame:
+                            frame["vars"] = sanitize(frame["vars"])
+
+        return event
+
+    except Exception:
+        # En cas de bug dans le scrubber, ne jamais bloquer Sentry
+        return event
+
 
 if SENTRY_DSN is not None:
     try:
@@ -98,6 +167,8 @@ if SENTRY_DSN is not None:
             # SHA as release, however you may want to set
             # something more human-readable.
             # release="myapp@1.0.0",
+            event_scrubber=EventScrubber(denylist=denylist),
+            before_send=before_send,
         )
         IS_SENTRY_ENABLED = True
     except ModuleNotFoundError:
@@ -170,10 +241,11 @@ INSTALLED_APPS = [
     "channels",  # Websocket support
     "developer_tools",
     "drf_spectacular",  # Swagger UI for FHIR API
-    "debug_toolbar",
+    # "debug_toolbar",
 ]
 INSTALLED_APPS += OPENIMIS_APPS
 INSTALLED_APPS += ["apscheduler_runner", "signal_binding"]  # Signal binding should be last installed module
+IS_TESTING =  'test' in sys.argv
 
 AUTHENTICATION_BACKENDS = []
 
@@ -222,12 +294,12 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-DEBUG_TOOLBAR_PANEL = [
-    "debug_toolbar.panels.profiling.ProfilingPanel"
-]
+# DEBUG_TOOLBAR_PANEL = [
+#     "debug_toolbar.panels.profiling.ProfilingPanel"
+# ]
 
 if DEBUG:
     # Attach profiler middleware
@@ -342,6 +414,7 @@ if DB_DEFAULT == 'PSQL' and os.environ.get("PSQL_DB_ENGINE", "False") != "False"
         "PASSWORD": os.environ.get("PSQL_DB_PASSWORD", os.environ.get("DB_PASSWORD")),
         "HOST": os.environ.get("PSQL_DB_HOST", 'postgres'),
         "PORT": os.environ.get("PSQL_DB_PORT", "5432"),
+        "CONN_MAX_AGE": 0,
         "OPTIONS": PSQL_DATABASE_OPTIONS,
         'TEST': {
             'NAME': os.environ.get("DB_TEST_NAME", "test_" + os.environ.get("MSSQL_DB_NAME", "imis")),
@@ -400,19 +473,60 @@ DATABASE_ROUTERS = ["openIMIS.routers.DashboardDatabaseRouter"]
 
 
 
-
+CACHE_OBJECT_DEFAULT =  (os.environ.get("CACHE_OBJECT_DEFAULT", '').lower() == 'true')
+CACHE_OBJECT_TTL =  int(os.environ.get("CACHE_OBJECT_TTL", 3600))
 # Celery message broker configuration for RabbitMQ. One can also use Redis on AWS SQS
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "amqp://rabitmq")
 if 'CELERY_RESULT_BACKEND' in os.environ:
     CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND")
 
+#print("CACHE_BACKEND", os.environ.get('CACHE_BACKEND'))
 if 'CACHE_BACKEND' in os.environ and 'CACHE_URL' in os.environ:
-    CACHES = {
-        'default': {
-            'BACKEND': os.environ.get('CACHE_BACKEND'),
-            'LOCATION': os.environ.get("CACHE_URL"),
-            'OPTIONS': json.loads(os.environ.get("CACHE_OPTIONS", ""))
-        }
+    CACHE_BACKEND = os.environ.get('CACHE_BACKEND')
+    CACHE_URL = os.environ.get("CACHE_URL")
+    CACHE_OPTIONS = os.environ.get("CACHE_OPTIONS", None)
+    if CACHE_OPTIONS:
+        CACHE_OPTIONS = json.loads(CACHE_OPTIONS)
+else:
+    CACHE_BACKEND = 'django.core.cache.backends.locmem.LocMemCache'
+    CACHE_URL = None
+    CACHE_OPTIONS = None
+
+CACHE_PARAM = {}
+CACHE_PARAM['BACKEND'] = CACHE_BACKEND
+if CACHE_URL:
+    CACHE_PARAM['LOCATION'] = CACHE_URL
+
+if CACHE_OPTIONS:
+    CACHE_PARAM['OPTIONS'] = CACHE_OPTIONS
+
+CACHES = {
+    'default': {
+        **CACHE_PARAM,
+        'KEY_PREFIX': "oi"
+    },
+    'location': {
+        **CACHE_PARAM,
+        'KEY_PREFIX': "loc"
+    },
+    'coverage': {
+        **CACHE_PARAM,
+        'KEY_PREFIX': "cov"
+
+    }
+}
+
+#print("CACHES", CACHES)
+# Django channels require rabbitMQ server, by default it use 127.0.0.1, port 5672
+if "CHANNELS_BACKEND" in os.environ and "CHANNELS_HOST" in os.environ:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": os.environ.get("CHANNELS_BACKEND"),
+            "CONFIG": {
+                "hosts": [os.environ.get("CHANNELS_HOST")],
+                # "ssl_context": ... (optional)
+            },
+        },
     }
 
 # This scheduler config will:
@@ -440,7 +554,7 @@ SCHEDULER_JOBS = [
     {
         "method": "policy.tasks.get_policies_for_renewal",
         "args": ["cron"],
-        "kwargs": {"id": "openimis_renewal_batch", "hour": 8, "minute": 30, "replace_existing": True},
+        "kwargs": {"id": "openimis_renewal_batch", "hour": 2, "minute": 5, "replace_existing": True},
     },
     # {
     #     "method": "policy_notification.tasks.send_notification_messages",

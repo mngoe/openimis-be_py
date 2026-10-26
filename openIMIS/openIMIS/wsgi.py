@@ -10,7 +10,10 @@ https://docs.djangoproject.com/en/2.1/howto/deployment/wsgi/
 import os
 
 from django.core.wsgi import get_wsgi_application
+from psycogreen.gevent import patch_psycopg
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'openIMIS.settings')
+# Patch psycopg2 pour compatibilité gevent
+patch_psycopg()
 
 application = get_wsgi_application()
