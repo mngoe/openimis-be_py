@@ -57,10 +57,22 @@ LOGGING = {
             "backupCount": 3,
             "formatter": "standard",
         },
-        "console": {"class": "logging.StreamHandler", "formatter": "short"},
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+        # "console": {"class": "logging.StreamHandler", "formatter": "short"},
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",
     },
     "loggers": {
-        "": {
+        "django": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+         "": {
             "level": LOGGING_LEVEL,
             "handlers": [DEFAULT_LOGGING_HANDLER],
         },
@@ -461,10 +473,8 @@ DATABASE_ROUTERS = ["openIMIS.routers.DashboardDatabaseRouter"]
 
 
 
-
 CACHE_OBJECT_DEFAULT =  (os.environ.get("CACHE_OBJECT_DEFAULT", '').lower() == 'true')
 CACHE_OBJECT_TTL =  int(os.environ.get("CACHE_OBJECT_TTL", 3600))
-
 # Celery message broker configuration for RabbitMQ. One can also use Redis on AWS SQS
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "amqp://rabitmq")
 if 'CELERY_RESULT_BACKEND' in os.environ:

@@ -168,13 +168,13 @@
 					"name": "controls",
 					"pip": "openimis-be-controls==v1.1.0"
 				},
-        {
-          "name": "cache_manager",
-          "pip": "git+https://github.com/Y-Note-SAS/openimis-be-cache-manager_py.git@test-csu#egg=openimis-be-cache-manager"
-        },
-		{
-          "name": "medical_controller",
-          "pip": "git+https://github.com/Y-Note-SAS/openimis-be-medical_controller_py.git@test-csu#egg=openimis-be-medical_controller"
-        }
+				{
+					"name": "cache_manager",
+					"pip": "git+https://github.com/Y-Note-SAS/openimis-be-cache-manager_py.git@test-csu#egg=openimis-be-cache-manager"
+				},
+				{
+					"name": "medical_controller",
+					"pip": "git+https://github.com/Y-Note-SAS/openimis-be-medical_controller_py.git@test-csu#egg=openimis-be-medical_controller"
+				}
 		]
   }
