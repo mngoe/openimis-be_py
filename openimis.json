@@ -162,7 +162,7 @@
 				},
 				{
 					"name":"program",
-					"pip":"git+https://github.com/mngoe/openimis-be-program_py.git@test-csu#egg=openimis-be-program"
+					"pip":"git+https://github.com/Y-Note-SAS/openimis-be-program_py.git@test-csu#egg=openimis-be-program"
 				},
 				{
 					"name": "controls",
