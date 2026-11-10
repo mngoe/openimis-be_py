@@ -32,6 +32,16 @@ on:
         description: 'SonarQube Project Sources'
         required: false
         type: string
+      ASSEMBLY_REPO:
+        description: 'Assembly (openimis-be_py) repository to build against'
+        required: false
+        type: string
+        default: 'mngoe/openimis-be_py'
+      ASSEMBLY_DEFAULT_BRANCH:
+        description: 'Assembly branch used when neither the tested branch nor the PR base exists in it'
+        required: false
+        type: string
+        default: 'test-csu'
 
 jobs:
   build_backend:
@@ -44,9 +54,30 @@ jobs:
           python-version: "3.10"
 
       - name: Pull openIMIS Backend
+        env:
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          ASSEMBLY_REPO: ${{ inputs.ASSEMBLY_REPO || 'mngoe/openimis-be_py' }}
+          ASSEMBLY_DEFAULT_BRANCH: ${{ inputs.ASSEMBLY_DEFAULT_BRANCH || 'test-csu' }}
         run: |
+          # Same rule as the openIMIS reference (release/26.10): build against the
+          # assembly branch named like the branch being tested, so the modules of
+          # one change are tested together; else the PR base; else the default.
+          if [[ "${{ github.event_name }}" == "pull_request" || "${{ github.event_name }}" == "pull_request_target" ]]; then
+            CANDIDATES="$PR_HEAD_REF $PR_BASE_REF"
+          else
+            CANDIDATES="${GITHUB_REF#refs/heads/}"
+          fi
+          TARGET_BRANCH="$ASSEMBLY_DEFAULT_BRANCH"
+          for candidate in $CANDIDATES; do
+            if git ls-remote --exit-code --heads "https://github.com/$ASSEMBLY_REPO.git" "refs/heads/$candidate" > /dev/null; then
+              TARGET_BRANCH="$candidate"
+              break
+            fi
+          done
+          echo "Assembly $ASSEMBLY_REPO, branch $TARGET_BRANCH (tried: $CANDIDATES)"
           rm ./openimis -rf
-          git clone --depth=1 --branch=test-csu https://github.com/mngoe/openimis-be_py.git ./openimis
+          git clone --depth=1 --branch="$TARGET_BRANCH" "https://github.com/$ASSEMBLY_REPO.git" ./openimis
 
       - name: Copy Current branch
         uses: actions/checkout@v4
@@ -71,9 +102,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install jq
 
-          #export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^openimis/openimis-be-\(.*\)_py$#\1#')"
-          # pour gérer à la fois les dépôts openimis et les forks
-          export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^\(.*\)/openimis-be-\(.*\)_py$#\1#')"
+          # module name from the repository, openimis or any fork (mngoe, Y-Note-SAS, ...)
+          export MODULE_NAME="$(echo $GITHUB_REPOSITORY | sed 's#^.*/openimis-be-\(.*\)_py$#\1#')"
           echo "MODULE_NAME=$MODULE_NAME" >> $GITHUB_ENV
           export MODULES=$(jq -r '(.modules[].name)' ./openimis.json | xargs)
           # Remove some module from MODULES
@@ -81,7 +111,8 @@ jobs:
           echo "MODULES=$MODULES" >> $GITHUB_ENV
           
           # Add or replace MODULE_NAME module in openimis.json (local version)
-          # echo $(jq --arg name "$MODULE_NAME" 'if [.modules[].name  ==  ($name)]| max then (.modules[]  | select(.name == ($name)) | .pip)|="-e ../current-module" else .modules |= .+ [{name:($name), pip:"../current-module"}] end' openimis.json)  > openimis.json
+          # the module under test is the checked-out branch, not the assembly pin
+          echo $(jq --arg name "$MODULE_NAME" 'if [.modules[].name  ==  ($name)]| max then (.modules[]  | select(.name == ($name)) | .pip)|="-e ../current-module" else .modules |= .+ [{name:($name), pip:"-e ../current-module"}] end' openimis.json)  > openimis.json
           cat openimis.json
 
       - name: Install Python dependencies3.10
@@ -92,7 +123,9 @@ jobs:
           pip install -r sentry-requirements.txt
           python modules-requirements.py openimis.json > modules-requirements.txt
           cat modules-requirements.txt
-          pip uninstall -r modules-requirements.txt -y
+          # the editable module under test is not uninstalled (it is not installed yet)
+          grep -v '^-e ' modules-requirements.txt > modules-uninstall.txt || true
+          pip uninstall -r modules-uninstall.txt -y
           pip install --no-cache-dir -r modules-requirements.txt
 
       - name: Environment info
