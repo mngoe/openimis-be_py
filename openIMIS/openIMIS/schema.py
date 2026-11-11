@@ -1,6 +1,7 @@
 import graphene
 
 from core.models import Language
+from django.conf import settings
 from django.utils import translation
 
 from .openimisapps import openimis_apps
@@ -57,7 +58,10 @@ for app in all_apps:
 
 
 class Query(*queries, graphene.ObjectType):
-    debug = graphene.Field(DjangoDebug, name="_debug")
+    # `_debug` returns the SQL of the request's queries (values included) to any caller:
+    # development only (MODE=DEV)
+    if settings.DEBUG:
+        debug = graphene.Field(DjangoDebug, name="_debug")
     node = graphene.relay.Node.Field()
 
 
