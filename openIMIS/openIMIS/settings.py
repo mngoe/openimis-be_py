@@ -343,9 +343,11 @@ GRAPHENE = {
         "openIMIS.tracer.TracerMiddleware",
         "openIMIS.schema.GQLUserLanguageMiddleware",
         "graphql_jwt.middleware.JSONWebTokenMiddleware",
-        "graphene_django.debug.DjangoDebugMiddleware",  # adds a _debug query to graphQL with sql debug info
     ],
 }
+if DEBUG:
+    # adds a _debug query to graphQL with sql debug info: development only
+    GRAPHENE["MIDDLEWARE"].append("graphene_django.debug.DjangoDebugMiddleware")
 
 if DEBUG:
     import socket  # only if you haven't already imported this
