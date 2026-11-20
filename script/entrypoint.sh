@@ -11,7 +11,7 @@ pip install -e /openimis-be-cs_py -c requirements.txt
 pip install -e /openimis-be-csu_py -c requirements.txt
 pip install -e /openimis-be-report-csu_py -c requirements.txt
 pip install -e /openimis-be-report-cs_py -c requirements.txt
-#pip install -e /openimis-be-medical_controller_py -c requirements.txt
+pip install -e /openimis-be-medical_controller_py -c requirements.txt
 #pip install -e /openimis-be-core_py
 #pip install -e /openimis-be-program_py
 #pip install -e /openimis-be-cs_py
@@ -29,7 +29,7 @@ pip install -e /openimis-be-report-cs_py -c requirements.txt
 #pip install -e /openimis-be-idps_py
 #cp /openimis-be/script/fhirtypes.py /usr/local/lib/python3.10/site-packages/fhir/resources/
 # pip install pydantic==1.10.0
-# pip install gunicorn
+pip install gunicorn
 # pip install django-debug-toolbar
 pip install openpyxl
 cd /openimis-be/openIMIS/
