@@ -94,6 +94,7 @@ jobs:
           cat modules-requirements.txt
           pip uninstall -r modules-requirements.txt -y
           pip install --no-cache-dir -r modules-requirements.txt
+          pip install pytest
 
       - name: Environment info
         run: |
